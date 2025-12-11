@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/Button'
 import { motion, useInView, useReducedMotion } from 'motion/react'
+import NextImage from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
 type Cta = { label: string; href: string }
@@ -54,7 +55,7 @@ export function Hero({
         GRID_IMAGES.map(
           (src) =>
             new Promise<void>((resolve) => {
-              const img = new Image()
+              const img = new globalThis.Image()
               img.onload = img.onerror = () => resolve()
               img.src = src
             }),
@@ -86,6 +87,17 @@ export function Hero({
     >
       <div className="mx-auto flex min-h-[85vh] w-full max-w-6xl flex-col items-center gap-8 bg-transparent lg:flex-row lg:items-center">
         <div className="flex w-full flex-col items-center space-y-6 text-center sm:space-y-8 lg:items-start lg:text-left">
+          <div className="flex w-full justify-center lg:justify-start">
+            <NextImage
+              src="/media/brand/agile-onion-logo-color.svg"
+              alt="Agile Onion"
+              width={180}
+              height={48}
+              className="mx-auto h-auto w-40 sm:w-48 lg:w-56 lg:mx-0"
+              priority
+            />
+          </div>
+
           {kicker ? (
             <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-[11px] font-semibold tracking-[0.14em] text-emerald-100 uppercase">
               <span

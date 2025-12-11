@@ -6,9 +6,8 @@ import { motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { useCallback, useRef, useState } from 'react'
 
 const NAV_ITEMS = [
-  { label: 'Blog', href: '#blog' },
+  { label: 'Blog', href: '/blog' },
   { label: 'O meni', href: '#founder' },
-  { label: 'Kontakt', href: '#contact' },
 ]
 
 export function FloatingNav() {
@@ -49,31 +48,8 @@ export function FloatingNav() {
       animate={{ y: hidden ? -80 : 0, opacity: hidden ? 0 : 1 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
       style={{ pointerEvents: hidden ? 'none' : undefined }}
-      className="fixed top-3 right-3 left-3 z-40 flex max-w-full -translate-x-0 flex-wrap items-center gap-2 overflow-hidden rounded-full border border-white/10 bg-black/70 px-3 py-1 text-xs text-zinc-100 shadow-md backdrop-blur sm:right-auto sm:left-1/2 sm:w-auto sm:max-w-[720px] sm:-translate-x-1/2 sm:flex-nowrap sm:gap-3 sm:px-5 sm:py-2.5 sm:text-sm md:gap-4 md:px-6 md:py-3 md:text-sm lg:top-4 lg:gap-5 lg:px-7 lg:py-3.5 lg:text-base"
+      className="fixed top-3 right-3 left-3 z-40 flex max-w-full translate-x-0 flex-wrap items-center gap-2 overflow-hidden rounded-full border border-white/10 bg-black/70 px-3 py-1 text-xs text-zinc-100 shadow-md backdrop-blur sm:right-auto sm:left-1/2 sm:w-auto sm:max-w-[720px] sm:-translate-x-1/2 sm:flex-nowrap sm:gap-3 sm:px-5 sm:py-2.5 sm:text-sm md:gap-4 md:px-6 md:py-3 md:text-sm lg:top-4 lg:gap-5 lg:px-7 lg:py-3.5 lg:text-base"
     >
-      <Link
-        href="/"
-        aria-label="Agile Onion"
-        className="flex shrink-0 items-center gap-2"
-      >
-        <Image
-          src="/media/brand/favicon-browser.png"
-          alt="Agile Onion"
-          width={28}
-          height={28}
-          className="shrink-0 sm:block xl:hidden"
-          priority
-        />
-        <Image
-          src="/media/brand/agile-onion-logo-color.svg"
-          alt="Agile Onion"
-          width={140}
-          height={36}
-          className="hidden h-9 w-auto xl:block xl:h-10"
-          priority
-        />
-      </Link>
-
       <div
         className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto sm:hidden"
         style={{ scrollbarWidth: 'none' }}

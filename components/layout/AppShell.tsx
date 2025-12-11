@@ -1,5 +1,6 @@
 import { type WithChildren } from '@/lib/types'
 import { FloatingNav } from './FloatingNav'
+import { Footer } from './Footer'
 
 type AppShellProps = WithChildren<{
   padded?: boolean
@@ -23,7 +24,8 @@ export function AppShell({ children, padded = true }: AppShellProps) {
         <div className={navSpacing}>
           <FloatingNav />
         </div>
-        {children}
+        <div className="flex-1 w-full">{children}</div>
+        <Footer />
       </main>
     </div>
   )

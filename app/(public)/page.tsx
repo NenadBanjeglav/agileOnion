@@ -4,6 +4,7 @@ import { Hero } from './_components/Hero'
 import { BlogCategories } from './_components/BlogCategories'
 import { LatestBlogs } from './_components/LatestBlogs'
 import { NewsletterShuffle } from './_components/NewsletterShuffle'
+import { AboutMe } from './_components/AboutMe'
 
 export default function HomePage() {
   const { hero } = homeContent
@@ -11,8 +12,9 @@ export default function HomePage() {
   return (
     <AppShell padded={false}>
       <Hero {...hero} />
-      <LatestBlogs />
+      <AboutMe />
       <BlogCategories />
+      <LatestBlogs />
       <NewsletterShuffle />
     </AppShell>
   )

@@ -1,10 +1,13 @@
 export const homeContent = {
   hero: {
     kicker: 'Mindset / agilnost / scrum',
-    title: 'Promena korak po korak',
+    title: 'Korak po korak do uspeha',
     subtitle:
-      'Agile Onion je praktični vodič za ljude i timove koji spajaju mindset, agilnost i Scrum kroz male eksperimente, nedeljni ritam i podršku.',
-    primaryCta: { label: 'Saznaj kako radimo', href: '#methodology' },
+      'Kroz agilne principe, mindset tehnike i scrum okvir, pretvaram tvoju ambiciju u rezultate.',
+    primaryCta: {
+      label: 'Saznaj kako da postigneš više',
+      href: '#layers-alt',
+    },
     image: {
       src: '/media/hero/team-meeting.jpg',
       alt: 'Tim deli ideje oko tabli',
