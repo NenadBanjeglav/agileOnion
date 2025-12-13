@@ -1,11 +1,12 @@
 import NextImage from 'next/image'
 import Link from 'next/link'
-import { Linkedin, Mail } from 'lucide-react'
+import { Linkedin } from 'lucide-react'
 
 const quickLinks = [
   { label: 'Blog', href: '/blog' },
-  { label: 'Newsletter', href: '#newsletter' },
+  { label: 'Taste an Onion', href: '#newsletter' },
   { label: 'O meni', href: '#founder' },
+  { label: 'Kontakt', href: '#footer' },
 ]
 
 export function Footer() {
@@ -13,6 +14,7 @@ export function Footer() {
 
   return (
     <footer
+      id="footer"
       className="relative -mx-[calc((100vw-100%)/2)] mt-16 w-screen overflow-hidden px-6 pt-14 pb-12 text-white sm:px-10 lg:px-14"
       aria-labelledby="site-footer-title"
     >
@@ -22,26 +24,30 @@ export function Footer() {
       </div>
 
       <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-10 rounded-[28px] border border-white/10 bg-white/5 p-6 text-center shadow-[0_26px_70px_-40px_rgba(0,0,0,0.95)] backdrop-blur sm:p-10 lg:p-12">
-        <NextImage
-          src="/media/brand/agile-onion-logo-color.svg"
-          alt="Agile Onion"
-          width={196}
-          height={52}
-          className="h-auto w-48 sm:w-52"
-          priority
-        />
+        <div className="flex items-center justify-center">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/15 bg-white/10 shadow-inner shadow-emerald-500/20">
+            <NextImage
+              src="/media/brand/favicon-browser.png"
+              alt="Agile Onion"
+              width={48}
+              height={48}
+              className="h-12 w-12 rounded-full"
+              priority
+            />
+          </div>
+        </div>
 
         <div className="space-y-3">
           <h2
             id="site-footer-title"
             className="text-2xl leading-tight font-semibold sm:text-3xl"
           >
-            Gradimo timove koji rastu sloj po sloj
+            Ostanimo u kontaktu
           </h2>
           <p className="text-base leading-relaxed text-zinc-200 sm:text-lg">
-            Agile Onion je prostor za timove koji žele jasniji ritam, bolju
-            saradnju i rezultate na koje su ponosni. Kroz priče, radionice i
-            coaching, pomažem da napredak bude vidljiv svakog sprinta.
+            Ako odlučiš da podeliš sa mnom svoje iskustvo, imaš neko pitanje ili
+            predlog, piši mi. Želim da čujem tvoju priču. Spreman sam da te
+            saslušam, radujem se tome.
           </p>
         </div>
 
@@ -49,15 +55,31 @@ export function Footer() {
           <FooterColumn title="Brzi linkovi" links={quickLinks} center />
         </div>
 
+        <p className="text-sm text-emerald-100/80">
+          Preferiraš direktan ping? Piši mi na{' '}
+          <a
+            href="mailto:agileonion.blog@gmail.com"
+            className="font-semibold text-emerald-50 underline underline-offset-4"
+          >
+            agileonion.blog@gmail.com
+          </a>
+          . Ako želiš da budeš u toku sa onim što se dešava u mojoj agilnoj
+          kuhinji i da ne propustiš tekstove, prijavi se na Taste an Onion, moj
+          nedeljni newsletter.
+        </p>
+
         <div className="flex w-full flex-col items-center gap-3 border-t border-white/10 pt-6 text-sm text-zinc-300 sm:flex-row sm:justify-between">
           <div className="mx-auto flex flex-wrap items-center justify-center gap-3 text-sm sm:justify-center">
-            <span className="inline-flex items-center gap-2 text-emerald-100">
+            <Link
+              href="https://www.linkedin.com"
+              className="inline-flex items-center gap-2 text-emerald-100 transition hover:text-white"
+            >
               <Linkedin className="h-4 w-4" aria-hidden />
               LinkedIn
-            </span>
+            </Link>
             <span className="hidden text-zinc-500 sm:inline">/</span>
             <span className="text-zinc-400">
-              © {year} Agile Onion. Uvek jedan sloj napred.
+              © {year} Agile Onion. Sladak ukus tvog rasta.
             </span>
           </div>
         </div>
@@ -95,7 +117,7 @@ function FooterColumn({
               className="group inline-flex items-center gap-2 text-zinc-200 transition hover:text-white"
             >
               <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[11px] font-semibold text-emerald-100 transition duration-150 group-hover:border-emerald-200 group-hover:bg-emerald-400/10 group-hover:text-white">
-                •
+                →
               </span>
               {link.label}
             </Link>

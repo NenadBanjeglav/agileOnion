@@ -87,8 +87,8 @@ export function LatestBlogs() {
                 Najnovije priče iz Agile Onion-a
               </h2>
               <p className="max-w-3xl text-base leading-relaxed text-zinc-200 sm:text-lg">
-                Najnovije priče koje ce ti pomoci da unapredis svoje znanje o
-                agilnosti, Scrum-u i licnom razvoju.
+                Najnovije priče koje će ti pomoći da unaprediš svoje znanje o
+                agilnosti, Scrum-u i ličnom razvoju.
               </p>
             </div>
           </div>
@@ -98,13 +98,13 @@ export function LatestBlogs() {
               direction="left"
               disabled={!canShiftLeft}
               onClick={shiftLeft}
-              label="Prethodne price"
+              label="Prethodne priče"
             />
             <CarouselButton
               direction="right"
               disabled={!canShiftRight}
               onClick={shiftRight}
-              label="Sledece price"
+              label="Sledeće priče"
             />
           </div>
         </div>
@@ -193,7 +193,7 @@ function BlogCard({
           </div>
 
           <div className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-emerald-200 transition duration-150 group-hover:gap-3">
-            Procitaj ceo tekst
+            Pročitaj ceo tekst
             <ArrowRight className="h-4 w-4" aria-hidden />
           </div>
         </div>

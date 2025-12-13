@@ -1,9 +1,9 @@
 'use client'
 
 import { Button } from '@/components/ui/Button'
-import { motion, useInView, useReducedMotion } from 'motion/react'
+import { motion, useAnimate, type Variants } from 'motion/react'
 import NextImage from 'next/image'
-import { useEffect, useRef, useState } from 'react'
+import { useMemo, useRef, type MouseEventHandler, type ReactNode } from 'react'
 
 type Cta = { label: string; href: string }
 
@@ -13,6 +13,8 @@ type HeroProps = {
   subtitle: string
   primaryCta: Cta
   secondaryCta?: Cta
+  bulletLead?: string
+  bullets?: string[]
   image?: { src: string; alt: string }
 }
 
@@ -35,245 +37,248 @@ const GRID_IMAGES = [
   '/media/trail/trail-gear.webp',
 ]
 
-export function Hero({
-  kicker,
-  title,
-  subtitle,
-  primaryCta,
-  secondaryCta,
-}: HeroProps) {
-  const [imagesReady, setImagesReady] = useState(false)
-  const shouldReduceMotion = !!useReducedMotion()
+export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
   const heroRef = useRef<HTMLElement | null>(null)
-  const [isAtTop, setIsAtTop] = useState(true)
+  const titleWords = useMemo(() => title.split(' '), [title])
+  const subtitleWords = useMemo(() => subtitle.split(' '), [subtitle])
 
-  useEffect(() => {
-    let isCancelled = false
+  const easing = [0.16, 1, 0.3, 1] as const
 
-    const preloadImages = async () => {
-      await Promise.all(
-        GRID_IMAGES.map(
-          (src) =>
-            new Promise<void>((resolve) => {
-              const img = new globalThis.Image()
-              img.onload = img.onerror = () => resolve()
-              img.src = src
-            }),
-        ),
-      )
-
-      if (isCancelled) return
-      setImagesReady(true)
-    }
-
-    preloadImages()
-    return () => {
-      isCancelled = true
-    }
-  }, [])
-
-  useEffect(() => {
-    const updateScroll = () => setIsAtTop(window.scrollY === 0)
-    updateScroll()
-    window.addEventListener('scroll', updateScroll, { passive: true })
-    return () => window.removeEventListener('scroll', updateScroll)
-  }, [])
-
-  return (
-    <section
-      ref={heroRef}
-      id="top"
-      className="relative -mx-[calc((100vw-100%)/2)] w-screen px-5 py-16 text-white sm:px-8 md:py-16 lg:py-14"
-    >
-      <div className="mx-auto flex min-h-[85vh] w-full max-w-6xl flex-col items-center gap-8 bg-transparent lg:flex-row lg:items-center">
-        <div className="flex w-full flex-col items-center space-y-6 text-center sm:space-y-8 lg:items-start lg:text-left">
-          <div className="flex w-full justify-center lg:justify-start">
-            <NextImage
-              src="/media/brand/agile-onion-logo-color.svg"
-              alt="Agile Onion"
-              width={180}
-              height={48}
-              className="mx-auto h-auto w-40 sm:w-48 lg:w-56 lg:mx-0"
-              priority
-            />
-          </div>
-
-          {kicker ? (
-            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-[11px] font-semibold tracking-[0.14em] text-emerald-100 uppercase">
-              <span
-                className="h-2 w-2 rounded-full bg-emerald-400"
-                aria-hidden
-              />
-              {kicker}
-            </span>
-          ) : null}
-
-          <div className="space-y-3 sm:space-y-4">
-            <h1 className="text-3xl leading-tight font-semibold tracking-tight sm:text-5xl sm:leading-[1.1]">
-              {title}
-            </h1>
-            <p className="max-w-2xl text-base leading-7 text-zinc-300 sm:text-lg">
-              {subtitle}
-            </p>
-          </div>
-
-          <div className="flex w-full flex-col items-center gap-3 text-base font-medium sm:flex-row sm:items-center sm:justify-center sm:gap-4 lg:justify-start">
-            <Button
-              as="a"
-              href={primaryCta.href}
-              className="group relative w-full overflow-hidden border-0 bg-linear-to-r from-emerald-400 via-emerald-500 to-sky-500 text-black shadow-[0_12px_30px_-18px_rgba(16,185,129,0.9)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(56,189,248,0.8)] active:scale-[0.99] sm:w-auto"
-            >
-              <span
-                className="absolute inset-0 translate-x-[-120%] bg-white/35 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
-                aria-hidden
-              />
-              {primaryCta.label}
-            </Button>
-            {secondaryCta ? (
-              <Button
-                as="a"
-                href={secondaryCta.href}
-                variant="ghost"
-                className="w-full border border-emerald-300/50 bg-white/10 text-emerald-100 hover:bg-white/20 sm:w-auto"
-              >
-                {secondaryCta.label}
-              </Button>
-            ) : null}
-          </div>
-        </div>
-
-        <div className="flex w-full justify-center lg:justify-end">
-          <div className="relative w-full max-w-[520px] overflow-visible rounded-2xl bg-transparent shadow-[0_25px_70px_-30px_rgba(0,0,0,0.65)] sm:max-w-[560px]">
-            <ShuffleGrid
-              startShuffling={imagesReady && !shouldReduceMotion && isAtTop}
-              shouldReduceMotion={shouldReduceMotion}
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-type ShuffleGridProps = {
-  startShuffling: boolean
-  shouldReduceMotion: boolean
-}
-
-function ShuffleGrid({ startShuffling, shouldReduceMotion }: ShuffleGridProps) {
-  const containerRef = useRef<HTMLDivElement | null>(null)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const isInView = useInView(containerRef, { margin: '0px 0px -25% 0px' })
-  const [isMobile, setIsMobile] = useState(false)
-  const [squares, setSquares] = useState<{ id: string; src: string }[]>(() =>
-    GRID_IMAGES.slice(0, 16).map((src) => ({ id: src, src })),
-  )
-
-  const refreshSquaresForViewport = (mobile: boolean) => {
-    const targetImages = mobile
-      ? GRID_IMAGES.slice(0, 12)
-      : GRID_IMAGES.slice(0, 16)
-    setSquares((prev) => {
-      if (
-        prev.length === targetImages.length &&
-        targetImages.every((src) => prev.some((item) => item.src === src))
-      ) {
-        return prev
-      }
-      return targetImages.map((src) => ({ id: src, src }))
-    })
+  const wordVariants: Variants = {
+    hidden: { y: 18, opacity: 0, filter: 'blur(6px)' },
+    show: (i: number) => ({
+      y: 0,
+      opacity: 1,
+      filter: 'blur(0px)',
+      transition: { duration: 0.4, delay: i * 0.05, ease: easing },
+    }),
   }
 
-  useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth < 640
-      setIsMobile(mobile)
-      refreshSquaresForViewport(mobile)
-    }
+  const subtitleVariants: Variants = {
+    hidden: { y: 10, opacity: 0 },
+    show: (i: number) => ({
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.28,
+        delay: 0.4 + i * 0.04,
+        ease: easing,
+      },
+    }),
+  }
 
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  useEffect(() => {
-    if (!startShuffling || !isInView || isMobile) return undefined
-
-    const shuffleSquares = () => {
-      setSquares((prev) => shuffle([...prev]))
-      timeoutRef.current = setTimeout(shuffleSquares, 3000)
-    }
-
-    timeoutRef.current = setTimeout(shuffleSquares, 0)
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
-    }
-  }, [startShuffling, isInView, isMobile])
-
-  if (isMobile) {
-    return (
-      <div
-        ref={containerRef}
-        className="grid h-60 auto-rows-fr grid-cols-3 gap-2 sm:h-72"
+  return (
+    <MouseImageTrail
+      images={GRID_IMAGES}
+      renderImageBuffer={40}
+      rotationRange={14}
+      className="relative"
+    >
+      <section
+        ref={heroRef}
+        id="top"
+        className="relative isolate -mx-[calc((100vw-100%)/2)] w-screen overflow-hidden px-5 py-16 text-white sm:px-8 md:py-16 lg:py-14"
+        aria-labelledby="hero-title"
       >
-        {squares.map(({ id, src }) => (
-          <div
-            key={id}
-            className="h-full w-full overflow-hidden rounded-xl bg-zinc-900/60 shadow-inner shadow-black/40"
-            style={{
-              backgroundImage: `url(${src})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
+        <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center gap-12 bg-transparent lg:flex-row lg:items-center">
+          <div className="relative z-30 flex w-full flex-col items-center space-y-6 text-center sm:space-y-8 lg:items-start lg:text-left">
+            <div className="space-y-5">
+              <motion.h1
+                id="hero-title"
+                className="relative inline-block text-3xl leading-tight font-semibold tracking-tight sm:text-5xl sm:leading-[1.05]"
+                initial="hidden"
+                animate="show"
+              >
+                {titleWords.map((word, i) => (
+                  <motion.span
+                    key={`${word}-${i}`}
+                    custom={i}
+                    variants={wordVariants}
+                    className="inline-block pr-2"
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </motion.h1>
+
+              <motion.p
+                className="max-w-2xl text-base leading-7 text-zinc-200 sm:text-lg"
+                initial="hidden"
+                animate="show"
+              >
+                {subtitleWords.map((word, i) => (
+                  <motion.span
+                    key={`${word}-${i}`}
+                    custom={i}
+                    variants={subtitleVariants}
+                    className="inline-block pr-1"
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </motion.p>
+
+              <div className="space-y-2">
+                <motion.div
+                  className="h-1 w-full max-w-sm origin-left overflow-hidden rounded-full bg-white/10"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 0.8, delay: 0.55, ease: 'easeOut' }}
+                >
+                  <div className="h-full w-full bg-linear-to-r from-emerald-400 via-emerald-300 to-sky-400" />
+                </motion.div>
+                <div className="flex gap-3">
+                  {[0.65, 0.9, 1.2].map((delay, idx) => (
+                    <motion.span
+                      key={idx}
+                      className="h-2.5 w-2.5 rounded-full bg-emerald-300/70"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{
+                        delay,
+                        duration: 0.35,
+                        ease: 'backOut',
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {primaryCta || secondaryCta ? (
+                <div className="mt-4 flex flex-col items-center gap-3 text-base font-medium sm:flex-row sm:items-center sm:justify-start sm:gap-4">
+                  {primaryCta ? (
+                    <Button
+                      as="a"
+                      href={primaryCta.href}
+                      className="group relative w-full overflow-hidden border-0 bg-linear-to-r from-emerald-400 via-emerald-500 to-sky-500 text-black shadow-[0_12px_30px_-18px_rgba(16,185,129,0.9)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(56,189,248,0.8)] active:scale-[0.99] sm:w-auto"
+                    >
+                      <span
+                        className="absolute inset-0 translate-x-[-120%] bg-white/25 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
+                        aria-hidden
+                      />
+                      {primaryCta.label}
+                    </Button>
+                  ) : null}
+                  {secondaryCta ? (
+                    <Button
+                      as="a"
+                      href={secondaryCta.href}
+                      variant="ghost"
+                      className="w-full border border-emerald-300/50 bg-white/10 text-emerald-100 hover:bg-white/20 sm:w-auto"
+                    >
+                      {secondaryCta.label}
+                    </Button>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="relative z-20 w-full max-w-[520px] lg:max-w-[560px]">
+            <div
+              className="absolute inset-6 rounded-[28px] bg-emerald-500/18 blur-3xl"
+              aria-hidden
+            />
+            <div className="relative flex h-full w-full items-center justify-center">
+              <NextImage
+                src="/media/brand/agile-onion-logo-color.svg"
+                alt="Agile Onion logo"
+                width={560}
+                height={260}
+                className="relative h-auto w-[360px] drop-shadow-[0_24px_60px_rgba(16,185,129,0.35)] sm:w-[420px]"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </MouseImageTrail>
+  )
+}
+
+function MouseImageTrail({
+  children,
+  images,
+  renderImageBuffer,
+  rotationRange,
+  className = '',
+}: {
+  children: ReactNode
+  images: string[]
+  renderImageBuffer: number
+  rotationRange: number
+  className?: string
+}) {
+  const [scope, animate] = useAnimate()
+  const last = useRef({ x: 0, y: 0 })
+  const count = useRef(0)
+
+  const handleMouseMove: MouseEventHandler<HTMLDivElement> = (event) => {
+    const { clientX, clientY } = event
+    const distance = Math.hypot(
+      clientX - last.current.x,
+      clientY - last.current.y,
+    )
+    if (distance < renderImageBuffer) return
+
+    last.current = { x: clientX, y: clientY }
+    renderNextImage()
+  }
+
+  const renderNextImage = () => {
+    const imageIndex = count.current % images.length
+    const selector = `[data-trail="${imageIndex}"]`
+    const el = document.querySelector(selector) as HTMLElement | null
+    if (!el) return
+
+    el.style.top = `${last.current.y}px`
+    el.style.left = `${last.current.x}px`
+    el.style.zIndex = '0'
+
+    const rotation = Math.random() * rotationRange
+    const direction = imageIndex % 2 === 0 ? 1 : -1
+
+    animate(
+      selector,
+      {
+        opacity: [0, 1],
+        transform: [
+          `translate(-50%, -25%) scale(0.5) rotate(${direction * rotation}deg)`,
+          `translate(-50%, -50%) scale(1) rotate(${-direction * rotation}deg)`,
+        ],
+      },
+      { type: 'spring', damping: 15, stiffness: 200 },
+    )
+
+    animate(
+      selector,
+      { opacity: [1, 0] },
+      { ease: 'linear', duration: 0.5, delay: 1 },
+    )
+
+    count.current += 1
+  }
+
+  return (
+    <div
+      ref={scope}
+      className={`relative overflow-hidden ${className}`}
+      onMouseMove={handleMouseMove}
+    >
+      <div className="relative z-50">{children}</div>
+      <div className="pointer-events-none absolute inset-0 z-0">
+        {images.map((src, index) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={src}
+            src={src}
+            alt=""
+            aria-hidden
+            data-trail={index}
+            className="pointer-events-none absolute top-0 left-0 h-32 w-auto rounded-xl border border-white/10 bg-black/50 object-cover opacity-0"
           />
         ))}
       </div>
-    )
-  }
-
-  return (
-    <motion.div
-      layout={!shouldReduceMotion}
-      ref={containerRef}
-      className="grid h-60 auto-rows-fr grid-cols-3 gap-2 sm:h-80 sm:grid-cols-4 md:h-[360px]"
-      transition={
-        shouldReduceMotion
-          ? { duration: 0 }
-          : { duration: 0.5, ease: 'easeOut' }
-      }
-    >
-      {squares.map(({ id, src }) => (
-        <motion.div
-          key={id}
-          layout={!shouldReduceMotion}
-          layoutId={id}
-          initial={{ opacity: 0.9, scale: 1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={
-            shouldReduceMotion
-              ? { opacity: { duration: 0 } }
-              : {
-                  layout: { type: 'spring', duration: 1.5 },
-                  opacity: { duration: 0.25 },
-                }
-          }
-          className="h-full w-full overflow-visible rounded-xl bg-zinc-900/60 shadow-inner shadow-black/40"
-          style={{
-            backgroundImage: `url(${src})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-      ))}
-    </motion.div>
+    </div>
   )
-}
-
-function shuffle<T>(list: T[]) {
-  const array = [...list]
-  for (let i = array.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[array[i], array[j]] = [array[j], array[i]]
-  }
-  return array
 }

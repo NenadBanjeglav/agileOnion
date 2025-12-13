@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { useCallback, useRef, useState } from 'react'
@@ -8,6 +7,8 @@ import { useCallback, useRef, useState } from 'react'
 const NAV_ITEMS = [
   { label: 'Blog', href: '/blog' },
   { label: 'O meni', href: '#founder' },
+  { label: 'Taste an Onion', href: '#newsletter' },
+  { label: 'Kontakt', href: '#footer' },
 ]
 
 export function FloatingNav() {
@@ -48,7 +49,7 @@ export function FloatingNav() {
       animate={{ y: hidden ? -80 : 0, opacity: hidden ? 0 : 1 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
       style={{ pointerEvents: hidden ? 'none' : undefined }}
-      className="fixed top-3 right-3 left-3 z-40 flex max-w-full translate-x-0 flex-wrap items-center gap-2 overflow-hidden rounded-full border border-white/10 bg-black/70 px-3 py-1 text-xs text-zinc-100 shadow-md backdrop-blur sm:right-auto sm:left-1/2 sm:w-auto sm:max-w-[720px] sm:-translate-x-1/2 sm:flex-nowrap sm:gap-3 sm:px-5 sm:py-2.5 sm:text-sm md:gap-4 md:px-6 md:py-3 md:text-sm lg:top-4 lg:gap-5 lg:px-7 lg:py-3.5 lg:text-base"
+      className="fixed top-3 right-3 left-3 z-60 flex max-w-full translate-x-0 flex-wrap items-center gap-2 overflow-hidden rounded-full border border-white/10 bg-black/70 px-3 py-1 text-xs text-zinc-100 shadow-md backdrop-blur sm:right-auto sm:left-1/2 sm:w-auto sm:max-w-[720px] sm:-translate-x-1/2 sm:flex-nowrap sm:gap-3 sm:px-5 sm:py-2.5 sm:text-sm md:gap-4 md:px-6 md:py-3 md:text-sm lg:top-4 lg:gap-5 lg:px-7 lg:py-3.5 lg:text-base"
     >
       <div
         className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto sm:hidden"
@@ -78,8 +79,6 @@ export function FloatingNav() {
           </NavLink>
         ))}
       </div>
-
-      <JoinButton isHidden={hidden} />
     </motion.nav>
   )
 }
@@ -115,25 +114,6 @@ function NavLink({
           {children}
         </span>
       </motion.div>
-    </Link>
-  )
-}
-
-function JoinButton({
-  className = '',
-  isHidden,
-}: {
-  className?: string
-  isHidden?: boolean
-}) {
-  return (
-    <Link
-      href="#newsletter"
-      tabIndex={isHidden ? -1 : undefined}
-      className={`group relative z-0 ml-auto flex shrink-0 items-center gap-2 overflow-hidden rounded-full border border-emerald-400/60 px-2.5 py-1 text-xs font-semibold tracking-[0.12em] whitespace-nowrap text-emerald-100 uppercase transition duration-150 hover:scale-[1.03] hover:border-emerald-300 hover:text-white active:scale-100 lg:px-3 lg:py-1.5 lg:text-sm ${className}`}
-    >
-      <span className="pointer-events-none before:absolute before:inset-0 before:-z-10 before:translate-y-[200%] before:scale-[2.5] before:rounded-full before:bg-emerald-200/60 before:transition-transform before:duration-500 group-hover:before:translate-y-0 dark:before:bg-emerald-900/60" />
-      Newsletter
     </Link>
   )
 }

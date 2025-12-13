@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
+import { blogSections } from '@/lib/content/blog'
 
 type AltLayer = {
   id: string
@@ -10,36 +11,19 @@ type AltLayer = {
   image: string
 }
 
-const altLayers: AltLayer[] = [
-  {
-    id: 'mindset-lab-alt',
-    title: 'Mindset Lab',
-    description:
-      'Eksperimenti za rast: motivacija, disciplina, emocije — pomeraj svoje granice uz mantil na sebi.',
-    image: '/media/trail/trail-notebook.webp',
-  },
-  {
-    id: 'agile-club-alt',
-    title: 'Agile Club',
-    description:
-      'Agilnost počinje od tebe: fokus, prilagođavanje i otkrivanje novog ja — upadaj u klub.',
-    image: '/media/trail/trail-collab.webp',
-  },
-  {
-    id: 'scrum-office-alt',
-    title: 'Scrum Office',
-    description:
-      'Scrum bez suve teorije: realne situacije, deljena odgovornost i jedna agilna porodica.',
-    image: '/media/trail/trail-office.webp',
-  },
-  {
-    id: 'vap-alt',
-    title: 'Very Agile Personas',
-    description:
-      'Priče sanjara i buntovnika koji ne odustaju dok snovi ne postanu stvarnost.',
-    image: '/media/trail/trail-retro.webp',
-  },
-]
+const layerImages: Record<string, string> = {
+  'mindset-lab': '/media/trail/trail-notebook.webp',
+  'agile-club': '/media/trail/trail-collab.webp',
+  'scrum-office': '/media/trail/trail-office.webp',
+  'very-agile-personas': '/media/trail/trail-retro.webp',
+}
+
+const altLayers: AltLayer[] = blogSections.map((section) => ({
+  id: section.slug,
+  title: section.title,
+  description: section.summary,
+  image: layerImages[section.slug] ?? '/media/trail/trail-notes.webp',
+}))
 
 export function BlogCategories() {
   const prefersReducedMotion = useReducedMotion()
@@ -55,18 +39,26 @@ export function BlogCategories() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 sm:gap-10">
         <div className="flex flex-col items-center gap-3 text-center sm:items-start sm:text-left">
           <span className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-xs font-semibold tracking-[0.14em] text-emerald-100 uppercase">
-            Istraži blog sekcije
+            Agile Onion slojevi
           </span>
-          <div className="space-y-3 sm:space-y-4">
+          <div className="space-y-4 sm:space-y-5">
             <h2
               id={headingId}
               className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl"
             >
-              Izaberi sloj koji ti najviše odgovara
+              Želiš da postaneš bolji lider, bolja osoba — ali ne znaš odakle da počneš?
             </h2>
-            <p className="max-w-3xl text-base leading-relaxed text-zinc-200 sm:text-lg">
-              Otkrij teme koje te najviše pokreću i uđi dublje u svet agilnosti,
-              rasta i ličnog razvoja.
+            <p className="max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
+              Budi ti i deo Agile Onion pokreta i evo šta dobijaš: jasne, odmah primenljive lekcije o Scrum okviru i agilnim principima; super-moćne tehnike za razvoj mindseta koji konačno radi za tebe, a ne protiv tebe; inspirativne priče ljudi koji su prešli put od ideje do manifestacije.
+            </p>
+            <p className="max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
+              Ne treba ti diploma, niti sertifikat i nije važno da li si priznati profesionalac ili tek tražiš sebe. Važno je da imaš otvoren um i iskru koja te gura napred. „Znanje bez primene je kao seme koje nikad ne proklija.“ — Paulo Coelho
+            </p>
+            <p className="max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
+              Agile Onion se sastoji iz sledećih slojeva: Mindset Lab, Agile Club, Scrum Office i Very Agile Personas (VAP). Otkrij svaki sloj, onako kako tebi prija, i vrlo brzo ćeš osetiti neodoljivi ukus koji te više neće napuštati.
+            </p>
+            <p className="text-base font-semibold text-emerald-100 sm:text-lg">
+              Sladak ukus tvog rasta.
             </p>
           </div>
         </div>

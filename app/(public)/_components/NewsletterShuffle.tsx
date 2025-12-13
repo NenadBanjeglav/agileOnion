@@ -10,19 +10,19 @@ const cards = [
   {
     imgUrl: '/media/trail/trail-office.webp',
     testimonial:
-      'Svake nedelje dobijem jedan konkretan korak za tim i sebe. Bez buke, samo primenljivo.',
+      'Jedan mejl nedeljno i tačno znam šta da probam sledeće. Željko piše kao prijatelj, ne kao prodavac.',
     author: 'Ana, Scrum Master',
   },
   {
     imgUrl: '/media/trail/trail-speaker.webp',
     testimonial:
-      'Newsletter me podseti da rast ide sloj po sloj. To je onaj blagi šut u leđa koji mi treba.',
+      'Taste an Onion me podseti da rast ide sloj po sloj. Blagi podsetnik, bez pritiska.',
     author: 'Miloš, Product Owner',
   },
   {
     imgUrl: '/media/trail/trail-collab.webp',
     testimonial:
-      'Najbolji mix mindseta i agilnosti koji stiže u inbox. Kratko, jasno, odmah primenljivo.',
+      'Najbolji miks mindseta i agilnosti u inboxu. Kratko, jasno, odmah primenljivo.',
     author: 'Ivana, Agile Coach',
   },
 ]
@@ -52,15 +52,14 @@ export function NewsletterShuffle() {
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center justify-items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:justify-items-start lg:gap-10">
         <div className="flex w-full max-w-xl flex-col items-center space-y-5 text-center lg:max-w-none lg:items-start lg:text-left">
           <span className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-xs font-semibold tracking-[0.14em] text-emerald-100 uppercase">
-            Nedeljni Agile Onion
+            Taste an Onion
           </span>
           <div className="space-y-3">
             <h2 className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl">
-              Prijavi se i dobijaš konkretan korak svake nedelje
+              Pridruži se Taste an Onion pismu
             </h2>
             <p className="text-base text-zinc-200 sm:text-lg">
-              Mindset, agilnost i Scrum kroz male eksperimente i ritam. Jedan
-              mejl, jedna praksa, jedan sloj napretka.
+              Prijavom na Taste an Onion ne dobijaš još jedan mejl u inboxu — već mali podsetnik da si na putu rasta. Svake nedelje po jedan komadić slatkog ukusa koji ti pomaže da ne posustaneš.
             </p>
           </div>
 
@@ -86,12 +85,12 @@ export function NewsletterShuffle() {
                 className="absolute inset-0 translate-x-[-120%] bg-white/35 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
                 aria-hidden
               />
-              <span className="relative">Prijavi se</span>
+              <span className="relative">Prijavi se ovde</span>
             </button>
           </form>
 
           <p className="text-sm text-emerald-100/80">
-            Bez spama. Samo nedeljni podsetnik da si na putu rasta.
+            Bez spama. Jedva čekam da se upoznamo.
           </p>
         </div>
 
