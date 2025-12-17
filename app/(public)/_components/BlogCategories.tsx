@@ -37,7 +37,7 @@ export function BlogCategories() {
       aria-labelledby={headingId}
     >
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 sm:gap-10">
-        <div className="flex flex-col items-center gap-3 text-center sm:items-start sm:text-left">
+        <div className="flex flex-col items-center gap-3 text-center">
           <span className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-xs font-semibold tracking-[0.14em] text-emerald-100 uppercase">
             Agile Onion slojevi
           </span>
@@ -46,17 +46,32 @@ export function BlogCategories() {
               id={headingId}
               className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl"
             >
-              Želiš da postaneš bolji lider, bolja osoba — ali ne znaš odakle da počneš?
+              Želiš da postaneš bolji lider, bolja osoba — ali ne znaš odakle da
+              počneš?
             </h2>
-            <p className="max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
-              Budi ti i deo Agile Onion pokreta i evo šta dobijaš: jasne, odmah primenljive lekcije o Scrum okviru i agilnim principima; super-moćne tehnike za razvoj mindseta koji konačno radi za tebe, a ne protiv tebe; inspirativne priče ljudi koji su prešli put od ideje do manifestacije.
+
+            <p className="mx-auto max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
+              Budi ti deo Agile Onion pokreta i evo šta dobijaš: jasne, odmah
+              primenljive lekcije o Scrum okviru i agilnim principima;
+              super-moćne tehnike za razvoj mindseta koji konačno radi za tebe,
+              a ne protiv tebe; inspirativne priče ljudi koji su prešli put od
+              ideje do manifestacije.
             </p>
-            <p className="max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
-              Ne treba ti diploma, niti sertifikat i nije važno da li si priznati profesionalac ili tek tražiš sebe. Važno je da imaš otvoren um i iskru koja te gura napred. „Znanje bez primene je kao seme koje nikad ne proklija.“ — Paulo Coelho
+
+            <p className="mx-auto max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
+              Ne treba ti diploma, niti sertifikat i nije važno da li si
+              priznati profesionalac ili tek tražiš sebe. Važno je da imaš
+              otvoren um i iskru koja te gura napred. “Znanje bez primene je kao
+              seme koje nikad ne proklija.” — Paulo Coelho
             </p>
-            <p className="max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
-              Agile Onion se sastoji iz sledećih slojeva: Mindset Lab, Agile Club, Scrum Office i Very Agile Personas (VAP). Otkrij svaki sloj, onako kako tebi prija, i vrlo brzo ćeš osetiti neodoljivi ukus koji te više neće napuštati.
+
+            <p className="mx-auto max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
+              Agile Onion se sastoji iz sledećih slojeva: Mindset Lab, Agile
+              Club, Scrum Office i Very Agile Personas (VAP). Otkrij svaki sloj,
+              onako kako tebi prija, i vrlo brzo ćeš osetiti neodoljivi ukus
+              koji te više neće napuštati.
             </p>
+
             <p className="text-base font-semibold text-emerald-100 sm:text-lg">
               Sladak ukus tvog rasta.
             </p>
@@ -142,7 +157,15 @@ function ColorCard({
                 />
               ))}
             </h3>
-            <p className="max-w-xl text-sm leading-relaxed text-zinc-100/90 sm:text-base">
+            <p
+              className="max-w-xl text-sm leading-relaxed text-zinc-100/90 sm:text-base"
+              style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+              }}
+            >
               {layer.description}
             </p>
           </div>

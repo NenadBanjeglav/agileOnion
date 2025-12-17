@@ -80,12 +80,27 @@ export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
         className="relative isolate -mx-[calc((100vw-100%)/2)] w-screen overflow-hidden px-5 py-16 text-white sm:px-8 md:py-16 lg:py-14"
         aria-labelledby="hero-title"
       >
-        <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center gap-12 bg-transparent lg:flex-row lg:items-center">
-          <div className="relative z-30 flex w-full flex-col items-center space-y-6 text-center sm:space-y-8 lg:items-start lg:text-left">
-            <div className="space-y-5">
+        <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center justify-center gap-10 text-center">
+          <div className="relative z-20 flex flex-col items-center gap-8 sm:gap-10">
+            <div className="relative flex items-center justify-center">
+              <div
+                className="absolute inset-4 rounded-[28px] bg-emerald-500/18 blur-3xl"
+                aria-hidden
+              />
+              <NextImage
+                src="/media/brand/agile-onion-logo-color.svg"
+                alt="Agile Onion logo"
+                width={560}
+                height={260}
+                className="relative h-auto w-[300px] drop-shadow-[0_24px_60px_rgba(16,185,129,0.35)] sm:w-[360px] md:w-[420px]"
+                priority
+              />
+            </div>
+
+            <div className="space-y-5 sm:space-y-6">
               <motion.h1
                 id="hero-title"
-                className="relative inline-block text-3xl leading-tight font-semibold tracking-tight sm:text-5xl sm:leading-[1.05]"
+                className="relative inline-block max-w-3xl text-3xl leading-tight font-semibold tracking-tight sm:text-5xl sm:leading-[1.05]"
                 initial="hidden"
                 animate="show"
               >
@@ -102,7 +117,7 @@ export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
               </motion.h1>
 
               <motion.p
-                className="max-w-2xl text-base leading-7 text-zinc-200 sm:text-lg"
+                className="mx-auto max-w-2xl text-base leading-7 text-zinc-200 sm:text-lg"
                 initial="hidden"
                 animate="show"
               >
@@ -120,14 +135,14 @@ export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
 
               <div className="space-y-2">
                 <motion.div
-                  className="h-1 w-full max-w-sm origin-left overflow-hidden rounded-full bg-white/10"
+                  className="mx-auto h-1 w-full max-w-sm origin-left overflow-hidden rounded-full bg-white/10"
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   transition={{ duration: 0.8, delay: 0.55, ease: 'easeOut' }}
                 >
                   <div className="h-full w-full bg-linear-to-r from-emerald-400 via-emerald-300 to-sky-400" />
                 </motion.div>
-                <div className="flex gap-3">
+                <div className="flex justify-center gap-3">
                   {[0.65, 0.9, 1.2].map((delay, idx) => (
                     <motion.span
                       key={idx}
@@ -145,7 +160,7 @@ export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
               </div>
 
               {primaryCta || secondaryCta ? (
-                <div className="mt-4 flex flex-col items-center gap-3 text-base font-medium sm:flex-row sm:items-center sm:justify-start sm:gap-4">
+                <div className="mt-4 flex flex-col items-center gap-3 text-base font-medium sm:flex-row sm:justify-center sm:gap-4">
                   {primaryCta ? (
                     <Button
                       as="a"
@@ -171,23 +186,6 @@ export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
                   ) : null}
                 </div>
               ) : null}
-            </div>
-          </div>
-
-          <div className="relative z-20 w-full max-w-[520px] lg:max-w-[560px]">
-            <div
-              className="absolute inset-6 rounded-[28px] bg-emerald-500/18 blur-3xl"
-              aria-hidden
-            />
-            <div className="relative flex h-full w-full items-center justify-center">
-              <NextImage
-                src="/media/brand/agile-onion-logo-color.svg"
-                alt="Agile Onion logo"
-                width={560}
-                height={260}
-                className="relative h-auto w-[360px] drop-shadow-[0_24px_60px_rgba(16,185,129,0.35)] sm:w-[420px]"
-                priority
-              />
             </div>
           </div>
         </div>

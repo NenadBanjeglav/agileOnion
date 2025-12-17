@@ -210,3 +210,12 @@ This project must include:
 Everything delivered must be clean, modern, premium, responsive, well-animated, authentic, fast, accessible, editorial, and high-craftsmanship.
 
 This document is the single source of truth for all creative, architectural, design, motion, and content decisions in the AgileOnion project.
+
+## 16. Text Encoding & Localization (MANDATORY)
+
+- Encoding: all source files must be UTF-8 (no BOM); never introduce or preserve non-UTF-8 text.
+- Allowed characters: standard UTF-8 plus Serbian Latin diacritics only — č ć š ž đ Č Ć Š Ž Đ.
+- Forbidden characters: never allow mojibake or corruption (e.g., Ž Ø ƒ  � Ã Â â € ™ ¢) and never use smart quotes; always use ASCII quotes (", ').
+- Copy/paste hygiene: avoid pasting directly from Word/PDF/email; if external text is used, paste as plain text, normalize to UTF-8, replace smart quotes, and manually verify diacritics.
+- File handling: assume UTF-8 when creating/editing; do not change encodings unless explicitly instructed.
+- Validation: before submitting changes, visually scan for encoding issues and diacritic correctness; any corruption is a blocking issue and must be fixed immediately.

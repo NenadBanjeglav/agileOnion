@@ -1,108 +1,124 @@
 'use client'
 
-import NextImage from 'next/image'
+import Image from 'next/image'
+import { ArrowUpRight, Sparkles, Target } from 'lucide-react'
+import { motion, useScroll, useTransform } from 'motion/react'
+import { useMemo, useRef } from 'react'
+
+const highlights = [
+  'Scrum Master, agilni trener i bloger - radim sa timovima i pojedincima.',
+  'Agilnost prevodim u jasne ritmove, povratnu informaciju i merljiv napredak.',
+  'Iz fabrike do vodjenja timova: iskustvo mi pomaze da vidim i ljude i procese.',
+]
+
+const signals = [
+  { label: 'jasna mapa', icon: Target },
+  { label: 'ritam i navike', icon: Sparkles },
+  { label: 'iskrena povratna', icon: ArrowUpRight },
+]
 
 export function AboutMe() {
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  })
+
+  const floatY = useTransform(scrollYProgress, [0, 1], [0, -36])
+  const glowScale = useTransform(scrollYProgress, [0, 1], [1, 1.08])
+
+  const bullets = useMemo(() => highlights, [])
+
   return (
     <section
+      ref={sectionRef}
       id="founder"
-      className="relative -mx-[calc((100vw-100%)/2)] w-screen px-6 py-16 text-white sm:px-10 md:py-20"
+      className="relative isolate mx-auto mt-10 max-w-6xl overflow-hidden rounded-3xl border border-white/10 bg-zinc-950 px-5 py-16 text-white shadow-[0_30px_90px_-65px_rgba(0,0,0,1)] sm:px-10 sm:py-20"
+      aria-labelledby="about-heading"
     >
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-70">
-        <div className="absolute inset-x-0 top-8 mx-auto h-64 w-11/12 rounded-4xl bg-emerald-500/25 blur-[120px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.07),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(56,189,248,0.16),transparent_32%),radial-gradient(circle_at_55%_65%,rgba(255,255,255,0.05),transparent_45%)]" />
+      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
+        <motion.div
+          style={{ scale: glowScale }}
+          className="absolute inset-x-0 top-6 mx-auto h-72 w-3/4 rounded-[32px] bg-emerald-500/15 blur-[120px]"
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(16,185,129,0.14),transparent_28%),radial-gradient(circle_at_82%_14%,rgba(56,189,248,0.16),transparent_28%),linear-gradient(135deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0)_40%)]" />
       </div>
 
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-[0_26px_70px_-40px_rgba(0,0,0,0.95)] backdrop-blur sm:p-10 lg:grid-cols-[1.05fr_0.95fr] lg:p-12">
-        <div className="relative order-2 flex justify-center lg:order-1 lg:justify-start">
-          <div className="relative h-full max-h-[520px] w-full max-w-[420px]">
-            <div className="absolute top-6 -left-10 h-44 w-44 rotate-6 rounded-[42%_58%_48%_52%] bg-emerald-400/18 blur-3xl" />
-            <div className="absolute -right-10 bottom-4 h-36 w-36 -rotate-6 rounded-[52%_48%_56%_44%] bg-sky-400/18 blur-3xl" />
-            <div className="relative mx-auto aspect-[4/5] w-full max-w-[360px] overflow-hidden rounded-3xl border border-emerald-200/40 bg-white/5 shadow-[0_32px_90px_-50px_rgba(0,0,0,1)] ring-1 ring-white/15">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.18),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(14,165,233,0.22),transparent_30%)]" />
-              <NextImage
-                src="/media/aboutme-removebg-preview.png"
-                alt="Željko Koprić, osnivač Agile Onion"
-                width={480}
-                height={520}
-                className="relative z-10 mx-auto h-full w-full object-contain"
-                priority
-              />
+      <div className="flex flex-col gap-14 lg:flex-row lg:items-center lg:gap-16">
+        <motion.div
+          className="flex flex-col items-center gap-6 text-center lg:items-start lg:text-left"
+          initial={{ opacity: 0, y: 14, filter: 'blur(8px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          viewport={{ once: true, amount: 0.45 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <span className="mx-auto inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-100 lg:mx-0">
+            Ko sam ja?
+          </span>
+          <div className="space-y-4">
+            <h2
+              id="about-heading"
+              className="mx-auto text-3xl leading-tight font-semibold sm:text-4xl lg:mx-0"
+            >
+              Zeljko Kopric, tvoj partner za agilnost koja se zaista desava.
+            </h2>
+            <p className="mx-auto max-w-2xl text-lg leading-relaxed text-zinc-200 lg:mx-0">
+              Pomazem ljudima da se pomere sa mrtve tacke tako sto pojednostavim
+              plan, uvedem ritam i obezbedim da se napredak meri. Bez buke, sa
+              dosta poverenja i jasnih odluka.
+            </p>
+          </div>
+
+          <div className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-5 text-left backdrop-blur">
+            {bullets.map((item) => (
+              <div
+                key={item}
+                className="flex items-start gap-3 text-left text-sm text-zinc-100 sm:text-base"
+              >
+                <div className="mt-[6px] h-[6px] w-[6px] shrink-0 rounded-full bg-emerald-400" />
+                <p className="leading-relaxed">{item}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            {signals.map((signal) => (
+              <span
+                key={signal.label}
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-zinc-900 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-emerald-100"
+              >
+                <signal.icon className="h-4 w-4" aria-hidden />
+                {signal.label}
+              </span>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          style={{ y: floatY }}
+          className="relative w-full max-w-xl self-center"
+          initial={{ opacity: 0, scale: 0.98, filter: 'blur(8px)' }}
+          whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className="absolute -inset-6 rounded-[36px] bg-gradient-to-br from-emerald-500/15 via-sky-400/12 to-amber-300/10 blur-3xl" />
+          <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-zinc-900/80 shadow-[0_32px_80px_-60px_rgba(0,0,0,1)] ring-1 ring-white/10">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.08),transparent_38%)]" />
+            <Image
+              src="/media/aboutme.png"
+              alt="Zeljko Kopric"
+              width={900}
+              height={1200}
+              className="h-full w-full object-cover transition duration-500"
+              priority
+            />
+            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/45 px-4 py-3 text-xs uppercase tracking-[0.22em] text-emerald-100">
+              <span>Agilno, ali vrlo licno</span>
+              <Sparkles className="h-4 w-4 text-amber-200" aria-hidden />
             </div>
           </div>
-        </div>
-
-        <div className="order-1 space-y-6 text-left lg:order-2">
-          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-[11px] font-semibold tracking-[0.14em] text-emerald-100 uppercase">
-            A ko sam ja?
-          </span>
-          <div className="space-y-3">
-            <h2 className="text-3xl leading-tight font-semibold sm:text-4xl">
-              Zovem se Željko Koprić. Ja sam Scrum Master, agilni entuzijasta, bloger.
-            </h2>
-            <p className="text-base leading-relaxed text-zinc-200 sm:text-lg">
-              Moj profesionalni teren bila je, i još uvek je, farmaceutska industrija. Prešao sam dug i veoma izazovan put od operatera na proizvodnoj liniji, davno, pa sve do pozicije menadžera na kojoj sam već godinama.
-            </p>
-            <p className="text-base leading-relaxed text-zinc-200 sm:text-lg">
-              I sad se verovatno pitaš kako sam to postigao. Koji je to recept koji sam primenjivao? Nema recepta. Nema formule. Važan je pristup. Stalno učenje. Učenje u svakom smislu, formalno, neformalno; učenje iz sopstvenih grešaka.
-            </p>
-            <p className="text-base leading-relaxed text-zinc-200 sm:text-lg">
-              „Agilnost počinje sa skromnošću — onog trenutka kada priznaš da i dalje imaš šta da naučiš.“ — Mike Cohn
-            </p>
-            <p className="text-base leading-relaxed text-zinc-200 sm:text-lg">
-              Nikada se nisam zadovoljavao postojećim i uvek sam tražio nove perspektive. Tako sam došao u kontakt sa agilnom filozofijom i shvatio da mi je agilni kod oduvek bio u genima. Često sam primenjivao principe agilnosti, a da toga nisam ni bio svestan.
-            </p>
-            <p className="text-base leading-relaxed text-zinc-200 sm:text-lg">
-              Sada kada imam to saznanje, želim da ga podelim sa tobom. Spreman sam da te saslušam, radujem se tvojoj priči.
-            </p>
-          </div>
-
-          <div className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-4 shadow-inner shadow-black/30">
-            <p className="text-sm font-semibold uppercase tracking-[0.12em] text-emerald-100">
-              Rešavamo ono što te stvarno koči:
-            </p>
-            <ul className="list-disc space-y-1 pl-5 text-base leading-relaxed text-zinc-200 sm:text-lg">
-              <li>sagorevaš i gubiš energiju;</li>
-              <li>znaš da možeš više, ali ne vidiš način;</li>
-              <li>nemaš jasnu mapu svoje budućnosti;</li>
-              <li>plaši te promena, pa ostaješ u mestu;</li>
-              <li>započneš motivisano, a onda naglo odustaneš.</li>
-            </ul>
-          </div>
-
-          <div className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-4 shadow-inner shadow-black/30">
-            <p className="text-sm font-semibold uppercase tracking-[0.12em] text-emerald-100">
-              Učim te kako da postaneš osoba kakva znaš da možeš biti:
-            </p>
-            <ul className="list-disc space-y-1 pl-5 text-base leading-relaxed text-zinc-200 sm:text-lg">
-              <li>lider koji se ne lomi, nego vodi;</li>
-              <li>osoba sa navikama koje te pokreću čak i kad ti se ne radi;</li>
-              <li>neko ko motivaciju i disciplinu pretvara u svoj najjači alat.</li>
-            </ul>
-          </div>
-
-          <div className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-4 shadow-inner shadow-black/30">
-            <p className="text-sm font-semibold uppercase tracking-[0.12em] text-emerald-100">
-              Kako to radimo?
-            </p>
-            <p className="text-sm text-emerald-50 sm:text-base">
-              “Budi uporan u viziji, ali fleksibilan u detaljima.” — Jeff Bezos
-            </p>
-            <ul className="list-disc space-y-1 pl-5 text-base leading-relaxed text-zinc-200 sm:text-lg">
-              <li>uvodimo agilnu praksu koja donosi jasnoću i ritam;</li>
-              <li>treniramo moćne mindset tehnike koje menjaju način na koji razmišljaš i donosiš odluke;</li>
-              <li>koristimo Scrum okvir kao sistem za tvoj lični i profesionalni razvoj;</li>
-              <li>pratimo i merimo tvoj napredak bez pogađanja i iluzija;</li>
-              <li>identifikujemo kritične tačke koje ti crpe energiju;</li>
-              <li>gradimo sistem rasta po tvojoj meri;</li>
-              <li>slavimo svaki korak napred koji napraviš.</li>
-            </ul>
-          </div>
-
-          <p className="text-base leading-relaxed text-zinc-200 sm:text-lg">
-            Ako imaš ideju, viziju sebe i mesta gde želiš da stigneš — to je sasvim dovoljno. Spreman sam da te saslušam, radujem se tvojoj priči.
-          </p>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
