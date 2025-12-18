@@ -26,6 +26,9 @@ export function AboutMe() {
 
   const floatY = useTransform(scrollYProgress, [0, 1], [0, -36])
   const glowScale = useTransform(scrollYProgress, [0, 1], [1, 1.08])
+  const logoY = useTransform(scrollYProgress, [0, 1], [0, 240])
+  const logoRotate = useTransform(scrollYProgress, [0, 1], [0, 18])
+  const logoScale = useTransform(scrollYProgress, [0, 1], [1, 1.12])
 
   const bullets = useMemo(() => highlights, [])
 
@@ -42,6 +45,13 @@ export function AboutMe() {
           className="absolute inset-x-0 top-6 mx-auto h-72 w-3/4 rounded-[32px] bg-emerald-500/15 blur-[120px]"
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(16,185,129,0.14),transparent_28%),radial-gradient(circle_at_82%_14%,rgba(56,189,248,0.16),transparent_28%),linear-gradient(135deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0)_40%)]" />
+        <motion.img
+          src="/media/backgrounds/paralax-logo.png"
+          alt=""
+          aria-hidden
+          className="absolute -right-10 top-10 w-52 opacity-70 lg:-right-6 lg:top-6 lg:w-64"
+          style={{ y: logoY, rotate: logoRotate, scale: logoScale }}
+        />
       </div>
 
       <div className="flex flex-col gap-14 lg:flex-row lg:items-center lg:gap-16">
@@ -52,7 +62,7 @@ export function AboutMe() {
           viewport={{ once: true, amount: 0.45 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="mx-auto inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-100 lg:mx-0">
+          <span className="mx-auto inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/10 px-4 py-2 text-[11px] font-semibold tracking-[0.22em] text-emerald-100 uppercase lg:mx-0">
             Ko sam ja?
           </span>
           <div className="space-y-4">
@@ -85,7 +95,7 @@ export function AboutMe() {
             {signals.map((signal) => (
               <span
                 key={signal.label}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-zinc-900 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-emerald-100"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-zinc-900 px-4 py-2 text-xs font-semibold tracking-wide text-emerald-100 uppercase"
               >
                 <signal.icon className="h-4 w-4" aria-hidden />
                 {signal.label}
@@ -113,8 +123,8 @@ export function AboutMe() {
               className="h-full w-full object-cover transition duration-500"
               priority
             />
-            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/45 px-4 py-3 text-xs uppercase tracking-[0.22em] text-emerald-100">
-              <span>Agilno, ali vrlo licno</span>
+            <div className="absolute right-4 bottom-4 left-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/45 px-4 py-3 text-xs tracking-[0.22em] text-emerald-100 uppercase">
+              <span>Agilno, ali vrlo lično</span>
               <Sparkles className="h-4 w-4 text-amber-200" aria-hidden />
             </div>
           </div>

@@ -25,13 +25,13 @@ export function Footer() {
 
       <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-10 rounded-[28px] border border-white/10 bg-white/5 p-6 text-center shadow-[0_26px_70px_-40px_rgba(0,0,0,0.95)] backdrop-blur sm:p-10 lg:p-12">
         <div className="flex items-center justify-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/15 bg-white/10 shadow-inner shadow-emerald-500/20">
+          <div className="flex h-24 w-24 items-center justify-center rounded-full border border-white/15 bg-white/10 shadow-inner shadow-emerald-500/20">
             <NextImage
-              src="/media/brand/favicon-browser.png"
+              src="/media/backgrounds/paralax-logo.png"
               alt="Agile Onion"
-              width={48}
-              height={48}
-              className="h-12 w-12 rounded-full"
+              width={80}
+              height={80}
+              className="h-24 w-24 rounded-full"
               priority
             />
           </div>
