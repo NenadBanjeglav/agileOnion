@@ -1,6 +1,7 @@
 export const siteConfig = {
   name: "Agile Onion",
-  description: "Agile project workspace scaffolded with Next.js 16 and React 19.",
+  description:
+    "Agile Onion offers agile coaching, Scrum guidance, and practical mindset tools for personal and professional growth.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   links: {
     github: "",
