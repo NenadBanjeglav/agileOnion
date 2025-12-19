@@ -1,6 +1,8 @@
 import { type WithChildren } from '@/lib/types'
 import { FloatingNav } from './FloatingNav'
 import { Footer } from './Footer'
+import { NewsletterShuffle } from '@/app/(public)/_components/NewsletterShuffle'
+import { AboutMe } from '@/app/(public)/_components/AboutMe'
 
 type AppShellProps = WithChildren<{
   padded?: boolean
@@ -24,8 +26,7 @@ export function AppShell({ children, padded = true }: AppShellProps) {
         <div className={navSpacing}>
           <FloatingNav />
         </div>
-        <div className="flex-1 w-full">{children}</div>
-        <Footer />
+        <div className="w-full flex-1">{children}</div>
       </main>
     </div>
   )

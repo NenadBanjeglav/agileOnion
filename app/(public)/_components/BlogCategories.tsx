@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion, useReducedMotion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
 import { blogSections } from '@/lib/content/blog'
@@ -96,82 +97,80 @@ function ColorCard({
   allowMotion: boolean
 }) {
   return (
-    <motion.article
-      id={layer.id}
-      className="group relative h-[280px] cursor-pointer overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 shadow-[0_28px_70px_-38px_rgba(0,0,0,0.9)] ring-1 ring-white/5 transition duration-200 focus-visible:ring-2 focus-visible:ring-emerald-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
-      whileHover={allowMotion ? 'hover' : undefined}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={
-        allowMotion
-          ? { duration: 0.6, ease: 'easeOut', staggerChildren: 0.035 }
-          : { duration: 0.6, ease: 'easeOut' }
-      }
-      tabIndex={0}
-      role="group"
-      aria-label={`${layer.title} section`}
-      onKeyDown={(event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault()
-          event.currentTarget.click()
-        }
-      }}
+    <Link
+      href={`/blog/category/${layer.id}`}
+      className="group block rounded-3xl focus-visible:ring-2 focus-visible:ring-emerald-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+      aria-label={`${layer.title} category`}
+      prefetch={false}
     >
-      <div
-        className="absolute inset-0 opacity-85 saturate-100 transition-transform duration-600 group-hover:scale-110"
-        style={{
-          backgroundImage: `url(${layer.image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-        aria-hidden
-      />
-      <div
-        className="absolute inset-0 opacity-95 transition-opacity duration-500 group-hover:opacity-0"
-        style={{
-          backgroundImage:
-            'linear-gradient(135deg, rgba(12,12,12,0.5), rgba(28,28,28,0.46), rgba(48,48,48,0.42))',
-        }}
-        aria-hidden
-      />
-      <div
-        className="absolute inset-0 bg-linear-to-t from-[#0b0f0f] via-black/35 to-transparent"
-        aria-hidden
-      />
-
-      <div className="relative z-10 flex h-full flex-col justify-between p-6 sm:p-7">
-        <ArrowUpRight
-          className="ml-auto h-6 w-6 text-emerald-50 transition duration-500 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:rotate-12"
-          aria-hidden="true"
+      <motion.article
+        id={layer.id}
+        className="relative h-[280px] overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 shadow-[0_28px_70px_-38px_rgba(0,0,0,0.9)] ring-1 ring-white/5 transition duration-200"
+        whileHover={allowMotion ? 'hover' : undefined}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={
+          allowMotion
+            ? { duration: 0.6, ease: 'easeOut', staggerChildren: 0.035 }
+            : { duration: 0.6, ease: 'easeOut' }
+        }
+      >
+        <div
+          className="absolute inset-0 opacity-85 saturate-100 transition-transform duration-600 group-hover:scale-110"
+          style={{
+            backgroundImage: `url(${layer.image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0 opacity-95 transition-opacity duration-500 group-hover:opacity-0"
+          style={{
+            backgroundImage:
+              'linear-gradient(135deg, rgba(12,12,12,0.5), rgba(28,28,28,0.46), rgba(48,48,48,0.42))',
+          }}
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0 bg-linear-to-t from-[#0b0f0f] via-black/35 to-transparent"
+          aria-hidden
         />
 
-        <div className="space-y-3">
-          <div className="space-y-2">
-            <h3 className="text-2xl leading-tight font-semibold text-white transition-colors duration-300 sm:text-[26px]">
-              {layer.title.split('').map((letter, idx) => (
-                <ShiftLetter
-                  key={`${layer.id}-${idx}-${letter}`}
-                  letter={letter}
-                  allowMotion={allowMotion}
-                />
-              ))}
-            </h3>
-            <p
-              className="max-w-xl text-sm leading-relaxed text-zinc-100/90 sm:text-base"
-              style={{
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-              }}
-            >
-              {layer.description}
-            </p>
+        <div className="relative z-10 flex h-full flex-col justify-between p-6 sm:p-7">
+          <ArrowUpRight
+            className="ml-auto h-6 w-6 text-emerald-50 transition duration-500 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:rotate-12"
+            aria-hidden="true"
+          />
+
+          <div className="space-y-3">
+            <div className="space-y-2">
+              <h3 className="text-2xl leading-tight font-semibold text-white transition-colors duration-300 sm:text-[26px]">
+                {layer.title.split('').map((letter, idx) => (
+                  <ShiftLetter
+                    key={`${layer.id}-${idx}-${letter}`}
+                    letter={letter}
+                    allowMotion={allowMotion}
+                  />
+                ))}
+              </h3>
+              <p
+                className="max-w-xl text-sm leading-relaxed text-zinc-100/90 sm:text-base"
+                style={{
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                }}
+              >
+                {layer.description}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </motion.article>
+      </motion.article>
+    </Link>
   )
 }
 

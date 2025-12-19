@@ -177,7 +177,7 @@ function ParallaxImage({
         loading="lazy"
       />
       <figcaption className="absolute inset-0 flex items-center justify-center px-5 text-center text-sm font-semibold text-white sm:text-base">
-        <span className="max-w-[22rem] sm:max-w-[28rem]">{quote}</span>
+        <span className="max-w-88 sm:max-w-md">{quote}</span>
       </figcaption>
     </motion.figure>
   )

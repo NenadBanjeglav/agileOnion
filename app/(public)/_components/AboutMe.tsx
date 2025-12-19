@@ -5,6 +5,8 @@ import { ArrowUpRight, Sparkles, Target } from 'lucide-react'
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useMemo, useRef } from 'react'
 
+import { Container } from '@/components/layout/Container'
+
 const highlights = [
   'Scrum Master, agilni trener i bloger - radim sa timovima i pojedincima.',
   'Agilnost prevodim u jasne ritmove, povratnu informaciju i merljiv napredak.',
@@ -36,7 +38,7 @@ export function AboutMe() {
     <section
       ref={sectionRef}
       id="founder"
-      className="relative isolate mx-auto mt-10 max-w-6xl overflow-hidden rounded-3xl border border-white/10 bg-zinc-950 px-5 py-16 text-white shadow-[0_30px_90px_-65px_rgba(0,0,0,1)] sm:px-10 sm:py-20"
+      className="relative isolate mx-auto max-w-6xl overflow-hidden rounded-3xl border border-white/10 bg-zinc-950 px-6 py-16 text-white shadow-[0_30px_90px_-65px_rgba(0,0,0,1)] sm:px-10 sm:py-20"
       aria-labelledby="about-heading"
     >
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
@@ -49,7 +51,7 @@ export function AboutMe() {
           src="/media/backgrounds/paralax-logo.png"
           alt=""
           aria-hidden
-          className="absolute -right-10 top-10 w-52 opacity-70 lg:-right-6 lg:top-6 lg:w-64"
+          className="absolute top-10 -right-10 w-52 opacity-70 lg:top-6 lg:-right-6 lg:w-64"
           style={{ y: logoY, rotate: logoRotate, scale: logoScale }}
         />
       </div>

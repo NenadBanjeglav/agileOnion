@@ -2,6 +2,8 @@ import NextImage from 'next/image'
 import Link from 'next/link'
 import { Linkedin } from 'lucide-react'
 
+import { Container } from './Container'
+
 const quickLinks = [
   { label: 'Blog', href: '/blog' },
   { label: 'Taste an Onion', href: '#newsletter' },
@@ -15,7 +17,7 @@ export function Footer() {
   return (
     <footer
       id="footer"
-      className="relative -mx-[calc((100vw-100%)/2)] mt-16 w-screen overflow-hidden px-6 pt-14 pb-12 text-white sm:px-10 lg:px-14"
+      className="relative mx-auto w-screen max-w-7xl overflow-hidden px-6 pt-14 pb-12 text-white sm:px-10"
       aria-labelledby="site-footer-title"
     >
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -23,7 +25,7 @@ export function Footer() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(16,185,129,0.22),transparent_30%),radial-gradient(circle_at_80%_0%,rgba(56,189,248,0.18),transparent_28%),radial-gradient(circle_at_50%_60%,rgba(255,255,255,0.05),transparent_45%)]" />
       </div>
 
-      <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-10 rounded-[28px] border border-white/10 bg-white/5 p-6 text-center shadow-[0_26px_70px_-40px_rgba(0,0,0,0.95)] backdrop-blur sm:p-10 lg:p-12">
+      <Container className="flex flex-col items-center gap-10 rounded-[28px] border border-white/10 bg-white/5 p-6 text-center shadow-[0_26px_70px_-40px_rgba(0,0,0,0.95)] backdrop-blur sm:p-10 lg:p-12">
         <div className="flex items-center justify-center">
           <div className="flex h-24 w-24 items-center justify-center rounded-full border border-white/15 bg-white/10 shadow-inner shadow-emerald-500/20">
             <NextImage
@@ -83,7 +85,7 @@ export function Footer() {
             </span>
           </div>
         </div>
-      </div>
+      </Container>
     </footer>
   )
 }

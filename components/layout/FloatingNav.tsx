@@ -1,13 +1,14 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useMotionValueEvent, useScroll } from 'motion/react'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 const NAV_ITEMS = [
   { label: 'Blog', href: '/blog' },
-  { label: 'O meni', href: '#founder' },
   { label: 'Taste an Onion', href: '#newsletter' },
+  { label: 'O meni', href: '#founder' },
   { label: 'Kontakt', href: '#footer' },
 ]
 
@@ -15,6 +16,7 @@ export function FloatingNav() {
   const { scrollY } = useScroll()
   const lastY = useRef(0)
   const [hidden, setHidden] = useState(false)
+  const navRef = useRef<HTMLElement | null>(null)
 
   const handleNavClick = useCallback((href: string) => {
     return (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -43,9 +45,17 @@ export function FloatingNav() {
     lastY.current = latest
   })
 
+  useEffect(() => {
+    if (!hidden || !navRef.current) return
+    const active = document.activeElement
+    if (active instanceof HTMLElement && navRef.current.contains(active)) {
+      active.blur()
+    }
+  }, [hidden])
+
   return (
     <motion.nav
-      aria-hidden={hidden}
+      ref={navRef}
       animate={{ y: hidden ? -80 : 0, opacity: hidden ? 0 : 1 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
       style={{ pointerEvents: hidden ? 'none' : undefined }}
@@ -55,6 +65,7 @@ export function FloatingNav() {
         className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto sm:hidden"
         style={{ scrollbarWidth: 'none' }}
       >
+        <NavLogo isHidden={hidden} />
         {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.href}
@@ -68,6 +79,7 @@ export function FloatingNav() {
       </div>
 
       <div className="hidden items-center gap-2 sm:flex">
+        <NavLogo isHidden={hidden} />
         {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.href}
@@ -80,6 +92,26 @@ export function FloatingNav() {
         ))}
       </div>
     </motion.nav>
+  )
+}
+
+function NavLogo({ isHidden }: { isHidden?: boolean }) {
+  return (
+    <Link
+      href="/"
+      tabIndex={isHidden ? -1 : undefined}
+      className="group flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 bg-white/5 shadow-inner shadow-emerald-500/10 transition hover:border-emerald-200/60 hover:bg-emerald-400/10"
+      aria-label="Go to home page"
+    >
+      <Image
+        src="/media/backgrounds/paralax-logo.png"
+        alt="Agile Onion"
+        width={28}
+        height={28}
+        className="h-7 w-7 rounded-full"
+        priority
+      />
+    </Link>
   )
 }
 

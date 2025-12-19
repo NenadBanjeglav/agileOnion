@@ -4,6 +4,8 @@ import Image from 'next/image'
 import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useMemo, useState } from 'react'
 
+import { Container } from '@/components/layout/Container'
+
 type ListOrderItem = 'front' | 'middle' | 'back'
 
 const cards = [
@@ -47,80 +49,80 @@ export function NewsletterShuffle() {
   return (
     <section
       id="newsletter"
-      className="relative -mx-[calc((100vw-100%)/2)] w-screen overflow-x-hidden bg-transparent px-6 py-16 text-white sm:px-10 md:py-20"
+      className="relative mx-auto flex w-screen max-w-6xl flex-col items-center gap-16 overflow-x-hidden bg-transparent px-6 py-20 text-white sm:px-10 lg:flex-row lg:justify-between lg:px-12 lg:py-24"
     >
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center justify-items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:justify-items-start lg:gap-10">
-        <div className="flex w-full max-w-xl flex-col items-center space-y-5 text-center lg:max-w-none lg:items-start lg:text-left">
-          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-xs font-semibold tracking-[0.14em] text-emerald-100 uppercase">
-            Taste an Onion
-          </span>
-          <div className="space-y-3">
-            <h2 className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl">
-              Pridruži se Taste an Onion pismu
-            </h2>
-            <p className="text-base text-zinc-200 sm:text-lg">
-              Prijavom na Taste an Onion ne dobijaš još jedan mejl u inboxu — već mali podsetnik da si na putu rasta. Svake nedelje po jedan komadić slatkog ukusa koji ti pomaže da ne posustaneš.
-            </p>
-          </div>
-
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            className="flex w-full flex-col gap-3 sm:max-w-[440px]"
-          >
-            <label className="sr-only" htmlFor="newsletter-email">
-              Email adresa za prijavu na newsletter
-            </label>
-            <input
-              id="newsletter-email"
-              type="email"
-              required
-              placeholder="Unesi svoj email"
-              className="w-full rounded-full border border-white/10 bg-white/10 px-4 py-3 text-sm text-white transition placeholder:text-zinc-400 focus:border-emerald-300 focus:ring-2 focus:ring-emerald-400/50 focus:outline-none"
-            />
-            <button
-              type="submit"
-              className="group relative inline-flex w-full items-center justify-center overflow-hidden rounded-full border-0 bg-linear-to-r from-emerald-400 via-emerald-500 to-sky-500 px-5 py-3 text-sm font-semibold text-black shadow-[0_12px_30px_-18px_rgba(16,185,129,0.9)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(56,189,248,0.8)] active:scale-[0.99]"
-            >
-              <span
-                className="absolute inset-0 translate-x-[-120%] bg-white/35 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
-                aria-hidden
-              />
-              <span className="relative">Prijavi se ovde</span>
-            </button>
-          </form>
-
-          <p className="text-sm text-emerald-100/80">
-            Bez spama. Jedva čekam da se upoznamo.
+      <div className="flex w-full max-w-xl flex-col items-center space-y-5 text-center lg:max-w-none lg:items-start lg:text-left">
+        <span className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-xs font-semibold tracking-[0.14em] text-emerald-100 uppercase">
+          Taste an Onion
+        </span>
+        <div className="space-y-3">
+          <h2 className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl">
+            Pridruži se Taste an Onion pismu
+          </h2>
+          <p className="text-base text-zinc-200 sm:text-lg">
+            Prijavom na Taste an Onion ne dobijaš još jedan mejl u inboxu — već
+            mali podsetnik da si na putu rasta. Svake nedelje po jedan komadić
+            slatkog ukusa koji ti pomaže da ne posustaneš.
           </p>
         </div>
 
-        <div className="mx-auto flex w-full max-w-[640px] flex-col items-center gap-4 lg:max-w-none lg:items-end">
-          <div
-            className="relative h-[460px] w-full overflow-visible sm:h-[480px] lg:ml-10 xl:ml-16"
-            style={{ perspective: 1400 }}
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="flex w-full flex-col gap-3 sm:max-w-[440px]"
+        >
+          <label className="sr-only" htmlFor="newsletter-email">
+            Email adresa za prijavu na newsletter
+          </label>
+          <input
+            id="newsletter-email"
+            type="email"
+            required
+            placeholder="Unesi svoj email"
+            className="w-full rounded-full border border-white/10 bg-white/10 px-4 py-3 text-sm text-white transition placeholder:text-zinc-400 focus:border-emerald-300 focus:ring-2 focus:ring-emerald-400/50 focus:outline-none"
+          />
+          <button
+            type="submit"
+            className="group relative inline-flex w-full items-center justify-center overflow-hidden rounded-full border-0 bg-linear-to-r from-emerald-400 via-emerald-500 to-sky-500 px-5 py-3 text-sm font-semibold text-black shadow-[0_12px_30px_-18px_rgba(16,185,129,0.9)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(56,189,248,0.8)] active:scale-[0.99]"
           >
-            <AccessibleAnnouncement order={order} />
-            {cards.map((card, idx) => (
-              <Card
-                key={card.author}
-                imgUrl={card.imgUrl}
-                testimonial={card.testimonial}
-                author={card.author}
-                handleShuffle={handleShuffle}
-                position={order[idx]}
-                shouldReduceMotion={shouldReduceMotion}
-              />
-            ))}
-          </div>
-          <div className="flex w-full flex-wrap justify-center gap-3 md:justify-end">
-            <button
-              type="button"
-              onClick={handleShuffle}
-              className="inline-flex items-center justify-center rounded-full border border-emerald-300/60 bg-emerald-400/10 px-4 py-2 text-xs font-semibold tracking-[0.12em] text-emerald-50 uppercase transition hover:scale-[1.02] hover:border-emerald-200 active:scale-100"
-            >
-              Sledeća priča
-            </button>
-          </div>
+            <span
+              className="absolute inset-0 translate-x-[-120%] bg-white/35 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
+              aria-hidden
+            />
+            <span className="relative">Prijavi se ovde</span>
+          </button>
+        </form>
+
+        <p className="text-sm text-emerald-100/80">
+          Bez spama. Jedva čekam da se upoznamo.
+        </p>
+      </div>
+
+      <div className="mx-auto flex w-full max-w-[640px] flex-col items-center gap-4 lg:max-w-none lg:items-end">
+        <div
+          className="relative h-[460px] w-full overflow-visible sm:h-[480px] lg:ml-10 xl:ml-16"
+          style={{ perspective: 1400 }}
+        >
+          <AccessibleAnnouncement order={order} />
+          {cards.map((card, idx) => (
+            <Card
+              key={card.author}
+              imgUrl={card.imgUrl}
+              testimonial={card.testimonial}
+              author={card.author}
+              handleShuffle={handleShuffle}
+              position={order[idx]}
+              shouldReduceMotion={shouldReduceMotion}
+            />
+          ))}
+        </div>
+        <div className="flex w-full flex-wrap justify-center gap-3 md:justify-end">
+          <button
+            type="button"
+            onClick={handleShuffle}
+            className="inline-flex items-center justify-center rounded-full border border-emerald-300/60 bg-emerald-400/10 px-4 py-2 text-xs font-semibold tracking-[0.12em] text-emerald-50 uppercase transition hover:scale-[1.02] hover:border-emerald-200 active:scale-100"
+          >
+            Sledeća priča
+          </button>
         </div>
       </div>
     </section>
