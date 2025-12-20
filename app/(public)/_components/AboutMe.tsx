@@ -5,8 +5,6 @@ import { ArrowUpRight, Sparkles, Target } from 'lucide-react'
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useMemo, useRef } from 'react'
 
-import { Container } from '@/components/layout/Container'
-
 const highlights = [
   'Scrum Master, agilni trener i bloger - radim sa timovima i pojedincima.',
   'Agilnost prevodim u jasne ritmove, povratnu informaciju i merljiv napredak.',

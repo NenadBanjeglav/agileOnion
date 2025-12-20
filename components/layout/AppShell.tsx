@@ -1,8 +1,5 @@
 import { type WithChildren } from '@/lib/types'
 import { FloatingNav } from './FloatingNav'
-import { Footer } from './Footer'
-import { NewsletterShuffle } from '@/app/(public)/_components/NewsletterShuffle'
-import { AboutMe } from '@/app/(public)/_components/AboutMe'
 
 type AppShellProps = WithChildren<{
   padded?: boolean

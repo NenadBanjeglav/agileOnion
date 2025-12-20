@@ -18,5 +18,17 @@ export function Button({ variant = "primary", as = "button", className = "", ...
 
   const Component = as === "a" ? "a" : "button";
 
-  return <Component className={`${base} ${variants[variant]} ${className}`} {...(props as any)} />;
+  if (Component === "a") {
+    const { href, ...rest } = props as AnchorHTMLAttributes<HTMLAnchorElement> & {
+      href: string;
+    };
+    return <a href={href} className={`${base} ${variants[variant]} ${className}`} {...rest} />;
+  }
+
+  return (
+    <button
+      className={`${base} ${variants[variant]} ${className}`}
+      {...(props as ButtonHTMLAttributes<HTMLButtonElement>)}
+    />
+  );
 }

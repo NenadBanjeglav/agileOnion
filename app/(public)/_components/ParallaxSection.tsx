@@ -100,7 +100,6 @@ function CenterImage({
   })
 
   const backgroundSize = useTransform(fastProgress, [0, 1], ['170%', '100%'])
-  const opacity = useTransform(progress, [0.7, 1], [1, 0])
 
   return (
     <motion.div className="sticky top-0 h-screen w-full">

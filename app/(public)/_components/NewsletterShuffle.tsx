@@ -4,8 +4,6 @@ import Image from 'next/image'
 import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useMemo, useState } from 'react'
 
-import { Container } from '@/components/layout/Container'
-
 type ListOrderItem = 'front' | 'middle' | 'back'
 
 const cards = [

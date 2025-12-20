@@ -8,7 +8,6 @@ const log = (level: LogLevel, message: string, meta?: Record<string, unknown>) =
     timestamp: new Date().toISOString(),
   };
 
-  // eslint-disable-next-line no-console
   console[level](JSON.stringify(payload));
 };
 
