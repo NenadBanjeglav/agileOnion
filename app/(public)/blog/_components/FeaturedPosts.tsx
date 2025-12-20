@@ -22,7 +22,6 @@ export function FeaturedPosts({heroPost, sidePosts}: FeaturedPostsProps) {
           <Link
             href={`/blog/${heroPost.slug}`}
             className="group relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/60 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.9)] ring-1 ring-white/5 transition duration-200 hover:border-emerald-200/50"
-            prefetch={false}
           >
             <div className="relative h-72 w-full overflow-hidden sm:h-96">
               <Image
@@ -64,7 +63,6 @@ export function FeaturedPosts({heroPost, sidePosts}: FeaturedPostsProps) {
                   key={post.id}
                   href={`/blog/${post.slug}`}
                   className="group flex gap-4 rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[0_18px_50px_-40px_rgba(0,0,0,0.8)] transition duration-200 hover:border-emerald-200/50"
-                  prefetch={false}
                 >
                   <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl">
                     <Image

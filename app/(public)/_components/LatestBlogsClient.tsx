@@ -157,7 +157,6 @@ function BlogCard({
       className="group relative block shrink-0 focus-visible:outline-none"
       style={{width: CARD_WIDTH, marginRight: CARD_GAP}}
       aria-label={`Procitaj: ${post.title}`}
-      prefetch={false}
     >
       <motion.article
         className="relative flex h-full min-h-[360px] flex-col overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/60 p-4 shadow-[0_24px_70px_-36px_rgba(0,0,0,0.9)] ring-1 ring-white/5 transition duration-200 group-hover:border-emerald-200/50 group-hover:ring-emerald-200/40"

@@ -101,7 +101,6 @@ function ColorCard({
       href={`/blog/category/${layer.id}`}
       className="group block rounded-3xl focus-visible:ring-2 focus-visible:ring-emerald-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
       aria-label={`${layer.title} category`}
-      prefetch={false}
     >
       <motion.article
         id={layer.id}

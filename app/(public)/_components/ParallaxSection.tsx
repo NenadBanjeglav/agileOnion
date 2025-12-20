@@ -95,17 +95,16 @@ function CenterImage({
   const fastProgress = useTransform(progress, [0, 0.4], [0, 1])
   const clipPath = useTransform(fastProgress, (value) => {
     const clip1 = 25 - 25 * value
-    const clip2 = 75 + 25 * value
-    return `polygon(${clip1}% ${clip1}%, ${clip2}% ${clip1}%, ${clip2}% ${clip2}%, ${clip1}% ${clip2}%)`
+    return `inset(${clip1}% ${clip1}% ${clip1}% ${clip1}% round 1.5rem)`
   })
 
-  const backgroundSize = useTransform(fastProgress, [0, 1], ['170%', '100%'])
+  const backgroundSize = useTransform(fastProgress, [0, 0.12], ['240%', '100%'])
 
   return (
     <motion.div className="sticky top-0 h-screen w-full">
-      <div className="relative h-full w-full overflow-hidden">
+      <div className="relative h-full w-full overflow-hidden rounded-3xl border border-white/10">
         <motion.div
-          className="absolute inset-0 rounded-3xl border border-white/10 bg-[url('/media/backgrounds/parallax.jpg')] bg-center bg-no-repeat"
+          className="absolute inset-0 bg-[url('/media/backgrounds/parallax.jpg')] bg-center bg-no-repeat"
           style={{ clipPath, backgroundSize }}
         />
         <div className="absolute inset-0 flex items-center justify-center px-6 text-center text-lg font-semibold text-white sm:text-2xl lg:text-3xl">

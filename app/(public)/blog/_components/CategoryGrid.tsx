@@ -22,7 +22,6 @@ export function CategoryGrid({categories}: CategoryGridProps) {
             key={category.slug}
             href={`/blog/category/${category.slug}`}
             className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_18px_55px_-40px_rgba(0,0,0,0.85)] transition duration-300 hover:-translate-y-1 hover:border-emerald-200/50 hover:bg-white/8 hover:shadow-[0_30px_80px_-45px_rgba(0,0,0,0.85)] focus-visible:ring-2 focus-visible:ring-emerald-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
-            prefetch={false}
           >
             <div className="relative h-28 overflow-hidden rounded-2xl">
               <Image

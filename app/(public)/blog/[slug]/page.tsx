@@ -267,7 +267,6 @@ export default async function BlogPostPage({
                 <Link
                   href={`/blog/category/${categorySlug}`}
                   className="rounded-full border border-emerald-200/40 bg-emerald-400/10 px-3 py-1 text-emerald-100 transition hover:border-emerald-100"
-                  prefetch={false}
                 >
                   {categoryLabel}
                 </Link>
@@ -353,7 +352,6 @@ export default async function BlogPostPage({
                 <Link
                   href={`/blog/category/${categorySlug}`}
                   className="rounded-full border border-emerald-200/40 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-100 transition hover:border-emerald-100"
-                  prefetch={false}
                 >
                   Pogledaj sve iz {categoryLabel}
                 </Link>
@@ -361,7 +359,6 @@ export default async function BlogPostPage({
               <Link
                 href="/blog"
                 className="rounded-full border border-white/20 px-4 py-2 text-sm font-semibold text-zinc-200 transition hover:border-emerald-200/60 hover:text-emerald-100"
-                prefetch={false}
               >
                 Nazad na blog
               </Link>
@@ -388,7 +385,6 @@ export default async function BlogPostPage({
                       key={item._id}
                       href={`/blog/${item.slug}`}
                       className="group flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/60 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.9)] ring-1 ring-white/5 transition duration-200 hover:border-emerald-200/50"
-                      prefetch={false}
                     >
                       {itemImage && (
                         <div className="relative h-36 overflow-hidden">
