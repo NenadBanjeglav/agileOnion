@@ -137,7 +137,7 @@ function NavLink({
         whileHover={{ y: -18 }}
         whileTap={{ y: -18 }}
         transition={{ ease: 'backInOut', duration: 0.5 }}
-        className="h-[18px] leading-none lg:h-[20px]"
+        className="h-[18px] leading-none lg:h-5"
       >
         <span className="flex h-[18px] items-center whitespace-nowrap text-zinc-300">
           {children}

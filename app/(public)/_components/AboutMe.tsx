@@ -42,7 +42,7 @@ export function AboutMe() {
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
         <motion.div
           style={{ scale: glowScale }}
-          className="absolute inset-x-0 top-6 mx-auto h-72 w-3/4 rounded-[32px] bg-emerald-500/15 blur-[120px]"
+          className="absolute inset-x-0 top-6 mx-auto h-72 w-3/4 rounded-4xl bg-emerald-500/15 blur-[120px]"
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(16,185,129,0.14),transparent_28%),radial-gradient(circle_at_82%_14%,rgba(56,189,248,0.16),transparent_28%),linear-gradient(135deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0)_40%)]" />
         <motion.img
@@ -85,7 +85,7 @@ export function AboutMe() {
                 key={item}
                 className="flex items-start gap-3 text-left text-sm text-zinc-100 sm:text-base"
               >
-                <div className="mt-[6px] h-[6px] w-[6px] shrink-0 rounded-full bg-emerald-400" />
+                <div className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
                 <p className="leading-relaxed">{item}</p>
               </div>
             ))}
@@ -112,7 +112,7 @@ export function AboutMe() {
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="absolute -inset-6 rounded-[36px] bg-gradient-to-br from-emerald-500/15 via-sky-400/12 to-amber-300/10 blur-3xl" />
+          <div className="absolute -inset-6 rounded-[36px] bg-linear-to-br from-emerald-500/15 via-sky-400/12 to-amber-300/10 blur-3xl" />
           <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-zinc-900/80 shadow-[0_32px_80px_-60px_rgba(0,0,0,1)] ring-1 ring-white/10">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.08),transparent_38%)]" />
             <Image
