@@ -104,16 +104,8 @@ function ColorCard({
     >
       <motion.article
         id={layer.id}
-        className="relative h-[280px] overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 shadow-[0_28px_70px_-38px_rgba(0,0,0,0.9)] ring-1 ring-white/5 transition duration-200"
+        className="relative h-[280px] overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 shadow-[0_28px_70px_-38px_rgba(0,0,0,0.9)] ring-1 ring-white/5 transition duration-200 transform-gpu"
         whileHover={allowMotion ? 'hover' : undefined}
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.25 }}
-        transition={
-          allowMotion
-            ? { duration: 0.6, ease: 'easeOut', staggerChildren: 0.035 }
-            : { duration: 0.6, ease: 'easeOut' }
-        }
       >
         <div
           className="absolute inset-0 opacity-85 saturate-100 transition-transform duration-600 group-hover:scale-110"

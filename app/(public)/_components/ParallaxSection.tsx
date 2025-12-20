@@ -17,8 +17,8 @@ const PARALLAX_IMAGES = [
     quote: '"Budi uporan u viziji, ali fleksibilan u detaljima." — Jeff Bezos',
   },
   {
-    src: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2000&auto=format&fit=crop',
-    alt: 'Notebook and coffee',
+    src: '/media/trail/trail-notebook.webp',
+    alt: 'Notebook and notes',
     start: 220,
     end: -260,
     className: 'mx-auto w-full sm:w-2/3',
@@ -26,8 +26,8 @@ const PARALLAX_IMAGES = [
       '"Znanje bez primene je kao seme koje nikad ne proklija." — Paulo Coelho',
   },
   {
-    src: 'https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=2000&auto=format&fit=crop',
-    alt: 'Person walking on ridge',
+    src: '/media/trail/trail-retro.webp',
+    alt: 'Retro board',
     start: -200,
     end: 220,
     className: 'ml-auto hidden w-1/3 sm:block',
@@ -35,8 +35,8 @@ const PARALLAX_IMAGES = [
       '"Agilnost počinje sa skromnošću — onog trenutka kada priznaš da i dalje imaš šta da naučiš." — Mike Cohn',
   },
   {
-    src: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2000&auto=format&fit=crop',
-    alt: 'Sunlit forest',
+    src: '/media/trail/trail-standup.webp',
+    alt: 'Standup session',
     start: 40,
     end: -520,
     className: 'ml-24 hidden w-5/12 md:block',
@@ -46,7 +46,7 @@ const PARALLAX_IMAGES = [
 
 export function ParallaxSection() {
   return (
-    <section className="relative w-full bg-transparent text-white">
+    <section className="relative hidden w-full bg-transparent text-white sm:block">
       <Hero />
     </section>
   )
@@ -102,7 +102,7 @@ function CenterImage({
 
   return (
     <motion.div className="sticky top-0 h-screen w-full">
-      <div className="relative h-full w-full overflow-hidden rounded-3xl border border-white/10">
+      <div className="relative h-full w-full overflow-hidden rounded-3xl">
         <motion.div
           className="absolute inset-0 bg-[url('/media/backgrounds/parallax.jpg')] bg-center bg-no-repeat"
           style={{ clipPath, backgroundSize }}
@@ -174,8 +174,17 @@ function ParallaxImage({
         className="block h-full w-full object-cover"
         loading="lazy"
       />
-      <figcaption className="absolute inset-0 flex items-center justify-center px-5 text-center text-sm font-semibold text-white sm:text-base">
-        <span className="max-w-88 sm:max-w-md">{quote}</span>
+      <figcaption className="absolute inset-0 flex items-center justify-center px-5 text-center text-base font-semibold text-white sm:text-xl lg:text-2xl">
+        <span
+          className="max-w-lg sm:max-w-2xl"
+          style={{
+            textShadow:
+              '0 8px 24px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.6)',
+            WebkitTextStroke: '0.6px rgba(0, 0, 0, 0.35)',
+          }}
+        >
+          {quote}
+        </span>
       </figcaption>
     </motion.figure>
   )
