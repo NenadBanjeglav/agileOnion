@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/media/brand/agile-onion-logo-color.svg',
+        url: '/media/brand/og-image.png',
         width: 1200,
         height: 630,
         alt: siteConfig.name,
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: siteConfig.name,
     description: siteConfig.description,
-    images: ['/media/brand/agile-onion-logo-color.svg'],
+    images: ['/media/brand/og-image.png'],
   },
   robots: {
     index: true,
