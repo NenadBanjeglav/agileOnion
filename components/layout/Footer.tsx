@@ -79,7 +79,7 @@ export function Footer() {
         <div className="flex w-full flex-col items-center gap-3 border-t border-white/10 pt-6 text-sm text-zinc-300 sm:flex-row sm:justify-between">
           <div className="mx-auto flex flex-wrap items-center justify-center gap-3 text-sm sm:justify-center">
             <Link
-              href="https://www.linkedin.com"
+              href="https://www.linkedin.com/in/%C5%BEeljko-kopri%C4%87-0869241a8/"
               className="inline-flex items-center gap-2 text-emerald-100 transition hover:text-white"
             >
               <Linkedin className="h-4 w-4" aria-hidden />
