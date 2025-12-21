@@ -2,9 +2,9 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import {motion, useReducedMotion} from 'motion/react'
-import {useEffect, useMemo, useRef, useState} from 'react'
-import {ArrowLeft, ArrowRight} from 'lucide-react'
+import { motion, useReducedMotion } from 'motion/react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 const CARD_WIDTH = 320
 const CARD_GAP = 18
@@ -21,12 +21,8 @@ export type LatestBlogsPost = {
 const clampOffset = (value: number, limit: number) =>
   Math.max(-limit, Math.min(0, value))
 
-export function LatestBlogsClient({
-  posts,
-}: {
-  posts: LatestBlogsPost[]
-}) {
-  const {width, ref} = useContainerWidth<HTMLDivElement>()
+export function LatestBlogsClient({ posts }: { posts: LatestBlogsPost[] }) {
+  const { width, ref } = useContainerWidth<HTMLDivElement>()
   const shouldReduceMotion = !!useReducedMotion()
   const [offset, setOffset] = useState(0)
 
@@ -110,9 +106,9 @@ export function LatestBlogsClient({
           className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 px-2 py-5 shadow-[0_26px_70px_-40px_rgba(0,0,0,0.95)]"
         >
           <motion.div
-            animate={{x: motionOffset}}
+            animate={{ x: motionOffset }}
             drag="x"
-            dragConstraints={{left: -maxOffset, right: 0}}
+            dragConstraints={{ left: -maxOffset, right: 0 }}
             dragElastic={0.08}
             dragMomentum={false}
             onDragEnd={(_, info) => {
@@ -155,13 +151,13 @@ function BlogCard({
     <Link
       href={`/blog/${post.slug}`}
       className="group relative block shrink-0 focus-visible:outline-none"
-      style={{width: CARD_WIDTH, marginRight: CARD_GAP}}
+      style={{ width: CARD_WIDTH, marginRight: CARD_GAP }}
       aria-label={`Procitaj: ${post.title}`}
     >
       <motion.article
         className="relative flex h-full min-h-[360px] flex-col overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/60 p-4 shadow-[0_24px_70px_-36px_rgba(0,0,0,0.9)] ring-1 ring-white/5 transition duration-200 group-hover:border-emerald-200/50 group-hover:ring-emerald-200/40"
-        whileHover={allowMotion ? {y: -10} : undefined}
-        transition={allowMotion ? {type: 'tween', duration: 0.14} : undefined}
+        whileHover={allowMotion ? { y: -10 } : undefined}
+        transition={allowMotion ? { type: 'tween', duration: 0.14 } : undefined}
       >
         <div className="relative h-40 overflow-hidden rounded-2xl">
           <Image
@@ -254,5 +250,5 @@ function useContainerWidth<T extends HTMLElement>() {
     return () => win.removeEventListener('resize', updateWidth)
   }, [])
 
-  return {ref, width}
+  return { ref, width }
 }

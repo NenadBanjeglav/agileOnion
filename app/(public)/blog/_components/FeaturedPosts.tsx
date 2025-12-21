@@ -1,15 +1,15 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type {PostCard} from './types'
-import {SectionHeader} from './SectionHeader'
+import type { PostCard } from './types'
+import { SectionHeader } from './SectionHeader'
 
 type FeaturedPostsProps = {
   heroPost?: PostCard
   sidePosts: PostCard[]
 }
 
-export function FeaturedPosts({heroPost, sidePosts}: FeaturedPostsProps) {
+export function FeaturedPosts({ heroPost, sidePosts }: FeaturedPostsProps) {
   return (
     <section className="flex flex-col gap-8">
       <SectionHeader
@@ -64,7 +64,10 @@ export function FeaturedPosts({heroPost, sidePosts}: FeaturedPostsProps) {
                   href={`/blog/${post.slug}`}
                   className="group flex gap-4 rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[0_18px_50px_-40px_rgba(0,0,0,0.8)] transition duration-200 hover:border-emerald-200/50"
                 >
-                  <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl">
+                  <div
+                    className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl"
+                    style={{ position: 'relative' }}
+                  >
                     <Image
                       src={post.image}
                       alt={`Ilustracija za ${post.title}`}

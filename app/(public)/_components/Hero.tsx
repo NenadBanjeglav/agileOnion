@@ -93,7 +93,6 @@ export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
                 width={560}
                 height={260}
                 className="relative h-auto w-[300px] drop-shadow-[0_24px_60px_rgba(16,185,129,0.35)] sm:w-[360px] md:w-[420px]"
-                priority
               />
             </div>
 

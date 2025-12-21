@@ -1,14 +1,14 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type {CategoryCard} from './types'
-import {SectionHeader} from './SectionHeader'
+import type { CategoryCard } from './types'
+import { SectionHeader } from './SectionHeader'
 
 type CategoryGridProps = {
   categories: CategoryCard[]
 }
 
-export function CategoryGrid({categories}: CategoryGridProps) {
+export function CategoryGrid({ categories }: CategoryGridProps) {
   return (
     <section className="flex flex-col gap-6">
       <SectionHeader

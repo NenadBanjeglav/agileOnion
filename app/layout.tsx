@@ -69,7 +69,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="sr" className="dark" suppressHydrationWarning>
+    <html
+      lang="sr"
+      className="dark"
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+    >
       <body
         className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden antialiased`}
       >

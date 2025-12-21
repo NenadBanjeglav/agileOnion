@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type {PostCard} from './types'
-import {SectionHeader} from './SectionHeader'
+import type { PostCard } from './types'
+import { SectionHeader } from './SectionHeader'
 
 type PostGridProps = {
   posts: PostCard[]
