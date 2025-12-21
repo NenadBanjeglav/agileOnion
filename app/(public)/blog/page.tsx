@@ -1,6 +1,7 @@
 import { AppShell } from '@/components/layout/AppShell'
 import { Container } from '@/components/layout/Container'
 import { sanityClient } from '@/lib/sanity/client'
+import { siteConfig } from '@/lib/config/site'
 import { formatDate } from '@/lib/utils/date'
 import { BlogHero } from './_components/BlogHero'
 import { CategoryGrid } from './_components/CategoryGrid'
@@ -52,15 +53,49 @@ const mapPost = (post: SanityPost): PostCard => ({
   date: formatDate(post.publishedAt ?? post._createdAt),
 })
 
+export const generateMetadata = () => {
+  const title = `Blog | ${siteConfig.name}`
+  const description = siteConfig.description
+  const url = `${siteConfig.url}/blog`
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'website',
+    },
+    twitter: {
+      title,
+      description,
+      card: 'summary',
+    },
+  }
+}
+
 export default async function BlogPage() {
   const posts = await sanityClient.fetch<SanityPost[]>(POSTS_QUERY)
   const mappedPosts = posts.map(mapPost)
   const heroPost = mappedPosts[0]
   const sidePosts = mappedPosts.slice(1, 4)
   const feedPosts = mappedPosts.slice(4)
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: siteConfig.name,
+    description: siteConfig.description,
+    url: `${siteConfig.url}/blog`,
+  }
 
   return (
     <AppShell padded={false}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <ParallaxLogos />
       <Container>
         <BlogHero />

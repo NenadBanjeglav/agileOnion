@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { AppShell } from '@/components/layout/AppShell'
 import { Container } from '@/components/layout/Container'
 import { sanityClient } from '@/lib/sanity/client'
+import { siteConfig } from '@/lib/config/site'
 import { formatDate } from '@/lib/utils/date'
 import { PostGrid } from '../../_components/PostGrid'
 import {
@@ -59,6 +60,33 @@ type CategoryPageProps = {
   params: Promise<{ slug: string }>
 }
 
+export async function generateMetadata({ params }: CategoryPageProps) {
+  const { slug } = await params
+  const category = CATEGORY_LOOKUP.get(slug)
+  if (!category) return {}
+
+  const title = `${category.title} | ${siteConfig.name}`
+  const description = category.description?.trim() || siteConfig.description
+  const url = `${siteConfig.url}/blog/category/${slug}`
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'website',
+    },
+    twitter: {
+      title,
+      description,
+      card: 'summary',
+    },
+  }
+}
+
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = await params
   const category = CATEGORY_LOOKUP.get(slug)
@@ -70,9 +98,20 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     slug,
   })
   const mappedPosts = posts.map(mapPost)
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: category.title,
+    description: category.description,
+    url: `${siteConfig.url}/blog/category/${slug}`,
+  }
 
   return (
     <AppShell padded={false}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Container>
         <div className="flex flex-col gap-12">
           <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 px-6 py-10 shadow-[0_26px_70px_-40px_rgba(0,0,0,0.9)] sm:px-10 sm:py-12">
