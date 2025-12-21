@@ -16,7 +16,7 @@ import { NewsletterShuffle } from '@/app/(public)/_components/NewsletterShuffle'
 import { AboutMe } from '@/app/(public)/_components/AboutMe'
 import { Footer } from '@/components/layout/Footer'
 
-export const revalidate = 60
+export const revalidate = 3600
 
 const POSTS_QUERY = `*[
   _type == "post" &&

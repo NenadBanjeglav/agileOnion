@@ -22,7 +22,7 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ ok: false }, { status: 401 });
   }
 
-  const paths = new Set<string>();
+  const paths = new Set<string>(['/', '/blog']);
 
   if (Array.isArray(payload.paths)) {
     for (const path of payload.paths) {
@@ -34,20 +34,10 @@ export async function POST(request: Request): Promise<Response> {
 
   if (payload.slug) {
     paths.add(`/blog/${payload.slug}`);
-    paths.add("/blog");
-    paths.add("/");
   }
 
   if (payload.category) {
     paths.add(`/blog/category/${payload.category}`);
-    paths.add("/blog");
-  }
-
-  if (!paths.size) {
-    return Response.json(
-      { ok: false, error: "No paths provided" },
-      { status: 400 },
-    );
   }
 
   for (const path of paths) {

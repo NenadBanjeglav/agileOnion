@@ -21,7 +21,7 @@ import { AboutMe } from '../../_components/AboutMe'
 import { Footer } from '@/components/layout/Footer'
 import { ParallaxLogos } from '../../_components/ParallaxLogos'
 
-export const revalidate = 60
+export const revalidate = 3600
 
 const POST_QUERY = `*[
   _type == "post" &&
