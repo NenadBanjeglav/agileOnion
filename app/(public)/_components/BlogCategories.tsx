@@ -62,8 +62,7 @@ export function BlogCategories() {
             <p className="mx-auto max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
               Ne treba ti diploma, niti sertifikat i nije važno da li si
               priznati profesionalac ili tek tražiš sebe. Važno je da imaš
-              otvoren um i iskru koja te gura napred. “Znanje bez primene je kao
-              seme koje nikad ne proklija.” — Paulo Coelho
+              otvoren um i iskru koja te gura napred.
             </p>
 
             <p className="mx-auto max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
@@ -104,7 +103,7 @@ function ColorCard({
     >
       <motion.article
         id={layer.id}
-        className="relative h-[280px] overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 shadow-[0_28px_70px_-38px_rgba(0,0,0,0.9)] ring-1 ring-white/5 transition duration-200 transform-gpu"
+        className="relative h-[280px] transform-gpu overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 shadow-[0_28px_70px_-38px_rgba(0,0,0,0.9)] ring-1 ring-white/5 transition duration-200"
         whileHover={allowMotion ? 'hover' : undefined}
       >
         <div

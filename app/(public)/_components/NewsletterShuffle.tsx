@@ -3,43 +3,130 @@
 import Image from 'next/image'
 import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useMemo, useState } from 'react'
+import { sanityClient } from '@/lib/sanity/client'
 
-type ListOrderItem = 'front' | 'middle' | 'back'
+type TestimonialCard = {
+  id?: string
+  imgUrl?: string
+  testimonial: string
+  author: string
+}
 
-const cards = [
-  {
-    imgUrl: '/media/trail/trail-office.webp',
-    testimonial:
-      'Jedan mejl nedeljno i tačno znam šta da probam sledeće. Željko piše kao prijatelj, ne kao prodavac.',
-    author: 'Ana, Scrum Master',
-  },
-  {
-    imgUrl: '/media/trail/trail-speaker.webp',
-    testimonial:
-      'Taste an Onion me podseti da rast ide sloj po sloj. Blagi podsetnik, bez pritiska.',
-    author: 'Miloš, Product Owner',
-  },
-  {
-    imgUrl: '/media/trail/trail-collab.webp',
-    testimonial:
-      'Najbolji miks mindseta i agilnosti u inboxu. Kratko, jasno, odmah primenljivo.',
-    author: 'Ivana, Agile Coach',
-  },
-]
+type SanityTestimonial = {
+  _id: string
+  quote: string
+  shortQuote?: string
+  authorName: string
+  authorRole?: string
+  authorCompany?: string
+  imageUrl?: string
+}
+
+const TESTIMONIALS_QUERY = `*[
+  _type == "testimonial" &&
+  defined(quote)
+] | order(coalesce(order, _createdAt) asc) {
+  _id,
+  quote,
+  shortQuote,
+  authorName,
+  authorRole,
+  authorCompany,
+  "imageUrl": image.asset->url
+}`
+
+const shuffleCards = (cards: TestimonialCard[]) => {
+  const shuffled = [...cards]
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
+const formatAuthorLine = (item: SanityTestimonial) => {
+  const details = [item.authorRole, item.authorCompany]
+    .filter(Boolean)
+    .join(', ')
+  return details ? `${item.authorName} - ${details}` : item.authorName
+}
+
+const getInitials = (name: string) => {
+  const cleanName = name.split(' - ')[0] ?? name
+  const parts = cleanName.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return '?'
+  const first = parts[0]?.[0] ?? ''
+  const last = parts.length > 1 ? (parts[parts.length - 1]?.[0] ?? '') : ''
+  return `${first}${last}`.toUpperCase()
+}
+
+const getAvatarColor = (name: string) => {
+  const palette = [
+    '#22c55e',
+    '#0ea5e9',
+    '#f97316',
+    '#eab308',
+    '#14b8a6',
+    '#8b5cf6',
+    '#f43f5e',
+    '#6366f1',
+  ]
+  let hash = 0
+  for (let i = 0; i < name.length; i += 1) {
+    hash = (hash * 31 + name.charCodeAt(i)) % palette.length
+  }
+  return palette[hash]
+}
 
 export function NewsletterShuffle() {
   const prefersReducedMotion = useReducedMotion()
   const shouldReduceMotion = !!prefersReducedMotion
-  const [order, setOrder] = useState<ListOrderItem[]>([
-    'front',
-    'middle',
-    'back',
-  ])
+  const [order, setOrder] = useState<number[]>([])
+  const [cards, setCards] = useState<TestimonialCard[]>([])
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadTestimonials = async () => {
+      try {
+        const items =
+          await sanityClient.fetch<SanityTestimonial[]>(TESTIMONIALS_QUERY)
+
+        if (!isMounted || items.length === 0) {
+          return
+        }
+
+        const mapped = items.map((item) => ({
+          id: item._id,
+          imgUrl: item.imageUrl ?? undefined,
+          testimonial: item.shortQuote?.trim() || item.quote.trim(),
+          author: formatAuthorLine(item),
+        }))
+
+        const randomized = shuffleCards(mapped)
+        setCards(randomized)
+      } catch {
+        // Keep fallback testimonials on any fetch issues.
+      }
+    }
+
+    loadTestimonials()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  useEffect(() => {
+    setOrder(cards.map((_, index) => index))
+  }, [cards])
 
   const handleShuffle = () => {
     setOrder((prev) => {
       const next = [...prev]
-      next.unshift(next.pop() as ListOrderItem)
+      if (next.length > 1) {
+        next.unshift(next.pop() as number)
+      }
       return next
     })
   }
@@ -95,47 +182,67 @@ export function NewsletterShuffle() {
         </p>
       </div>
 
-      <div className="mx-auto flex w-full max-w-[640px] flex-col items-center gap-4 lg:max-w-none lg:items-end">
-        <div
-          className="relative h-[460px] w-full overflow-visible sm:h-[480px] lg:ml-10 xl:ml-16"
-          style={{ perspective: 1400 }}
-        >
-          <AccessibleAnnouncement order={order} />
-          {cards.map((card, idx) => (
-            <Card
-              key={card.author}
-              imgUrl={card.imgUrl}
-              testimonial={card.testimonial}
-              author={card.author}
-              handleShuffle={handleShuffle}
-              position={order[idx]}
-              shouldReduceMotion={shouldReduceMotion}
-            />
-          ))}
-        </div>
-        <div className="flex w-full flex-wrap justify-center gap-3 md:justify-end">
-          <button
-            type="button"
-            onClick={handleShuffle}
-            className="inline-flex items-center justify-center rounded-full border border-emerald-300/60 bg-emerald-400/10 px-4 py-2 text-xs font-semibold tracking-[0.12em] text-emerald-50 uppercase transition hover:scale-[1.02] hover:border-emerald-200 active:scale-100"
+      {cards.length > 0 ? (
+        <div className="mx-auto flex w-full max-w-[640px] flex-col items-center gap-4 lg:max-w-none lg:items-end">
+          <div
+            className="relative h-[460px] w-full overflow-visible sm:h-[480px] lg:ml-10 xl:ml-16"
+            style={{ perspective: 1400 }}
           >
-            Sledeća priča
-          </button>
+            <AccessibleAnnouncement order={order} cards={cards} />
+            {order.map((cardIndex, idx) => {
+              const card = cards[cardIndex]
+              if (!card) return null
+              return (
+                <Card
+                  key={card.id ?? `${card.author}-${cardIndex}`}
+                  imgUrl={card.imgUrl}
+                  testimonial={card.testimonial}
+                  author={card.author}
+                  handleShuffle={handleShuffle}
+                  stackIndex={idx}
+                  totalCards={order.length}
+                  shouldReduceMotion={shouldReduceMotion}
+                />
+              )
+            })}
+          </div>
+          <div className="flex w-full flex-wrap justify-center gap-3 md:justify-start">
+            <button
+              type="button"
+              onClick={handleShuffle}
+              className="inline-flex cursor-pointer items-center justify-center rounded-full border border-emerald-300/60 bg-emerald-400/10 px-4 py-2 text-xs font-semibold tracking-[0.12em] text-emerald-50 uppercase transition hover:scale-[1.02] hover:border-emerald-200 active:scale-100"
+            >
+              Sledeća priča
+            </button>
+          </div>
         </div>
-      </div>
+      ) : null}
     </section>
   )
 }
 
-function AccessibleAnnouncement({ order }: { order: ListOrderItem[] }) {
+function AccessibleAnnouncement({
+  order,
+  cards,
+}: {
+  order: number[]
+  cards: TestimonialCard[]
+}) {
   const frontCard = useMemo(() => {
-    const index = order.indexOf('front')
+    if (cards.length === 0) {
+      return null
+    }
+    const index = order[0] ?? 0
     return cards[index] ?? cards[0]
-  }, [order])
+  }, [order, cards])
+
+  if (!frontCard) {
+    return null
+  }
 
   return (
     <p className="sr-only" aria-live="polite">
-      Trenutna priča: {frontCard?.author}. {frontCard?.testimonial}
+      Trenutna priča: {frontCard.author}. {frontCard.testimonial}
     </p>
   )
 }
@@ -143,8 +250,9 @@ function AccessibleAnnouncement({ order }: { order: ListOrderItem[] }) {
 type CardProps = {
   handleShuffle: () => void
   testimonial: string
-  position: ListOrderItem
-  imgUrl: string
+  stackIndex: number
+  totalCards: number
+  imgUrl?: string
   author: string
   shouldReduceMotion: boolean
 }
@@ -152,7 +260,8 @@ type CardProps = {
 function Card({
   handleShuffle,
   testimonial,
-  position,
+  stackIndex,
+  totalCards,
   imgUrl,
   author,
   shouldReduceMotion,
@@ -166,32 +275,40 @@ function Card({
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  const middleOffset = isSmallScreen ? '14%' : '18%'
-  const backOffset = isSmallScreen ? '28%' : '36%'
-  const x =
-    position === 'front'
-      ? '0%'
-      : position === 'middle'
-        ? middleOffset
-        : backOffset
+  const totalSteps = Math.max(totalCards - 1, 1)
+  const maxOffsetX = isSmallScreen ? 90 : 150
+  const maxOffsetY = isSmallScreen ? 60 : 90
+  const stepX = totalCards > 1 ? maxOffsetX / totalSteps : 0
+  const stepY = totalCards > 1 ? maxOffsetY / totalSteps : 0
+  const maxRotate = 10
   const rotateZ =
-    position === 'front' ? '-5deg' : position === 'middle' ? '0deg' : '4deg'
-  const zIndex = position === 'front' ? 12 : position === 'middle' ? 11 : 10
+    totalCards > 1 ? -maxRotate / 2 + (maxRotate * stackIndex) / totalSteps : -5
+  const scale = totalCards > 1 ? 1 - 0.12 * (stackIndex / totalSteps) : 1
+  const opacity =
+    totalCards > 1 ? Math.max(0.35, 1 - 0.7 * (stackIndex / totalSteps)) : 1
+  const x = stepX * stackIndex
+  const y = stepY * stackIndex
+  const zIndex = totalCards - stackIndex
   const allowMotion = !shouldReduceMotion
+  const isFront = stackIndex === 0
 
   return (
     <motion.div
-      style={{ zIndex }}
-      animate={allowMotion ? { rotate: rotateZ, x } : { rotate: '0deg', x: 0 }}
-      drag={allowMotion ? 'x' : false}
+      style={{ zIndex, opacity }}
+      animate={
+        allowMotion
+          ? { rotate: rotateZ, x, y, scale }
+          : { rotate: '0deg', x: 0, y: 0, scale: 1 }
+      }
+      drag={allowMotion && isFront ? 'x' : false}
       dragElastic={0.25}
       dragSnapToOrigin
       dragTransition={{ bounceStiffness: 420, bounceDamping: 38 }}
       dragMomentum={false}
-      dragListener={allowMotion}
+      dragListener={allowMotion && isFront}
       dragConstraints={{ left: 0, right: 0 }}
       onDragEnd={
-        allowMotion
+        allowMotion && isFront
           ? (_, info) => {
               if (info.offset.x < -80 || info.velocity.x < -500) {
                 handleShuffle()
@@ -202,18 +319,28 @@ function Card({
       transition={{ duration: allowMotion ? 0.35 : 0 }}
       className="absolute top-0 left-1/2 grid h-[360px] w-60 -translate-x-1/2 cursor-grab place-content-center space-y-5 rounded-3xl border border-white/10 bg-white/10 p-6 shadow-[0_22px_70px_-38px_rgba(0,0,0,0.95)] backdrop-blur-xl select-none active:cursor-grabbing sm:h-[380px] sm:w-[260px] md:h-[430px] md:w-[320px] lg:h-[470px] lg:w-[350px]"
     >
-      <Image
-        src={imgUrl}
-        alt={`Image of ${author}`}
-        width={96}
-        height={96}
-        sizes="96px"
-        className="pointer-events-none mx-auto h-24 w-24 rounded-full border border-white/15 bg-white/10 object-cover"
-      />
-      <span className="text-center text-base text-zinc-200 italic">
+      {imgUrl ? (
+        <Image
+          src={imgUrl}
+          alt={`Image of ${author}`}
+          width={96}
+          height={96}
+          sizes="96px"
+          className="pointer-events-none mx-auto h-12 w-12 rounded-full border border-white/15 bg-white/10 object-cover sm:h-24 sm:w-24"
+        />
+      ) : (
+        <div
+          className="pointer-events-none mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-[10px] font-semibold text-white sm:h-24 sm:w-24 sm:text-sm"
+          style={{ backgroundColor: getAvatarColor(author) }}
+          aria-hidden
+        >
+          {getInitials(author)}
+        </div>
+      )}
+      <span className="text-center text-xs text-zinc-200 italic sm:text-base">
         &quot;{testimonial}&quot;
       </span>
-      <span className="text-center text-xs font-semibold tracking-[0.14em] text-emerald-100 uppercase">
+      <span className="text-center text-[9px] font-semibold tracking-[0.14em] text-emerald-100 uppercase sm:text-xs">
         {author}
       </span>
       {allowMotion ? (
