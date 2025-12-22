@@ -78,6 +78,17 @@ const getAvatarColor = (name: string) => {
   return palette[hash]
 }
 
+const getAvatarStyle = (name: string) => {
+  const backgroundColor = getAvatarColor(name)
+  const hex = backgroundColor.replace('#', '')
+  const r = Number.parseInt(hex.slice(0, 2), 16) / 255
+  const g = Number.parseInt(hex.slice(2, 4), 16) / 255
+  const b = Number.parseInt(hex.slice(4, 6), 16) / 255
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
+  const color = luminance > 0.6 ? '#0f172a' : '#f8fafc'
+  return { backgroundColor, color }
+}
+
 export function NewsletterShuffle() {
   const prefersReducedMotion = useReducedMotion()
   const shouldReduceMotion = !!prefersReducedMotion
@@ -330,8 +341,8 @@ function Card({
         />
       ) : (
         <div
-          className="pointer-events-none mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-[10px] font-semibold text-white sm:h-24 sm:w-24 sm:text-sm"
-          style={{ backgroundColor: getAvatarColor(author) }}
+          className="pointer-events-none mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-[10px] font-semibold sm:h-24 sm:w-24 sm:text-sm"
+          style={getAvatarStyle(author)}
           aria-hidden
         >
           {getInitials(author)}
