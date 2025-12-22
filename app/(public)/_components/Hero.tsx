@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/Button'
-import { motion, useAnimate, type Variants } from 'motion/react'
+import { motion, useAnimate, useReducedMotion, type Variants } from 'motion/react'
 import NextImage from 'next/image'
 import { useMemo, useRef, type MouseEventHandler, type ReactNode } from 'react'
 
@@ -39,6 +39,8 @@ const GRID_IMAGES = [
 
 export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
   const heroRef = useRef<HTMLElement | null>(null)
+  const prefersReducedMotion = useReducedMotion()
+  const allowMotion = !prefersReducedMotion
   const titleWords = useMemo(() => title.split(' '), [title])
   const subtitleWords = useMemo(() => subtitle.split(' '), [subtitle])
 
@@ -67,36 +69,31 @@ export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
     }),
   }
 
-  return (
-    <MouseImageTrail
-      images={GRID_IMAGES}
-      renderImageBuffer={40}
-      rotationRange={14}
-      className="relative"
+  const heroContent = (
+    <section
+      ref={heroRef}
+      id="top"
+      className="relative isolate -mx-[calc((100vw-100%)/2)] w-screen overflow-hidden px-5 py-16 text-white sm:px-8 md:py-16 lg:py-14"
+      aria-labelledby="hero-title"
     >
-      <section
-        ref={heroRef}
-        id="top"
-        className="relative isolate -mx-[calc((100vw-100%)/2)] w-screen overflow-hidden px-5 py-16 text-white sm:px-8 md:py-16 lg:py-14"
-        aria-labelledby="hero-title"
-      >
-        <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center justify-center gap-10 text-center">
-          <div className="relative z-20 flex flex-col items-center gap-8 sm:gap-10">
-            <div className="relative flex items-center justify-center">
-              <div
-                className="absolute inset-4 rounded-[28px] bg-emerald-500/18 blur-3xl"
-                aria-hidden
-              />
-              <NextImage
-                src="/media/brand/agile-onion-logo-color.svg"
-                alt="Agile Onion logo"
-                width={560}
-                height={260}
-                className="relative h-auto w-[300px] drop-shadow-[0_24px_60px_rgba(16,185,129,0.35)] sm:w-[360px] md:w-[420px]"
-              />
-            </div>
+      <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center justify-center gap-10 text-center">
+        <div className="relative z-20 flex flex-col items-center gap-8 sm:gap-10">
+          <div className="relative flex items-center justify-center">
+            <div
+              className="absolute inset-4 rounded-[28px] bg-emerald-500/18 blur-3xl"
+              aria-hidden
+            />
+            <NextImage
+              src="/media/brand/agile-onion-logo-color.svg"
+              alt="Agile Onion logo"
+              width={560}
+              height={260}
+              className="relative h-auto w-[300px] drop-shadow-[0_24px_60px_rgba(16,185,129,0.35)] sm:w-[360px] md:w-[420px]"
+            />
+          </div>
 
-            <div className="space-y-5 sm:space-y-6">
+          <div className="space-y-5 sm:space-y-6">
+            {allowMotion ? (
               <motion.h1
                 id="hero-title"
                 className="relative inline-block max-w-3xl text-3xl leading-tight font-semibold tracking-tight sm:text-5xl sm:leading-[1.05]"
@@ -114,7 +111,16 @@ export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
                   </motion.span>
                 ))}
               </motion.h1>
+            ) : (
+              <h1
+                id="hero-title"
+                className="relative inline-block max-w-3xl text-3xl leading-tight font-semibold tracking-tight sm:text-5xl sm:leading-[1.05]"
+              >
+                {title}
+              </h1>
+            )}
 
+            {allowMotion ? (
               <motion.p
                 className="mx-auto max-w-2xl text-base leading-7 text-zinc-200 sm:text-lg"
                 initial="hidden"
@@ -131,8 +137,14 @@ export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
                   </motion.span>
                 ))}
               </motion.p>
+            ) : (
+              <p className="mx-auto max-w-2xl text-base leading-7 text-zinc-200 sm:text-lg">
+                {subtitle}
+              </p>
+            )}
 
-              <div className="space-y-2">
+            <div className="space-y-2">
+              {allowMotion ? (
                 <motion.div
                   className="mx-auto h-1 w-full max-w-sm origin-left overflow-hidden rounded-full bg-white/10"
                   initial={{ scaleX: 0 }}
@@ -141,54 +153,80 @@ export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
                 >
                   <div className="h-full w-full bg-linear-to-r from-emerald-400 via-emerald-300 to-sky-400" />
                 </motion.div>
-                <div className="flex justify-center gap-3">
-                  {[0.65, 0.9, 1.2].map((delay, idx) => (
-                    <motion.span
-                      key={idx}
-                      className="h-2.5 w-2.5 rounded-full bg-emerald-300/70"
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{
-                        delay,
-                        duration: 0.35,
-                        ease: 'backOut',
-                      }}
-                    />
-                  ))}
+              ) : (
+                <div className="mx-auto h-1 w-full max-w-sm overflow-hidden rounded-full bg-white/10">
+                  <div className="h-full w-full bg-linear-to-r from-emerald-400 via-emerald-300 to-sky-400" />
                 </div>
-              </div>
-
-              {primaryCta || secondaryCta ? (
-                <div className="mt-4 flex flex-col items-center gap-3 text-base font-medium sm:flex-row sm:justify-center sm:gap-4">
-                  {primaryCta ? (
-                    <Button
-                      as="a"
-                      href={primaryCta.href}
-                      className="group relative w-full overflow-hidden border-0 bg-linear-to-r from-emerald-400 via-emerald-500 to-sky-500 text-black shadow-[0_12px_30px_-18px_rgba(16,185,129,0.9)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(56,189,248,0.8)] active:scale-[0.99] sm:w-auto"
-                    >
-                      <span
-                        className="absolute inset-0 translate-x-[-120%] bg-white/25 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
-                        aria-hidden
+              )}
+              <div className="flex justify-center gap-3">
+                {allowMotion
+                  ? [0.65, 0.9, 1.2].map((delay, idx) => (
+                      <motion.span
+                        key={idx}
+                        className="h-2.5 w-2.5 rounded-full bg-emerald-300/70"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{
+                          delay,
+                          duration: 0.35,
+                          ease: 'backOut',
+                        }}
                       />
-                      {primaryCta.label}
-                    </Button>
-                  ) : null}
-                  {secondaryCta ? (
-                    <Button
-                      as="a"
-                      href={secondaryCta.href}
-                      variant="ghost"
-                      className="w-full border border-emerald-300/50 bg-white/10 text-emerald-100 hover:bg-white/20 sm:w-auto"
-                    >
-                      {secondaryCta.label}
-                    </Button>
-                  ) : null}
-                </div>
-              ) : null}
+                    ))
+                  : [0, 1, 2].map((idx) => (
+                      <span
+                        key={idx}
+                        className="h-2.5 w-2.5 rounded-full bg-emerald-300/70"
+                      />
+                    ))}
+              </div>
             </div>
+
+            {primaryCta || secondaryCta ? (
+              <div className="mt-4 flex flex-col items-center gap-3 text-base font-medium sm:flex-row sm:justify-center sm:gap-4">
+                {primaryCta ? (
+                  <Button
+                    as="a"
+                    href={primaryCta.href}
+                    className="group relative w-full overflow-hidden border-0 bg-linear-to-r from-emerald-400 via-emerald-500 to-sky-500 text-black shadow-[0_12px_30px_-18px_rgba(16,185,129,0.9)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(56,189,248,0.8)] active:scale-[0.99] sm:w-auto"
+                  >
+                    <span
+                      className="absolute inset-0 translate-x-[-120%] bg-white/25 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
+                      aria-hidden
+                    />
+                    {primaryCta.label}
+                  </Button>
+                ) : null}
+                {secondaryCta ? (
+                  <Button
+                    as="a"
+                    href={secondaryCta.href}
+                    variant="ghost"
+                    className="w-full border border-emerald-300/50 bg-white/10 text-emerald-100 hover:bg-white/20 sm:w-auto"
+                  >
+                    {secondaryCta.label}
+                  </Button>
+                ) : null}
+              </div>
+            ) : null}
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+  )
+
+  if (!allowMotion) {
+    return heroContent
+  }
+
+  return (
+    <MouseImageTrail
+      images={GRID_IMAGES}
+      renderImageBuffer={40}
+      rotationRange={14}
+      className="relative"
+    >
+      {heroContent}
     </MouseImageTrail>
   )
 }
