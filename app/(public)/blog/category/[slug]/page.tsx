@@ -15,6 +15,7 @@ import type { PostCard } from '../../_components/types'
 import { NewsletterShuffle } from '@/app/(public)/_components/NewsletterShuffle'
 import { AboutMe } from '@/app/(public)/_components/AboutMe'
 import { Footer } from '@/components/layout/Footer'
+import { JsonLd } from '@/components/seo/JsonLd'
 
 export const revalidate = 3600
 
@@ -108,10 +109,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <AppShell padded={false}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
       <Container>
         <div className="flex flex-col gap-12">
           <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 px-6 py-10 shadow-[0_26px_70px_-40px_rgba(0,0,0,0.9)] sm:px-10 sm:py-12">

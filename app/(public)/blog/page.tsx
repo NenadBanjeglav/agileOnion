@@ -13,6 +13,7 @@ import { NewsletterShuffle } from '../_components/NewsletterShuffle'
 import { AboutMe } from '../_components/AboutMe'
 import { Footer } from '@/components/layout/Footer'
 import { ParallaxLogos } from '../_components/ParallaxLogos'
+import { JsonLd } from '@/components/seo/JsonLd'
 
 export const revalidate = 3600
 
@@ -92,10 +93,7 @@ export default async function BlogPage() {
 
   return (
     <AppShell padded={false}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
       <ParallaxLogos />
       <Container>
         <BlogHero />

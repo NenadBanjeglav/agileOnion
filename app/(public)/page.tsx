@@ -10,6 +10,7 @@ import ReactLenis from 'lenis/react'
 import { NewsletterShuffle } from './_components/NewsletterShuffle'
 import { AboutMe } from './_components/AboutMe'
 import { Footer } from '@/components/layout/Footer'
+import { JsonLd } from '@/components/seo/JsonLd'
 
 export default function HomePage() {
   const { hero } = homeContent
@@ -28,10 +29,7 @@ export default function HomePage() {
         lerp: 0.08,
       }}
     >
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
+      <JsonLd data={structuredData} />
       <AppShell padded={false}>
         <ParallaxLogos />
         <Hero {...hero} />
