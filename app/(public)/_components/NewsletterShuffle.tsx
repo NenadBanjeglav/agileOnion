@@ -2,7 +2,8 @@
 
 import Image from 'next/image'
 import { motion, useReducedMotion } from 'motion/react'
-import { useEffect, useMemo, useState } from 'react'
+import { Loader2 } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { sanityClient } from '@/lib/sanity/client'
 
 type TestimonialCard = {
@@ -21,6 +22,8 @@ type SanityTestimonial = {
   authorCompany?: string
   imageUrl?: string
 }
+
+type ListOrderItem = 'front' | 'middle' | 'back'
 
 const TESTIMONIALS_QUERY = `*[
   _type == "testimonial" &&
@@ -51,49 +54,21 @@ const formatAuthorLine = (item: SanityTestimonial) => {
   return details ? `${item.authorName} - ${details}` : item.authorName
 }
 
-const getInitials = (name: string) => {
-  const cleanName = name.split(' - ')[0] ?? name
-  const parts = cleanName.trim().split(/\s+/).filter(Boolean)
-  if (parts.length === 0) return '?'
-  const first = parts[0]?.[0] ?? ''
-  const last = parts.length > 1 ? (parts[parts.length - 1]?.[0] ?? '') : ''
-  return `${first}${last}`.toUpperCase()
-}
-
-const getAvatarColor = (name: string) => {
-  const palette = [
-    '#22c55e',
-    '#0ea5e9',
-    '#f97316',
-    '#eab308',
-    '#14b8a6',
-    '#8b5cf6',
-    '#f43f5e',
-    '#6366f1',
-  ]
-  let hash = 0
-  for (let i = 0; i < name.length; i += 1) {
-    hash = (hash * 31 + name.charCodeAt(i)) % palette.length
-  }
-  return palette[hash]
-}
-
-const getAvatarStyle = (name: string) => {
-  const backgroundColor = getAvatarColor(name)
-  const hex = backgroundColor.replace('#', '')
-  const r = Number.parseInt(hex.slice(0, 2), 16) / 255
-  const g = Number.parseInt(hex.slice(2, 4), 16) / 255
-  const b = Number.parseInt(hex.slice(4, 6), 16) / 255
-  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
-  const color = luminance > 0.6 ? '#0f172a' : '#f8fafc'
-  return { backgroundColor, color }
-}
-
 export function NewsletterShuffle() {
   const prefersReducedMotion = useReducedMotion()
   const shouldReduceMotion = !!prefersReducedMotion
-  const [order, setOrder] = useState<number[]>([])
+  const [order, setOrder] = useState<ListOrderItem[]>([
+    'front',
+    'middle',
+    'back',
+  ])
   const [cards, setCards] = useState<TestimonialCard[]>([])
+  const [email, setEmail] = useState('')
+  const [company, setCompany] = useState('')
+  const [status, setStatus] = useState<
+    'idle' | 'loading' | 'success' | 'error'
+  >('idle')
+  const [notice, setNotice] = useState('')
 
   useEffect(() => {
     let isMounted = true
@@ -114,7 +89,7 @@ export function NewsletterShuffle() {
           author: formatAuthorLine(item),
         }))
 
-        const randomized = shuffleCards(mapped)
+        const randomized = shuffleCards(mapped).slice(0, 3)
         setCards(randomized)
       } catch {
         // Keep fallback testimonials on any fetch issues.
@@ -129,17 +104,62 @@ export function NewsletterShuffle() {
   }, [])
 
   useEffect(() => {
-    setOrder(cards.map((_, index) => index))
+    setOrder(
+      cards.length >= 3
+        ? ['front', 'middle', 'back']
+        : cards.map(() => 'front'),
+    )
   }, [cards])
 
   const handleShuffle = () => {
     setOrder((prev) => {
       const next = [...prev]
       if (next.length > 1) {
-        next.unshift(next.pop() as number)
+        next.unshift(next.pop() as ListOrderItem)
       }
       return next
     })
+  }
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (status === 'loading') return
+
+    setStatus('loading')
+    setNotice('')
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          source: 'newsletter-shuffle',
+          company,
+        }),
+      })
+      const data = (await response.json().catch(() => null)) as {
+        error?: string
+        alreadySubscribed?: boolean
+      } | null
+
+      if (!response.ok) {
+        throw new Error(data?.error ?? 'Request failed')
+      }
+
+      setStatus('success')
+      setNotice(() => {
+        if (data?.alreadySubscribed) {
+          return 'Vec si prijavljen. Hvala!'
+        }
+        return 'Hvala! Prijava je sacuvana.'
+      })
+      setEmail('')
+      setCompany('')
+    } catch {
+      setStatus('error')
+      setNotice('Nesto nije uspelo. Pokusaj ponovo.')
+    }
   }
 
   return (
@@ -163,7 +183,7 @@ export function NewsletterShuffle() {
         </div>
 
         <form
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={handleSubmit}
           className="flex w-full flex-col gap-3 sm:max-w-[440px]"
         >
           <label className="sr-only" htmlFor="newsletter-email">
@@ -174,18 +194,52 @@ export function NewsletterShuffle() {
             type="email"
             required
             placeholder="Unesi svoj email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            autoComplete="email"
+            inputMode="email"
             className="w-full rounded-full border border-white/10 bg-white/10 px-4 py-3 text-sm text-white transition placeholder:text-zinc-400 focus:border-emerald-300 focus:ring-2 focus:ring-emerald-400/50 focus:outline-none"
+          />
+          <input
+            type="text"
+            name="company"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            value={company}
+            onChange={(event) => setCompany(event.target.value)}
+            className="absolute left-[-9999px] h-0 w-0 opacity-0"
           />
           <button
             type="submit"
+            disabled={status === 'loading'}
             className="group relative inline-flex w-full items-center justify-center overflow-hidden rounded-full border-0 bg-linear-to-r from-emerald-400 via-emerald-500 to-sky-500 px-5 py-3 text-sm font-semibold text-black shadow-[0_12px_30px_-18px_rgba(16,185,129,0.9)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(56,189,248,0.8)] active:scale-[0.99]"
           >
             <span
               className="absolute inset-0 translate-x-[-120%] bg-white/35 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
               aria-hidden
             />
-            <span className="relative">Prijavi se ovde</span>
+            <span
+              className="relative inline-flex items-center gap-2"
+              aria-label={status === 'loading' ? 'Ucitavanje' : undefined}
+            >
+              {status === 'loading' ? (
+                <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
+              ) : (
+                'Prijavi se ovde'
+              )}
+            </span>
           </button>
+          {status === 'loading' ? (
+            <p className="text-sm text-emerald-100/80" role="status">
+              Ucitavanje u toku...
+            </p>
+          ) : null}
+          {notice ? (
+            <p className="text-sm text-emerald-100/80" role="status">
+              {notice}
+            </p>
+          ) : null}
         </form>
 
         <p className="text-sm text-emerald-100/80">
@@ -200,24 +254,19 @@ export function NewsletterShuffle() {
             style={{ perspective: 1400 }}
           >
             <AccessibleAnnouncement order={order} cards={cards} />
-            {order.map((cardIndex, idx) => {
-              const card = cards[cardIndex]
-              if (!card) return null
-              return (
-                <Card
-                  key={card.id ?? `${card.author}-${cardIndex}`}
-                  imgUrl={card.imgUrl}
-                  testimonial={card.testimonial}
-                  author={card.author}
-                  handleShuffle={handleShuffle}
-                  stackIndex={idx}
-                  totalCards={order.length}
-                  shouldReduceMotion={shouldReduceMotion}
-                />
-              )
-            })}
+            {cards.map((card, index) => (
+              <Card
+                key={card.id ?? `${card.author}-${index}`}
+                imgUrl={card.imgUrl}
+                testimonial={card.testimonial}
+                author={card.author}
+                handleShuffle={handleShuffle}
+                position={order[index] ?? 'front'}
+                shouldReduceMotion={shouldReduceMotion}
+              />
+            ))}
           </div>
-          <div className="flex w-full flex-wrap justify-center gap-3 md:justify-start">
+          <div className="flex w-full flex-wrap justify-center gap-3 md:justify-center">
             <button
               type="button"
               onClick={handleShuffle}
@@ -236,15 +285,16 @@ function AccessibleAnnouncement({
   order,
   cards,
 }: {
-  order: number[]
+  order: ListOrderItem[]
   cards: TestimonialCard[]
 }) {
   const frontCard = useMemo(() => {
     if (cards.length === 0) {
       return null
     }
-    const index = order[0] ?? 0
-    return cards[index] ?? cards[0]
+    const frontIndex = order.indexOf('front')
+    if (frontIndex === -1) return cards[0]
+    return cards[frontIndex] ?? cards[0]
   }, [order, cards])
 
   if (!frontCard) {
@@ -261,8 +311,7 @@ function AccessibleAnnouncement({
 type CardProps = {
   handleShuffle: () => void
   testimonial: string
-  stackIndex: number
-  totalCards: number
+  position: ListOrderItem
   imgUrl?: string
   author: string
   shouldReduceMotion: boolean
@@ -271,13 +320,13 @@ type CardProps = {
 function Card({
   handleShuffle,
   testimonial,
-  stackIndex,
-  totalCards,
+  position,
   imgUrl,
   author,
   shouldReduceMotion,
 }: CardProps) {
   const [isSmallScreen, setIsSmallScreen] = useState(false)
+  const dragStartX = useRef(0)
 
   useEffect(() => {
     const update = () => setIsSmallScreen(window.innerWidth < 640)
@@ -286,49 +335,52 @@ function Card({
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  const totalSteps = Math.max(totalCards - 1, 1)
-  const maxOffsetX = isSmallScreen ? 90 : 150
-  const maxOffsetY = isSmallScreen ? 60 : 90
-  const stepX = totalCards > 1 ? maxOffsetX / totalSteps : 0
-  const stepY = totalCards > 1 ? maxOffsetY / totalSteps : 0
-  const maxRotate = 10
+  const middleOffsetX = isSmallScreen ? '8%' : '24%'
+  const backOffsetX = isSmallScreen ? '16%' : '48%'
+  const x =
+    position === 'front'
+      ? '0%'
+      : position === 'middle'
+        ? middleOffsetX
+        : backOffsetX
   const rotateZ =
-    totalCards > 1 ? -maxRotate / 2 + (maxRotate * stackIndex) / totalSteps : -5
-  const scale = totalCards > 1 ? 1 - 0.12 * (stackIndex / totalSteps) : 1
-  const opacity =
-    totalCards > 1 ? Math.max(0.35, 1 - 0.7 * (stackIndex / totalSteps)) : 1
-  const x = stepX * stackIndex
-  const y = stepY * stackIndex
-  const zIndex = totalCards - stackIndex
+    position === 'front' ? '-6deg' : position === 'middle' ? '0deg' : '6deg'
+  const zIndex = position === 'front' ? 2 : position === 'middle' ? 1 : 0
+  const opacity = position === 'back' ? 0.7 : 1
   const allowMotion = !shouldReduceMotion
-  const isFront = stackIndex === 0
+  const isFront = position === 'front'
 
   return (
     <motion.div
       style={{ zIndex, opacity }}
-      animate={
-        allowMotion
-          ? { rotate: rotateZ, x, y, scale }
-          : { rotate: '0deg', x: 0, y: 0, scale: 1 }
-      }
+      animate={allowMotion ? { rotate: rotateZ, x } : { rotate: '0deg', x: 0 }}
       drag={allowMotion && isFront ? 'x' : false}
-      dragElastic={0.25}
+      dragElastic={0.35}
       dragSnapToOrigin
       dragTransition={{ bounceStiffness: 420, bounceDamping: 38 }}
       dragMomentum={false}
       dragListener={allowMotion && isFront}
       dragConstraints={{ left: 0, right: 0 }}
+      onDragStart={
+        allowMotion && isFront
+          ? (_, info) => {
+              dragStartX.current = info.point.x
+            }
+          : undefined
+      }
       onDragEnd={
         allowMotion && isFront
           ? (_, info) => {
-              if (info.offset.x < -80 || info.velocity.x < -500) {
+              const diff = dragStartX.current - info.point.x
+              if (diff > 150) {
                 handleShuffle()
               }
+              dragStartX.current = 0
             }
           : undefined
       }
       transition={{ duration: allowMotion ? 0.35 : 0 }}
-      className="absolute top-0 left-1/2 grid h-[360px] w-60 -translate-x-1/2 cursor-grab place-content-center space-y-5 rounded-3xl border border-white/10 bg-white/10 p-6 shadow-[0_22px_70px_-38px_rgba(0,0,0,0.95)] backdrop-blur-xl select-none active:cursor-grabbing sm:h-[380px] sm:w-[260px] md:h-[430px] md:w-[320px] lg:h-[470px] lg:w-[350px]"
+      className="absolute top-0 left-1/2 grid h-[320px] w-56 -translate-x-1/2 cursor-grab place-content-center space-y-4 rounded-3xl border border-white/10 bg-white/10 p-5 shadow-[0_22px_70px_-38px_rgba(0,0,0,0.95)] backdrop-blur-xl select-none active:cursor-grabbing sm:h-[350px] sm:w-[240px] md:h-[400px] md:w-[300px] lg:h-[440px] lg:w-[320px]"
     >
       {imgUrl ? (
         <Image
@@ -340,13 +392,14 @@ function Card({
           className="pointer-events-none mx-auto h-12 w-12 rounded-full border border-white/15 bg-white/10 object-cover sm:h-24 sm:w-24"
         />
       ) : (
-        <div
-          className="pointer-events-none mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-[10px] font-semibold sm:h-24 sm:w-24 sm:text-sm"
-          style={getAvatarStyle(author)}
-          aria-hidden
-        >
-          {getInitials(author)}
-        </div>
+        <Image
+          src="/media/backgrounds/paralax-logo.png"
+          alt="Agile Onion logo"
+          width={96}
+          height={96}
+          sizes="96px"
+          className="pointer-events-none mx-auto h-12 w-12 rounded-full border border-white/15 bg-white/10 object-contain p-2 sm:h-24 sm:w-24 sm:p-3"
+        />
       )}
       <span className="text-center text-xs text-zinc-200 italic sm:text-base">
         &quot;{testimonial}&quot;

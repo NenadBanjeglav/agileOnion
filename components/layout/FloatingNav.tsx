@@ -54,44 +54,69 @@ export function FloatingNav() {
   }, [hidden])
 
   return (
-    <motion.nav
-      ref={navRef}
-      animate={{ y: hidden ? -80 : 0, opacity: hidden ? 0 : 1 }}
-      transition={{ duration: 0.2, ease: 'easeOut' }}
-      style={{ pointerEvents: hidden ? 'none' : undefined }}
-      className="fixed top-3 left-1/2 z-60 flex w-auto max-w-[88vw] -translate-x-1/2 flex-wrap items-center justify-center gap-2 overflow-hidden rounded-full border border-white/10 bg-black/70 px-3 py-1 text-xs text-zinc-100 shadow-md backdrop-blur sm:max-w-[720px] sm:flex-nowrap sm:gap-3 sm:px-5 sm:py-2.5 sm:text-sm md:gap-4 md:px-6 md:py-3 md:text-sm lg:top-4 lg:gap-5 lg:px-7 lg:py-3.5 lg:text-base"
-    >
-      <div
-        className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto sm:hidden"
-        style={{ scrollbarWidth: 'none' }}
+    <>
+      <motion.div
+        animate={{ y: hidden ? -80 : 0, opacity: hidden ? 0 : 1 }}
+        transition={{ duration: 0.2, ease: 'easeOut' }}
+        style={{ pointerEvents: hidden ? 'none' : undefined }}
+        className="fixed top-3 left-3 z-60 hidden lg:block lg:top-4 lg:left-6"
       >
-        <NavLogo isHidden={hidden} />
-        {NAV_ITEMS.map((item) => (
-          <NavLink
-            key={item.href}
-            href={item.href}
-            onClick={handleNavClick(item.href)}
-            isHidden={hidden}
-          >
-            {item.label}
-          </NavLink>
-        ))}
-      </div>
+        <Link
+          href="/"
+          tabIndex={hidden ? -1 : undefined}
+          className="block"
+          aria-label="Go to home page"
+        >
+          <Image
+            src="/media/brand/agile-onion-logo-color.svg"
+            alt="Agile Onion logo"
+            width={240}
+            height={72}
+            className="h-12 w-auto sm:h-14"
+            priority
+          />
+        </Link>
+      </motion.div>
 
-      <div className="hidden items-center gap-2 sm:flex">
-        <NavLogo isHidden={hidden} />
-        {NAV_ITEMS.map((item) => (
-          <NavLink
-            key={item.href}
-            href={item.href}
-            onClick={handleNavClick(item.href)}
-            isHidden={hidden}
-          >
-            {item.label}
-          </NavLink>
-        ))}
-      </div>
-    </motion.nav>
+      <motion.nav
+        ref={navRef}
+        animate={{ y: hidden ? -80 : 0, opacity: hidden ? 0 : 1 }}
+        transition={{ duration: 0.2, ease: 'easeOut' }}
+        style={{ pointerEvents: hidden ? 'none' : undefined }}
+        className="fixed top-3 left-1/2 z-60 flex w-auto max-w-[88vw] -translate-x-1/2 flex-wrap items-center justify-center gap-2 overflow-hidden rounded-full border border-white/10 bg-black/70 px-3 py-1 text-xs text-zinc-100 shadow-md backdrop-blur sm:max-w-[720px] sm:flex-nowrap sm:gap-3 sm:px-5 sm:py-2.5 sm:text-sm md:gap-4 md:px-6 md:py-3 md:text-sm lg:top-4 lg:gap-5 lg:px-7 lg:py-3.5 lg:text-base"
+      >
+        <div
+          className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto sm:hidden"
+          style={{ scrollbarWidth: 'none' }}
+        >
+          <NavLogo isHidden={hidden} />
+          {NAV_ITEMS.map((item) => (
+            <NavLink
+              key={item.href}
+              href={item.href}
+              onClick={handleNavClick(item.href)}
+              isHidden={hidden}
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </div>
+
+        <div className="hidden items-center gap-2 sm:flex">
+          <NavLogo isHidden={hidden} />
+          {NAV_ITEMS.map((item) => (
+            <NavLink
+              key={item.href}
+              href={item.href}
+              onClick={handleNavClick(item.href)}
+              isHidden={hidden}
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </div>
+      </motion.nav>
+    </>
   )
 }
 

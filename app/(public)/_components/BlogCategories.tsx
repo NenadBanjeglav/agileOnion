@@ -38,51 +38,61 @@ export function BlogCategories() {
       aria-labelledby={headingId}
     >
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 sm:gap-10">
-        <div className="flex flex-col items-center gap-3 text-center">
+        <div className="flex flex-col items-center gap-3 text-center sm:text-left lg:items-start">
           <span className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-xs font-semibold tracking-[0.14em] text-emerald-100 uppercase">
             Agile Onion slojevi
           </span>
-          <div className="space-y-4 sm:space-y-5">
-            <h2
-              id={headingId}
-              className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl"
-            >
-              Želiš da postaneš bolji lider, bolja osoba — ali ne znaš odakle da
-              počneš?
-            </h2>
+          <div className="grid w-full gap-6 sm:gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start">
+            <div className="space-y-4 sm:space-y-5">
+              <h2
+                id={headingId}
+                className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl"
+              >
+                Budi ti deo Agile Onion zajednice i evo šta dobijaš:
+              </h2>
+            </div>
 
-            <p className="mx-auto max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
-              Budi ti deo Agile Onion pokreta i evo šta dobijaš: jasne, odmah
-              primenljive lekcije o Scrum okviru i agilnim principima;
-              super-moćne tehnike za razvoj mindseta koji konačno radi za tebe,
-              a ne protiv tebe; inspirativne priče ljudi koji su prešli put od
-              ideje do manifestacije.
-            </p>
-
-            <p className="mx-auto max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
-              Ne treba ti diploma, niti sertifikat i nije važno da li si
-              priznati profesionalac ili tek tražiš sebe. Važno je da imaš
-              otvoren um i iskru koja te gura napred.
-            </p>
-
-            <p className="mx-auto max-w-4xl text-base leading-relaxed text-zinc-200 sm:text-lg">
-              Agile Onion se sastoji iz sledećih slojeva: Mindset Lab, Agile
-              Club, Scrum Office i Very Agile Personas (VAP). Otkrij svaki sloj,
-              onako kako tebi prija, i vrlo brzo ćeš osetiti neodoljivi ukus
-              koji te više neće napuštati.
-            </p>
-
-            <p className="text-base font-semibold text-emerald-100 sm:text-lg">
-              Sladak ukus tvog rasta.
-            </p>
+            <ul className="mx-auto w-full max-w-3xl space-y-3 text-left text-base leading-relaxed text-zinc-200 sm:mx-0 sm:text-lg">
+              <li className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300" />
+                <span>
+                  redovne odmah primenljive lekcije o Scrum okviru i agilnoj filozofiji;
+                </span>
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300" />
+                <span>
+                  super-moćne tehnike za razvoj mindseta i praktične vežbe;
+                </span>
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300" />
+                <span>
+                  inspirativne priče ljudi koji su prešli put od ideje do manifestacije;
+                </span>
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300" />
+                <span>moju bezrezervnu podršku.</span>
+              </li>
+            </ul>
           </div>
         </div>
+
+        <p className="text-center text-sm font-semibold tracking-[0.22em] text-emerald-200 uppercase sm:text-left">
+          Agile Onion blog sadrži sledeće kategorije:
+        </p>
 
         <div className="grid grid-cols-1 gap-5 md:gap-6 lg:grid-cols-2">
           {altLayers.map((layer) => (
             <ColorCard key={layer.id} layer={layer} allowMotion={allowMotion} />
           ))}
         </div>
+
+        <p className="mx-auto max-w-4xl text-center text-base leading-relaxed text-zinc-200 sm:text-lg">
+          Otkrivaj sloj po sloj, onako kako tebi prija, i vrlo brzo ćeš osetiti
+          neodoljivi ukus koji te više neće napuštati. Sladak ukus tvog rasta.
+        </p>
       </div>
     </section>
   )

@@ -5,19 +5,6 @@ import { motion, useAnimate, useReducedMotion, type Variants } from 'motion/reac
 import NextImage from 'next/image'
 import { useMemo, useRef, type MouseEventHandler, type ReactNode } from 'react'
 
-type Cta = { label: string; href: string }
-
-type HeroProps = {
-  kicker?: string
-  title: string
-  subtitle: string
-  primaryCta: Cta
-  secondaryCta?: Cta
-  bulletLead?: string
-  bullets?: string[]
-  image?: { src: string; alt: string }
-}
-
 const GRID_IMAGES = [
   '/media/hero/team-meeting.webp',
   '/media/trail/trail-workshop.webp',
@@ -37,10 +24,15 @@ const GRID_IMAGES = [
   '/media/trail/trail-gear.webp',
 ]
 
-export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
+export function Hero() {
   const heroRef = useRef<HTMLElement | null>(null)
   const prefersReducedMotion = useReducedMotion()
   const allowMotion = !prefersReducedMotion
+  const title =
+    'OVAJ BLOG JE PUT DO TVOG NESALOMIVOG MINDSETA. POCINJES SADA I TO BAS OVDE. BEZ ODLAGANJA.'
+  const subtitle = 'AGILNI PRINCIPI, GROWTH MINDSET METODE, SCRUM OKVIR'
+  const primaryCta = { label: 'Prijavi se na newsletter', href: '#newsletter' }
+  const secondaryCta = { label: 'Pogledaj blog', href: '#blog' }
   const titleWords = useMemo(() => title.split(' '), [title])
   const subtitleWords = useMemo(() => subtitle.split(' '), [subtitle])
 
@@ -76,9 +68,9 @@ export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
       className="relative isolate -mx-[calc((100vw-100%)/2)] w-screen overflow-hidden px-5 py-16 text-white sm:px-8 md:py-16 lg:py-14"
       aria-labelledby="hero-title"
     >
-      <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center justify-center gap-10 text-center">
-        <div className="relative z-20 flex flex-col items-center gap-8 sm:gap-10">
-          <div className="relative flex items-center justify-center">
+      <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center justify-start gap-10 pt-6 text-center sm:pt-8 lg:justify-center lg:pt-0">
+        <div className="relative z-20 flex w-full flex-col items-center gap-8 sm:gap-10">
+          <div className="relative flex w-full items-center justify-center">
             <div
               className="absolute inset-4 rounded-[28px] bg-emerald-500/18 blur-3xl"
               aria-hidden
@@ -182,33 +174,28 @@ export function Hero({ title, subtitle, primaryCta, secondaryCta }: HeroProps) {
               </div>
             </div>
 
-            {primaryCta || secondaryCta ? (
-              <div className="mt-4 flex flex-col items-center gap-3 text-base font-medium sm:flex-row sm:justify-center sm:gap-4">
-                {primaryCta ? (
-                  <Button
-                    as="a"
-                    href={primaryCta.href}
-                    className="group relative w-full overflow-hidden border-0 bg-linear-to-r from-emerald-400 via-emerald-500 to-sky-500 text-black shadow-[0_12px_30px_-18px_rgba(16,185,129,0.9)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(56,189,248,0.8)] active:scale-[0.99] sm:w-auto"
-                  >
-                    <span
-                      className="absolute inset-0 translate-x-[-120%] bg-white/25 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
-                      aria-hidden
-                    />
-                    {primaryCta.label}
-                  </Button>
-                ) : null}
-                {secondaryCta ? (
-                  <Button
-                    as="a"
-                    href={secondaryCta.href}
-                    variant="ghost"
-                    className="w-full border border-emerald-300/50 bg-white/10 text-emerald-100 hover:bg-white/20 sm:w-auto"
-                  >
-                    {secondaryCta.label}
-                  </Button>
-                ) : null}
-              </div>
-            ) : null}
+            <div className="mt-4 flex flex-col items-center gap-3 text-base font-medium sm:flex-row sm:justify-center sm:gap-4">
+              <Button
+                as="a"
+                href={primaryCta.href}
+                className="group relative w-full overflow-hidden border-0 bg-linear-to-r from-emerald-400 via-emerald-500 to-sky-500 text-black shadow-[0_12px_30px_-18px_rgba(16,185,129,0.9)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(56,189,248,0.8)] active:scale-[0.99] sm:w-auto"
+              >
+                <span
+                  className="absolute inset-0 translate-x-[-120%] bg-white/25 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
+                  aria-hidden
+                />
+                {primaryCta.label}
+              </Button>
+              <Button
+                as="a"
+                href={secondaryCta.href}
+                variant="ghost"
+                className="w-full border border-emerald-300/50 bg-white/10 text-emerald-100 hover:bg-white/20 sm:w-auto"
+              >
+                {secondaryCta.label}
+              </Button>
+            </div>
+
           </div>
         </div>
       </div>
