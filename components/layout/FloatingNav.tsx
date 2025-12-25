@@ -8,9 +8,10 @@ import {
   useMotionValueEvent,
   useScroll,
 } from 'motion/react'
-import { ChevronDown, Menu, X } from 'lucide-react'
+import { ChevronDown, Menu, Search, X } from 'lucide-react'
 import { type ElementType, type ReactNode, useCallback, useState } from 'react'
 import { blogSections } from '@/lib/content/blog'
+import { BlogSearchModal } from './BlogSearchModal'
 
 type NavItem = {
   label: string
@@ -28,6 +29,7 @@ const NAV_ITEMS: NavItem[] = [
 export function FloatingNav() {
   const { scrollY } = useScroll()
   const [scrolled, setScrolled] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
 
   const handleNavClick = useCallback(
     (href: string, onDone?: () => void) =>
@@ -59,8 +61,12 @@ export function FloatingNav() {
         <div className="hidden items-center gap-6 lg:flex">
           <Links onNavClick={handleNavClick} />
         </div>
-        <MobileMenu onNavClick={handleNavClick} />
+        <div className="flex items-center gap-3">
+          <SearchButton onClick={() => setSearchOpen(true)} />
+          <MobileMenu onNavClick={handleNavClick} />
+        </div>
       </div>
+      <BlogSearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </nav>
   )
 }
@@ -200,6 +206,18 @@ function BlogFlyout() {
         </Link>
       ))}
     </div>
+  )
+}
+
+function SearchButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/80 transition hover:border-white/30 hover:text-white"
+      aria-label="Otvori pretragu bloga"
+    >
+      <Search className="h-5 w-5" aria-hidden />
+    </button>
   )
 }
 
