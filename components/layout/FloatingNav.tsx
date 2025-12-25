@@ -190,7 +190,7 @@ function BlogFlyout() {
           className="group hover:bg-neutral-750 relative overflow-hidden rounded-lg border border-emerald-200/10 bg-neutral-800 p-3 shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-emerald-200/70 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900 focus-visible:outline-none"
         >
           <div
-            className="absolute inset-0 opacity-45 transition duration-300 group-hover:opacity-55"
+            className="absolute inset-0 opacity-45 transition duration-300 group-hover:opacity-70"
             style={{
               backgroundImage: `url(${
                 categoryImages[section.slug] ?? '/media/trail/trail-notes.webp'
@@ -200,7 +200,10 @@ function BlogFlyout() {
             }}
             aria-hidden
           />
-          <div className="absolute inset-0 bg-neutral-950/30" aria-hidden />
+          <div
+            className="absolute inset-0 bg-neutral-950 opacity-30 transition duration-300 group-hover:opacity-10"
+            aria-hidden
+          />
           <motion.div
             whileHover={{ y: -2, scale: 1.01 }}
             whileTap={{ scale: 0.99 }}

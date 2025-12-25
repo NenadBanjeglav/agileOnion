@@ -8,7 +8,7 @@ type AppShellProps = WithChildren<{
 export function AppShell({ children, padded = true }: AppShellProps) {
   const navSpacing = padded
     ? 'mb-8 w-full pt-12 sm:pt-14'
-    : 'w-full pt-6 sm:pt-6 lg:pt-0'
+    : 'mb-8 w-full pt-10 sm:pt-12 lg:pt-10'
   const widthClass = padded ? 'mx-auto w-full max-w-6xl' : 'w-screen'
 
   return (

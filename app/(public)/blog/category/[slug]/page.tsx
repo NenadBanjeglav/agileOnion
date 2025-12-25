@@ -114,12 +114,25 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <div className="flex flex-col gap-12">
           <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 px-6 py-10 shadow-[0_26px_70px_-40px_rgba(0,0,0,0.9)] sm:px-10 sm:py-12">
             <div
+              className="pointer-events-none absolute inset-0 opacity-55"
+              style={{
+                backgroundImage: `url(${category.image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+              aria-hidden
+            />
+            <div
               className="pointer-events-none absolute inset-0 opacity-60"
               aria-hidden
             >
               <div className="absolute top-8 -left-20 h-56 w-56 rounded-full bg-emerald-400/25 blur-[120px]" />
               <div className="absolute -right-20 bottom-6 h-56 w-56 rounded-full bg-cyan-400/15 blur-[120px]" />
             </div>
+            <div
+              className="pointer-events-none absolute inset-0 bg-neutral-950/40"
+              aria-hidden
+            />
 
             <div className="relative z-10 space-y-4">
               <div className="flex flex-wrap items-center gap-3 text-xs font-semibold tracking-[0.14em] text-emerald-200 uppercase">
