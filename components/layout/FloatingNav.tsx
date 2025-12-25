@@ -2,11 +2,19 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, useMotionValueEvent, useScroll } from 'motion/react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
+import { ChevronDown, Menu, X } from 'lucide-react'
+import { type ElementType, type ReactNode, useCallback, useState } from 'react'
+import { blogSections } from '@/lib/content/blog'
 
-const NAV_ITEMS = [
-  { label: 'Blog', href: '/blog' },
+type NavItem = {
+  label: string
+  href: string
+  flyout?: ElementType
+}
+
+const NAV_ITEMS: NavItem[] = [
+  { label: 'Blog', href: '/blog', flyout: BlogFlyout },
   { label: 'Taste an Onion', href: '#newsletter' },
   { label: 'O meni', href: '#founder' },
   { label: 'Kontakt', href: '#footer' },
@@ -14,163 +22,251 @@ const NAV_ITEMS = [
 
 export function FloatingNav() {
   const { scrollY } = useScroll()
-  const lastY = useRef(0)
-  const [hidden, setHidden] = useState(false)
-  const navRef = useRef<HTMLElement | null>(null)
+  const [scrolled, setScrolled] = useState(false)
 
-  const handleNavClick = useCallback((href: string) => {
-    return (event: React.MouseEvent<HTMLAnchorElement>) => {
-      if (href.startsWith('#')) {
-        event.preventDefault()
-        const target = document.querySelector(href)
-        if (target instanceof HTMLElement) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  const handleNavClick = useCallback(
+    (href: string, onDone?: () => void) =>
+      (event: React.MouseEvent<HTMLAnchorElement>) => {
+        if (href.startsWith('#')) {
+          event.preventDefault()
+          const target = document.querySelector(href)
+          if (target instanceof HTMLElement) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
         }
-      }
-    }
-  }, [])
+        onDone?.()
+      },
+    [],
+  )
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
-    const prev = lastY.current
-    const diff = latest - prev
-
-    if (latest < 10) {
-      setHidden(false)
-    } else if (diff > 0) {
-      setHidden(true)
-    } else if (diff < 0) {
-      setHidden(false)
-    }
-
-    lastY.current = latest
+    setScrolled(latest > 250)
   })
 
-  useEffect(() => {
-    if (!hidden || !navRef.current) return
-    const active = document.activeElement
-    if (active instanceof HTMLElement && navRef.current.contains(active)) {
-      active.blur()
-    }
-  }, [hidden])
-
   return (
-    <>
-      <motion.div
-        animate={{ y: hidden ? -80 : 0, opacity: hidden ? 0 : 1 }}
-        transition={{ duration: 0.2, ease: 'easeOut' }}
-        style={{ pointerEvents: hidden ? 'none' : undefined }}
-        className="fixed top-3 left-3 z-60 hidden lg:block lg:top-4 lg:left-6"
-      >
-        <Link
-          href="/"
-          tabIndex={hidden ? -1 : undefined}
-          className="block"
-          aria-label="Go to home page"
-        >
-          <Image
-            src="/media/brand/agile-onion-logo-color.svg"
-            alt="Agile Onion logo"
-            width={240}
-            height={72}
-            className="h-12 w-auto sm:h-14"
-            priority
-          />
-        </Link>
-      </motion.div>
-
-      <motion.nav
-        ref={navRef}
-        animate={{ y: hidden ? -80 : 0, opacity: hidden ? 0 : 1 }}
-        transition={{ duration: 0.2, ease: 'easeOut' }}
-        style={{ pointerEvents: hidden ? 'none' : undefined }}
-        className="fixed top-3 left-1/2 z-60 flex w-auto max-w-[88vw] -translate-x-1/2 flex-wrap items-center justify-center gap-2 overflow-hidden rounded-full border border-white/10 bg-black/70 px-3 py-1 text-xs text-zinc-100 shadow-md backdrop-blur sm:max-w-[720px] sm:flex-nowrap sm:gap-3 sm:px-5 sm:py-2.5 sm:text-sm md:gap-4 md:px-6 md:py-3 md:text-sm lg:top-4 lg:gap-5 lg:px-7 lg:py-3.5 lg:text-base"
-      >
-        <div
-          className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto sm:hidden"
-          style={{ scrollbarWidth: 'none' }}
-        >
-          <NavLogo isHidden={hidden} />
-          {NAV_ITEMS.map((item) => (
-            <NavLink
-              key={item.href}
-              href={item.href}
-              onClick={handleNavClick(item.href)}
-              isHidden={hidden}
-            >
-              {item.label}
-            </NavLink>
-          ))}
+    <nav
+      className={`fixed top-0 z-60 w-full overflow-x-hidden px-5 text-white transition-all duration-300 ease-out sm:px-8 lg:overflow-visible lg:px-12 ${
+        scrolled ? 'bg-neutral-950 py-3 shadow-xl' : 'bg-transparent py-6'
+      }`}
+    >
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6">
+        <BrandLogo />
+        <div className="hidden items-center gap-6 lg:flex">
+          <Links onNavClick={handleNavClick} />
         </div>
-
-        <div className="hidden items-center gap-2 sm:flex">
-          <NavLogo isHidden={hidden} />
-          {NAV_ITEMS.map((item) => (
-            <NavLink
-              key={item.href}
-              href={item.href}
-              onClick={handleNavClick(item.href)}
-              isHidden={hidden}
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </div>
-      </motion.nav>
-    </>
+        <MobileMenu onNavClick={handleNavClick} />
+      </div>
+    </nav>
   )
 }
 
-function NavLogo({ isHidden }: { isHidden?: boolean }) {
+function BrandLogo() {
   return (
-    <Link
-      href="/"
-      tabIndex={isHidden ? -1 : undefined}
-      className="group flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 bg-white/5 shadow-inner shadow-emerald-500/10 transition hover:border-emerald-200/60 hover:bg-emerald-400/10"
-      aria-label="Go to home page"
-    >
+    <Link href="/" className="flex items-center gap-3" aria-label="Go to home page">
       <Image
-        src="/media/backgrounds/paralax-logo.png"
-        alt="Agile Onion"
-        width={28}
-        height={28}
-        className="h-7 w-7 rounded-full"
+        src="/media/brand/agile-onion-logo-color.svg"
+        alt="Agile Onion logo"
+        width={260}
+        height={78}
+        className="h-10 w-auto max-w-[70vw] sm:h-12 lg:h-16"
         priority
       />
     </Link>
   )
 }
 
+function Links({
+  onNavClick,
+}: {
+  onNavClick: (href: string, onDone?: () => void) => (event: React.MouseEvent<HTMLAnchorElement>) => void
+}) {
+  return (
+    <div className="flex items-center gap-6">
+      {NAV_ITEMS.map((item) => (
+        <NavLink
+          key={item.href}
+          href={item.href}
+          FlyoutContent={item.flyout}
+          onClick={onNavClick(item.href)}
+        >
+          {item.label}
+        </NavLink>
+      ))}
+    </div>
+  )
+}
+
 function NavLink({
   children,
   href,
+  FlyoutContent,
   onClick,
-  isHidden,
 }: {
-  children: string
+  children: ReactNode
   href: string
+  FlyoutContent?: ElementType
   onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void
-  isHidden?: boolean
 }) {
+  const [open, setOpen] = useState(false)
+  const showFlyout = FlyoutContent && open
+  const showUnderline = open
+
   return (
-    <Link
-      href={href}
-      onClick={onClick}
-      tabIndex={isHidden ? -1 : undefined}
-      className="block shrink-0 overflow-hidden px-1 lg:px-1.5"
+    <div
+      className="group relative h-fit w-fit"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
     >
-      <motion.div
-        whileHover={{ y: -18 }}
-        whileTap={{ y: -18 }}
-        transition={{ ease: 'backInOut', duration: 0.5 }}
-        className="h-[18px] leading-none lg:h-5"
+      <Link
+        href={href}
+        onClick={onClick}
+        className="relative text-sm font-semibold text-white/80 transition-colors duration-200 ease-out group-hover:text-white focus-visible:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200/70 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 sm:text-base"
       >
-        <span className="flex h-[18px] items-center whitespace-nowrap text-zinc-300">
+        <motion.span
+          whileHover={{ y: -2 }}
+          whileTap={{ y: -1 }}
+          transition={{ duration: 0.2, ease: 'easeOut' }}
+          className="inline-flex items-center gap-1"
+        >
           {children}
-        </span>
-        <span className="flex h-[18px] items-center whitespace-nowrap text-emerald-200">
-          {children}
-        </span>
-      </motion.div>
-    </Link>
+        </motion.span>
+        <span
+          style={{ transform: showUnderline ? 'scaleX(1)' : 'scaleX(0)' }}
+          className="absolute -bottom-2 -left-2 -right-2 h-0.5 origin-left scale-x-0 rounded-full bg-gradient-to-r from-[#01DCA0] via-[#00B3D5] to-emerald-200 transition-transform duration-300 ease-out group-hover:scale-x-100 sm:h-1"
+        />
+      </Link>
+      <AnimatePresence>
+        {showFlyout && (
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 15 }}
+            style={{ translateX: '-50%' }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="absolute left-1/2 top-12 z-50"
+          >
+            <div className="absolute -top-6 left-0 right-0 h-6 bg-transparent" />
+            <div className="absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-neutral-900" />
+            <FlyoutContent />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
+function BlogFlyout() {
+  return (
+    <div className="grid w-[520px] grid-cols-2 gap-3 rounded-2xl border border-emerald-900/40 bg-neutral-900 p-5 text-white shadow-xl">
+      {blogSections.map((section) => (
+        <Link
+          key={section.slug}
+          href={`/blog/category/${section.slug}`}
+          className="group rounded-lg border border-emerald-200/10 bg-neutral-800 p-3 shadow-sm transition-colors hover:bg-neutral-750 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200/70 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900"
+        >
+          <motion.div
+            whileHover={{ y: -2, scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="space-y-1"
+          >
+            <h3 className="text-sm font-semibold text-white transition-colors duration-200 group-hover:text-emerald-100">
+              {section.title}
+            </h3>
+            <p
+              className="text-xs text-white/70 transition-colors duration-200 group-hover:text-white/80"
+              style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+              }}
+            >
+              {section.summary}
+            </p>
+          </motion.div>
+        </Link>
+      ))}
+    </div>
+  )
+}
+
+function MobileMenu({
+  onNavClick,
+}: {
+  onNavClick: (href: string, onDone?: () => void) => (event: React.MouseEvent<HTMLAnchorElement>) => void
+}) {
+  const [open, setOpen] = useState(false)
+  const [blogOpen, setBlogOpen] = useState(false)
+
+  return (
+    <div className="block lg:hidden">
+      <button onClick={() => setOpen(true)} className="text-2xl text-white">
+        <Menu aria-hidden />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.nav
+            initial={{ x: '100vw' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100vw' }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="fixed left-0 top-0 z-60 flex h-screen w-full flex-col bg-neutral-950 text-white"
+          >
+            <div className="flex items-center justify-between border-b border-white/10 p-6">
+              <BrandLogo />
+              <button onClick={() => setOpen(false)}>
+                <X className="text-2xl text-white sm:text-3xl" aria-hidden />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto bg-neutral-900 p-6">
+              {NAV_ITEMS.map((item) =>
+                item.flyout ? (
+                  <div key={item.href} className="border-b border-white/10 py-5">
+                    <button
+                      onClick={() => setBlogOpen((prev) => !prev)}
+                      className="flex w-full items-center justify-between text-left text-2xl font-semibold text-white/90 sm:text-3xl"
+                    >
+                      <span>{item.label}</span>
+                      <ChevronDown
+                        className={`h-6 w-6 text-white/80 transition-transform duration-200 sm:h-7 sm:w-7 ${
+                          blogOpen ? 'rotate-180' : 'rotate-0'
+                        }`}
+                        aria-hidden
+                      />
+                    </button>
+                    {blogOpen && (
+                      <div className="mt-4 space-y-3 pl-1 text-sm text-white/60">
+                        {blogSections.map((section) => (
+                          <Link
+                            key={section.slug}
+                            href={`/blog/category/${section.slug}`}
+                            onClick={onNavClick(`/blog/category/${section.slug}`, () =>
+                              setOpen(false),
+                            )}
+                            className="block text-base font-medium text-white/90 transition-colors hover:text-emerald-200 sm:text-lg"
+                          >
+                            {section.title}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={onNavClick(item.href, () => setOpen(false))}
+                    className="flex w-full items-center justify-between border-b border-white/10 py-5 text-2xl font-semibold text-white/90 transition-colors hover:text-emerald-200 sm:text-3xl"
+                  >
+                    <span>{item.label}</span>
+                  </Link>
+                ),
+              )}
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </div>
   )
 }

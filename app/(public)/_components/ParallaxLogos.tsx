@@ -18,7 +18,6 @@ export function ParallaxLogos() {
       <motion.img
         src="/media/backgrounds/paralax-logo.png"
         alt=""
-        fetchPriority="high"
         aria-hidden
         className="absolute top-16 left-6 w-40 opacity-[0.26] blur-[0.2px] md:w-52"
         style={{ y: yPrimary, rotate: rotatePrimary, scale: scalePrimary }}
@@ -26,7 +25,6 @@ export function ParallaxLogos() {
       <motion.img
         src="/media/backgrounds/paralax-logo.png"
         alt=""
-        fetchPriority="high"
         aria-hidden
         className="absolute right-6 bottom-14 w-32 opacity-[0.22] blur-[0.1px] md:w-44"
         style={{
