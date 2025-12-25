@@ -174,19 +174,38 @@ function NavLink({
 }
 
 function BlogFlyout() {
+  const categoryImages: Record<string, string> = {
+    'mindset-lab': '/media/trail/trail-notebook.webp',
+    'agile-club': '/media/trail/trail-collab.webp',
+    'scrum-office': '/media/trail/trail-office.webp',
+    'very-agile-personas': '/media/trail/trail-retro.webp',
+  }
+
   return (
     <div className="grid w-[520px] grid-cols-2 gap-3 rounded-2xl border border-emerald-900/40 bg-neutral-900 p-5 text-white shadow-xl">
       {blogSections.map((section) => (
         <Link
           key={section.slug}
           href={`/blog/category/${section.slug}`}
-          className="group hover:bg-neutral-750 rounded-lg border border-emerald-200/10 bg-neutral-800 p-3 shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-emerald-200/70 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900 focus-visible:outline-none"
+          className="group hover:bg-neutral-750 relative overflow-hidden rounded-lg border border-emerald-200/10 bg-neutral-800 p-3 shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-emerald-200/70 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900 focus-visible:outline-none"
         >
+          <div
+            className="absolute inset-0 opacity-45 transition duration-300 group-hover:opacity-55"
+            style={{
+              backgroundImage: `url(${
+                categoryImages[section.slug] ?? '/media/trail/trail-notes.webp'
+              })`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+            aria-hidden
+          />
+          <div className="absolute inset-0 bg-neutral-950/30" aria-hidden />
           <motion.div
             whileHover={{ y: -2, scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="space-y-1"
+            className="relative space-y-1"
           >
             <h3 className="text-sm font-semibold text-white transition-colors duration-200 group-hover:text-emerald-100">
               {section.title}
