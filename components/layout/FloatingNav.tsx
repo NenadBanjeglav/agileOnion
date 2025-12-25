@@ -2,7 +2,12 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from 'motion/react'
 import { ChevronDown, Menu, X } from 'lucide-react'
 import { type ElementType, type ReactNode, useCallback, useState } from 'react'
 import { blogSections } from '@/lib/content/blog'
@@ -62,14 +67,18 @@ export function FloatingNav() {
 
 function BrandLogo() {
   return (
-    <Link href="/" className="flex items-center gap-3" aria-label="Go to home page">
+    <Link
+      href="/"
+      className="flex items-center gap-3"
+      aria-label="Go to home page"
+    >
       <Image
         src="/media/brand/agile-onion-logo-color.svg"
         alt="Agile Onion logo"
         width={260}
         height={78}
         className="h-10 w-auto max-w-[70vw] sm:h-12 lg:h-16"
-        priority
+        fetchPriority="high"
       />
     </Link>
   )
@@ -78,7 +87,10 @@ function BrandLogo() {
 function Links({
   onNavClick,
 }: {
-  onNavClick: (href: string, onDone?: () => void) => (event: React.MouseEvent<HTMLAnchorElement>) => void
+  onNavClick: (
+    href: string,
+    onDone?: () => void,
+  ) => (event: React.MouseEvent<HTMLAnchorElement>) => void
 }) {
   return (
     <div className="flex items-center gap-6">
@@ -120,7 +132,7 @@ function NavLink({
       <Link
         href={href}
         onClick={onClick}
-        className="relative text-sm font-semibold text-white/80 transition-colors duration-200 ease-out group-hover:text-white focus-visible:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200/70 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 sm:text-base"
+        className="relative text-sm font-semibold text-white/80 transition-colors duration-200 ease-out group-hover:text-white focus-visible:text-white focus-visible:ring-2 focus-visible:ring-emerald-200/70 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 focus-visible:outline-none sm:text-base"
       >
         <motion.span
           whileHover={{ y: -2 }}
@@ -132,7 +144,7 @@ function NavLink({
         </motion.span>
         <span
           style={{ transform: showUnderline ? 'scaleX(1)' : 'scaleX(0)' }}
-          className="absolute -bottom-2 -left-2 -right-2 h-0.5 origin-left scale-x-0 rounded-full bg-gradient-to-r from-[#01DCA0] via-[#00B3D5] to-emerald-200 transition-transform duration-300 ease-out group-hover:scale-x-100 sm:h-1"
+          className="absolute -right-2 -bottom-2 -left-2 h-0.5 origin-left scale-x-0 rounded-full bg-gradient-to-r from-[#01DCA0] via-[#00B3D5] to-emerald-200 transition-transform duration-300 ease-out group-hover:scale-x-100 sm:h-1"
         />
       </Link>
       <AnimatePresence>
@@ -143,10 +155,10 @@ function NavLink({
             exit={{ opacity: 0, y: 15 }}
             style={{ translateX: '-50%' }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="absolute left-1/2 top-12 z-50"
+            className="absolute top-12 left-1/2 z-50"
           >
-            <div className="absolute -top-6 left-0 right-0 h-6 bg-transparent" />
-            <div className="absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-neutral-900" />
+            <div className="absolute -top-6 right-0 left-0 h-6 bg-transparent" />
+            <div className="absolute top-0 left-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-neutral-900" />
             <FlyoutContent />
           </motion.div>
         )}
@@ -162,7 +174,7 @@ function BlogFlyout() {
         <Link
           key={section.slug}
           href={`/blog/category/${section.slug}`}
-          className="group rounded-lg border border-emerald-200/10 bg-neutral-800 p-3 shadow-sm transition-colors hover:bg-neutral-750 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200/70 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900"
+          className="group hover:bg-neutral-750 rounded-lg border border-emerald-200/10 bg-neutral-800 p-3 shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-emerald-200/70 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900 focus-visible:outline-none"
         >
           <motion.div
             whileHover={{ y: -2, scale: 1.01 }}
@@ -194,7 +206,10 @@ function BlogFlyout() {
 function MobileMenu({
   onNavClick,
 }: {
-  onNavClick: (href: string, onDone?: () => void) => (event: React.MouseEvent<HTMLAnchorElement>) => void
+  onNavClick: (
+    href: string,
+    onDone?: () => void,
+  ) => (event: React.MouseEvent<HTMLAnchorElement>) => void
 }) {
   const [open, setOpen] = useState(false)
   const [blogOpen, setBlogOpen] = useState(false)
@@ -211,7 +226,7 @@ function MobileMenu({
             animate={{ x: 0 }}
             exit={{ x: '100vw' }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="fixed left-0 top-0 z-60 flex h-screen w-full flex-col bg-neutral-950 text-white"
+            className="fixed top-0 left-0 z-60 flex h-screen w-full flex-col bg-neutral-950 text-white"
           >
             <div className="flex items-center justify-between border-b border-white/10 p-6">
               <BrandLogo />
@@ -222,7 +237,10 @@ function MobileMenu({
             <div className="flex-1 overflow-y-auto bg-neutral-900 p-6">
               {NAV_ITEMS.map((item) =>
                 item.flyout ? (
-                  <div key={item.href} className="border-b border-white/10 py-5">
+                  <div
+                    key={item.href}
+                    className="border-b border-white/10 py-5"
+                  >
                     <button
                       onClick={() => setBlogOpen((prev) => !prev)}
                       className="flex w-full items-center justify-between text-left text-2xl font-semibold text-white/90 sm:text-3xl"
@@ -241,8 +259,9 @@ function MobileMenu({
                           <Link
                             key={section.slug}
                             href={`/blog/category/${section.slug}`}
-                            onClick={onNavClick(`/blog/category/${section.slug}`, () =>
-                              setOpen(false),
+                            onClick={onNavClick(
+                              `/blog/category/${section.slug}`,
+                              () => setOpen(false),
                             )}
                             className="block text-base font-medium text-white/90 transition-colors hover:text-emerald-200 sm:text-lg"
                           >
