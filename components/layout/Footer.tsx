@@ -87,7 +87,7 @@ export function Footer() {
             </Link>
             <span className="hidden text-zinc-500 sm:inline">/</span>
             <span className="text-zinc-400">
-              © {year} Agile Onion. Sladak ukus tvog rasta.
+              © {year} Agile Onion. Sweet taste of your growth.
             </span>
           </div>
         </div>
