@@ -39,7 +39,7 @@ export function BlogCategories() {
     >
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 sm:gap-10">
         <div className="flex flex-col items-center gap-3 text-center sm:text-left lg:items-start">
-          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-xs font-semibold tracking-[0.14em] text-emerald-100 uppercase">
+          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[#00B3D5]/30 bg-[#00B3D5]/10 px-4 py-2 text-xs font-semibold tracking-[0.14em] text-[#d9fbff] uppercase">
             Agile Onion slojevi
           </span>
           <div className="grid w-full gap-6 sm:gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start">
@@ -48,39 +48,39 @@ export function BlogCategories() {
                 id={headingId}
                 className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl"
               >
-                Budi ti deo Agile Onion zajednice i evo šta dobijaš:
+                Budi ti deo Agile Onion zajednice i evo sta dobijas:
               </h2>
             </div>
 
             <ul className="mx-auto w-full max-w-3xl space-y-3 text-left text-base leading-relaxed text-zinc-200 sm:mx-0 sm:text-lg">
               <li className="flex items-center gap-3">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300" />
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
                 <span>
                   redovne odmah primenljive lekcije o Scrum okviru i agilnoj filozofiji;
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300" />
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
                 <span>
-                  super-moćne tehnike za razvoj mindseta i praktične vežbe;
+                  super-mocne tehnike za razvoj mindseta i prakticne vezbe;
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300" />
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
                 <span>
-                  inspirativne priče ljudi koji su prešli put od ideje do manifestacije;
+                  inspirativne price ljudi koji su presli put od ideje do manifestacije;
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300" />
-                <span>moju bezrezervnu podršku.</span>
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
+                <span>moju bezrezervnu podrsku.</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <p className="text-center text-sm font-semibold tracking-[0.22em] text-emerald-200 uppercase sm:text-left">
-          Agile Onion blog sadrži sledeće kategorije:
+        <p className="text-center text-sm font-semibold tracking-[0.22em] text-[#00B3D5] uppercase sm:text-left">
+          Agile Onion blog sadrzi sledece kategorije:
         </p>
 
         <div className="grid grid-cols-1 gap-5 md:gap-6 lg:grid-cols-2">
@@ -90,8 +90,8 @@ export function BlogCategories() {
         </div>
 
         <p className="mx-auto max-w-4xl text-center text-base leading-relaxed text-zinc-200 sm:text-lg">
-          Otkrivaj sloj po sloj, onako kako tebi prija, i vrlo brzo ćeš osetiti
-          neodoljivi ukus koji te više neće napuštati. Sladak ukus tvog rasta.
+          Otkrivaj sloj po sloj, onako kako tebi prija, i vrlo brzo ces osetiti
+          neodoljivi ukus koji te vise nece napustati. Sladak ukus tvog rasta.
         </p>
       </div>
     </section>
@@ -108,7 +108,7 @@ function ColorCard({
   return (
     <Link
       href={`/blog/category/${layer.id}`}
-      className="group block rounded-3xl focus-visible:ring-2 focus-visible:ring-emerald-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+      className="group block rounded-3xl focus-visible:ring-2 focus-visible:ring-[#00B3D5]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
       aria-label={`${layer.title} category`}
     >
       <motion.article
@@ -140,7 +140,7 @@ function ColorCard({
 
         <div className="relative z-10 flex h-full flex-col justify-between p-6 sm:p-7">
           <ArrowUpRight
-            className="ml-auto h-6 w-6 text-emerald-50 transition duration-500 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:rotate-12"
+            className="ml-auto h-6 w-6 text-[#eaffff] transition duration-500 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:rotate-12"
             aria-hidden="true"
           />
 
@@ -201,7 +201,7 @@ function ShiftLetter({
         aria-hidden
       >
         <span>{letter}</span>
-        <span className="text-emerald-200">{letter}</span>
+        <span className="text-[#00B3D5]">{letter}</span>
       </motion.span>
       <span className="sr-only">{letter}</span>
     </span>

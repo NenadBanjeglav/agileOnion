@@ -77,7 +77,7 @@ export function Hero() {
         <div className="relative z-20 flex w-full flex-col items-center gap-8 sm:gap-10">
           <div className="relative flex w-full items-center justify-center">
             <div
-              className="absolute inset-4 rounded-[28px] bg-emerald-500/18 blur-3xl"
+              className="absolute inset-4 rounded-[28px] bg-[#01DCA0]/20 blur-3xl"
               aria-hidden
             />
             <NextImage
@@ -144,16 +144,16 @@ export function Hero() {
             <div className="space-y-2">
               {allowMotion ? (
                 <motion.div
-                  className="mx-auto h-1 w-full max-w-sm origin-left overflow-hidden rounded-full bg-white/10"
+                  className="mx-auto h-1 w-full max-w-sm origin-left overflow-hidden rounded-full bg-white/20"
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   transition={{ duration: 0.8, delay: 0.55, ease: 'easeOut' }}
                 >
-                  <div className="h-full w-full bg-linear-to-r from-emerald-400 via-emerald-300 to-sky-400" />
+                  <div className="h-full w-full bg-linear-to-r from-[#01DCA0] via-[#00B3D5] to-[#3201dc]" />
                 </motion.div>
               ) : (
-                <div className="mx-auto h-1 w-full max-w-sm overflow-hidden rounded-full bg-white/10">
-                  <div className="h-full w-full bg-linear-to-r from-emerald-400 via-emerald-300 to-sky-400" />
+                <div className="mx-auto h-1 w-full max-w-sm overflow-hidden rounded-full bg-white/20">
+                  <div className="h-full w-full bg-linear-to-r from-[#01DCA0] via-[#00B3D5] to-[#3201dc]" />
                 </div>
               )}
               <div className="flex justify-center gap-3">
@@ -161,7 +161,7 @@ export function Hero() {
                   ? [0.65, 0.9, 1.2].map((delay, idx) => (
                       <motion.span
                         key={idx}
-                        className="h-2.5 w-2.5 rounded-full bg-emerald-300/70"
+                        className="h-2.5 w-2.5 rounded-full bg-[#01DCA0]/70"
                         initial={{ scale: 0, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{
@@ -174,7 +174,7 @@ export function Hero() {
                   : [0, 1, 2].map((idx) => (
                       <span
                         key={idx}
-                        className="h-2.5 w-2.5 rounded-full bg-emerald-300/70"
+                        className="h-2.5 w-2.5 rounded-full bg-[#01DCA0]/70"
                       />
                     ))}
               </div>
@@ -184,10 +184,10 @@ export function Hero() {
               <Button
                 as="a"
                 href={primaryCta.href}
-                className="group relative w-full overflow-hidden border-0 bg-linear-to-r from-emerald-400 via-emerald-500 to-sky-500 text-black shadow-[0_12px_30px_-18px_rgba(16,185,129,0.9)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(56,189,248,0.8)] active:scale-[0.99] sm:w-auto"
+                className="group relative w-full overflow-hidden border-0 bg-linear-to-r from-[#01DCA0] via-[#00B3D5] to-[#3201dc] text-black shadow-[0_12px_30px_-18px_rgba(1,220,160,0.85)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(0,179,213,0.7)] active:scale-[0.99] sm:w-auto"
               >
                 <span
-                  className="absolute inset-0 translate-x-[-120%] bg-white/25 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
+                  className="absolute inset-0 translate-x-[-120%] bg-white/35 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
                   aria-hidden
                 />
                 {primaryCta.label}
@@ -196,7 +196,7 @@ export function Hero() {
                 as="a"
                 href={secondaryCta.href}
                 variant="ghost"
-                className="w-full border border-emerald-300/50 bg-white/10 text-emerald-100 hover:bg-white/20 sm:w-auto"
+                className="w-full border border-[#00B3D5]/50 bg-white/10 text-[#d9fbff] hover:bg-white/20 sm:w-auto"
               >
                 {secondaryCta.label}
               </Button>

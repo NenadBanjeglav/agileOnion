@@ -14,16 +14,16 @@ const STEPS = [
   },
   {
     title: 'Scrum okvir',
-    description: 'Koristimo sistem za tvoj lični i profesionalni razvoj.',
+    description: 'Koristimo sistem za tvoj licni i profesionalni razvoj.',
   },
   {
     title: 'Merenje napretka',
-    description: 'Identifikujemo kritične tačke i slavimo svaki sprint napred.',
+    description: 'Identifikujemo kriticne tacke i slavimo svaki sprint napred.',
   },
   {
-    title: 'Spreman si za sledeći korak?',
+    title: 'Spreman si za sledeci korak?',
     description:
-      'Pridruži se newsletteru i dobijaj planove i alate iz prve ruke.',
+      'Pridruzi se newsletteru i dobijaj planove i alate iz prve ruke.',
     cta: { label: 'Prijavi se', href: '#newsletter' },
   },
 ]
@@ -51,65 +51,84 @@ export function HowWeWork() {
       aria-labelledby="how-we-work-title"
     >
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
-        <div className="flex flex-col gap-3 text-center sm:text-left">
-          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-sky-300/30 bg-sky-400/10 px-4 py-2 text-xs font-semibold tracking-[0.22em] text-sky-100 uppercase">
+        <div className="flex flex-col items-center gap-3 text-center">
+          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[#00B3D5]/35 bg-[#00B3D5]/10 px-4 py-2 text-xs font-semibold tracking-[0.22em] text-[#e6f9ff] uppercase">
             Kako radimo?
           </span>
           <h2
             id="how-we-work-title"
             className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl"
           >
-            Svaki sloj je praktičan i merljiv, sa jasnim koracima koje možeš da
-            uvedeš odmah.
+            Svaki sloj je praktican i merljiv, sa jasnim koracima koje mozes da
+            uvedes odmah.
           </h2>
         </div>
 
-        <div className="rounded-3xl border border-white/10 bg-linear-to-br from-sky-500/20 via-emerald-400/10 to-white/5 p-6 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.9)] sm:p-8">
-          <Steps numSteps={numSteps} stepsComplete={stepsComplete} />
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-linear-to-br from-[#01DCA0]/18 via-[#00B3D5]/16 to-[#8c00d5]/12 p-6 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.9)] sm:p-8">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-30"
+            style={{
+              backgroundImage: 'url(/media/hero/team-meeting.webp)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+            aria-hidden
+          />
+          <div
+            className="pointer-events-none absolute inset-0 bg-white/20"
+            aria-hidden
+          />
+          <div className="relative">
+            <Steps numSteps={numSteps} stepsComplete={stepsComplete} />
 
-          <div className="my-6 min-h-[220px] rounded-2xl border border-white/10 bg-black/20 p-6 sm:min-h-[240px] sm:p-8">
-            <p className="text-sm font-semibold tracking-[0.3em] text-emerald-200 uppercase">
-              Fokus korak
-            </p>
-            <h3 className="mt-3 text-2xl font-semibold text-white">
-              {activeStep.title}
-            </h3>
-            <p className="mt-2 max-w-2xl text-base leading-relaxed text-zinc-200 sm:text-lg">
-              {activeStep.description}
-            </p>
-            {activeStep.cta ? (
-              <div className="mt-6 flex justify-end">
-                <a
-                  href={activeStep.cta.href}
-                  className="inline-flex items-center justify-center rounded-full bg-white px-6 py-2 text-sm font-semibold text-black transition hover:bg-emerald-100"
-                >
-                  {activeStep.cta.label}
-                </a>
-              </div>
-            ) : null}
-          </div>
+            <div className="my-6 min-h-[220px] rounded-2xl border border-white/10 bg-black/20 p-6 text-center sm:min-h-[240px] sm:p-8">
+              <p className="text-sm font-semibold tracking-[0.3em] text-[#00B3D5] uppercase">
+                Fokus korak
+              </p>
+              <h3 className="mt-3 text-2xl font-semibold text-white">
+                {activeStep.title}
+              </h3>
+              <p className="mx-auto mt-2 max-w-2xl text-base leading-relaxed text-zinc-200 sm:text-lg">
+                {activeStep.description}
+              </p>
+              {activeStep.cta ? (
+                <div className="mt-6 flex justify-center">
+                  <a
+                    href={activeStep.cta.href}
+                    className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-0 bg-linear-to-r from-[#01DCA0] via-[#00B3D5] to-[#3201dc] px-6 py-2 text-sm font-semibold text-black shadow-[0_12px_30px_-18px_rgba(1,220,160,0.85)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(0,179,213,0.7)] active:scale-[0.99]"
+                  >
+                    <span
+                      className="absolute inset-0 translate-x-[-120%] bg-white/35 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
+                      aria-hidden
+                    />
+                    {activeStep.cta.label}
+                  </a>
+                </div>
+              ) : null}
+            </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm text-zinc-300">
-              Korak {stepsComplete} od {numSteps}
-            </p>
-            <div className="flex items-center gap-2">
-              <button
-                className="rounded-full border border-white/15 px-4 py-2 text-sm text-white/80 transition hover:border-emerald-200/60 hover:bg-emerald-400/10"
-                onClick={() => handleSetStep(-1)}
-                type="button"
-              >
-                Nazad
-              </button>
-              {!isCtaStep ? (
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-sm text-zinc-200">
+                Korak {stepsComplete} od {numSteps}
+              </p>
+              <div className="flex items-center gap-2">
                 <button
-                  className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-emerald-100"
-                  onClick={() => handleSetStep(1)}
+                  className="cursor-pointer rounded-full border border-white/20 px-4 py-2 text-sm text-white/80 transition hover:border-[#01DCA0]/60 hover:bg-[#01DCA0]/10"
+                  onClick={() => handleSetStep(-1)}
                   type="button"
                 >
-                  Napred
+                  Nazad
                 </button>
-              ) : null}
+                {!isCtaStep ? (
+                  <button
+                    className="cursor-pointer rounded-full bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-[#01DCA0]/10 hover:text-white"
+                    onClick={() => handleSetStep(1)}
+                    type="button"
+                  >
+                    Napred
+                  </button>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>
@@ -144,7 +163,7 @@ function Steps({
             {stepNum !== stepArray.length && (
               <div className="relative h-1 flex-1 rounded-full bg-white/10">
                 <motion.div
-                  className="absolute inset-y-0 left-0 rounded-full bg-emerald-300/90"
+                  className="absolute inset-y-0 left-0 rounded-full bg-[#01DCA0]/90"
                   animate={{ width: isCompleted ? '100%' : '0%' }}
                   transition={{ ease: 'easeIn', duration: 0.3 }}
                 />
@@ -173,11 +192,11 @@ function Step({
       <div
         className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all duration-300 ${
           isCurrent
-            ? 'scale-110 border-emerald-200 bg-emerald-200 text-black shadow-[0_0_0_6px_rgba(16,185,129,0.2)]'
+            ? 'scale-110 border-[#00B3D5] bg-[#00B3D5] text-black shadow-[0_0_0_6px_rgba(0,179,213,0.25)]'
             : ''
         } ${
           isCompleted
-            ? 'border-emerald-300/70 bg-emerald-300/40 text-white'
+            ? 'border-[#01DCA0]/70 bg-[#01DCA0]/40 text-white'
             : isCurrent
               ? ''
               : 'border-white/25 text-white/35'
@@ -215,7 +234,7 @@ function Step({
         </AnimatePresence>
       </div>
       {isCurrent && (
-        <div className="absolute -inset-2 z-0 animate-pulse rounded-full bg-emerald-200/20" />
+        <div className="absolute -inset-2 z-0 animate-pulse rounded-full bg-[#00B3D5]/20" />
       )}
     </div>
   )

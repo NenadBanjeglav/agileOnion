@@ -168,17 +168,17 @@ export function NewsletterShuffle() {
       className="relative mx-auto flex w-screen max-w-6xl flex-col items-center gap-16 overflow-x-hidden bg-transparent px-6 py-20 text-white sm:px-10 lg:flex-row lg:justify-between lg:px-12 lg:py-24"
     >
       <div className="flex w-full max-w-xl flex-col items-center space-y-5 text-center lg:max-w-none lg:items-start lg:text-left">
-        <span className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-xs font-semibold tracking-[0.14em] text-emerald-100 uppercase">
+        <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[#00B3D5]/30 bg-[#00B3D5]/10 px-4 py-2 text-xs font-semibold tracking-[0.14em] text-[#d9fbff] uppercase">
           Taste an Onion
         </span>
         <div className="space-y-3">
           <h2 className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl">
-            Pridruži se Taste an Onion pismu
+            Pridruzi se Taste an Onion pismu
           </h2>
           <p className="text-base text-zinc-200 sm:text-lg">
-            Prijavom na Taste an Onion ne dobijaš još jedan mejl u inboxu — već
-            mali podsetnik da si na putu rasta. Svake nedelje po jedan komadić
-            slatkog ukusa koji ti pomaže da ne posustaneš.
+            Prijavom na Taste an Onion ne dobijas jos jedan mejl u inboxu vec
+            mali podsetnik da si na putu rasta. Svake nedelje po jedan komadic
+            slatkog ukusa koji ti pomaze da ne posustanes.
           </p>
         </div>
 
@@ -198,7 +198,7 @@ export function NewsletterShuffle() {
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
             inputMode="email"
-            className="w-full rounded-full border border-white/10 bg-white/10 px-4 py-3 text-sm text-white transition placeholder:text-zinc-400 focus:border-emerald-300 focus:ring-2 focus:ring-emerald-400/50 focus:outline-none"
+            className="w-full rounded-full border border-white/10 bg-white/10 px-4 py-3 text-sm text-white transition placeholder:text-zinc-400 focus:border-[#00B3D5] focus:ring-2 focus:ring-[#00B3D5]/50 focus:outline-none"
           />
           <input
             type="text"
@@ -213,7 +213,7 @@ export function NewsletterShuffle() {
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="group relative inline-flex w-full items-center justify-center overflow-hidden rounded-full border-0 bg-linear-to-r from-emerald-400 via-emerald-500 to-sky-500 px-5 py-3 text-sm font-semibold text-black shadow-[0_12px_30px_-18px_rgba(16,185,129,0.9)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(56,189,248,0.8)] active:scale-[0.99]"
+            className="group relative inline-flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-full border-0 bg-linear-to-r from-[#01DCA0] via-[#00B3D5] to-[#3201dc] px-5 py-3 text-sm font-semibold text-black shadow-[0_12px_30px_-18px_rgba(1,220,160,0.85)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(0,179,213,0.7)] active:scale-[0.99]"
           >
             <span
               className="absolute inset-0 translate-x-[-120%] bg-white/35 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"
@@ -231,19 +231,19 @@ export function NewsletterShuffle() {
             </span>
           </button>
           {status === 'loading' ? (
-            <p className="text-sm text-emerald-100/80" role="status">
+            <p className="text-sm text-[#d9fbff]/80" role="status">
               Ucitavanje u toku...
             </p>
           ) : null}
           {notice ? (
-            <p className="text-sm text-emerald-100/80" role="status">
+            <p className="text-sm text-[#d9fbff]/80" role="status">
               {notice}
             </p>
           ) : null}
         </form>
 
-        <p className="text-sm text-emerald-100/80">
-          Bez spama. Jedva čekam da se upoznamo.
+        <p className="text-sm text-[#d9fbff]/80">
+          Bez spama. Jedva cekam da se upoznamo.
         </p>
       </div>
 
@@ -270,9 +270,9 @@ export function NewsletterShuffle() {
             <button
               type="button"
               onClick={handleShuffle}
-              className="inline-flex cursor-pointer items-center justify-center rounded-full border border-emerald-300/60 bg-emerald-400/10 px-4 py-2 text-xs font-semibold tracking-[0.12em] text-emerald-50 uppercase transition hover:scale-[1.02] hover:border-emerald-200 active:scale-100"
+              className="inline-flex cursor-pointer items-center justify-center rounded-full border border-[#00B3D5]/60 bg-[#00B3D5]/10 px-4 py-2 text-xs font-semibold tracking-[0.12em] text-[#e6f9ff] uppercase transition hover:scale-[1.02] hover:border-[#00B3D5] active:scale-100"
             >
-              Sledeća priča
+              Sledeca prica
             </button>
           </div>
         </div>
@@ -303,7 +303,7 @@ function AccessibleAnnouncement({
 
   return (
     <p className="sr-only" aria-live="polite">
-      Trenutna priča: {frontCard.author}. {frontCard.testimonial}
+      Trenutna prica: {frontCard.author}. {frontCard.testimonial}
     </p>
   )
 }
@@ -404,12 +404,12 @@ function Card({
       <span className="text-center text-xs text-zinc-200 italic sm:text-base">
         &quot;{testimonial}&quot;
       </span>
-      <span className="text-center text-[9px] font-semibold tracking-[0.14em] text-emerald-100 uppercase sm:text-xs">
+      <span className="text-center text-[9px] font-semibold tracking-[0.14em] text-[#d9fbff] uppercase sm:text-xs">
         {author}
       </span>
       {allowMotion ? (
         <span className="text-center text-[11px] text-zinc-400">
-          Prevuci levo da vidiš sledeću priču
+          Prevuci levo da vidis sledecu pricu
         </span>
       ) : null}
     </motion.div>

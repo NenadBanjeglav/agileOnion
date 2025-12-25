@@ -28,9 +28,9 @@ export function MissionSection() {
 
         <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl items-center px-5 py-16 sm:px-8 lg:py-24">
           <div className="max-w-xl space-y-6 text-left text-white">
-            <span className="inline-flex items-center gap-3 text-xs font-semibold tracking-[0.4em] text-emerald-200 uppercase">
+            <span className="inline-flex items-center gap-3 text-xs font-semibold tracking-[0.4em] text-[#00B3D5] uppercase">
               O BLOGU
-              <span className="h-px w-12 bg-emerald-300/60" aria-hidden />
+              <span className="h-px w-12 bg-[#01DCA0]/70" aria-hidden />
             </span>
             <h2
               id="mission-title"
@@ -47,7 +47,7 @@ export function MissionSection() {
               {HIGHLIGHTS.map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <span
-                    className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300"
+                    className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]"
                     aria-hidden
                   />
                   <span>{item}</span>
