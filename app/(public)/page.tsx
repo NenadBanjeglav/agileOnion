@@ -2,6 +2,7 @@ import { AppShell } from '@/components/layout/AppShell'
 import { siteConfig } from '@/lib/config/site'
 import { Hero } from './_components/Hero'
 import { MissionSection } from './_components/MissionSection'
+import { HowWeWork } from './_components/HowWeWork'
 import { BlogCategories } from './_components/BlogCategories'
 import { LatestBlogs } from './_components/LatestBlogs'
 import { NewsletterShuffle } from './_components/NewsletterShuffle'
@@ -26,10 +27,11 @@ export default function HomePage() {
         <ParallaxLogosClient />
         <Hero />
         <MissionSection />
+        <HowWeWork />
         <BlogCategories />
         <LatestBlogs />
-        <NewsletterShuffle />
         <AboutMe />
+        <NewsletterShuffle />
         <Footer />
       </AppShell>
     </>
