@@ -1,7 +1,12 @@
 'use client'
 
 import { Button } from '@/components/ui/Button'
-import { motion, useAnimate, useReducedMotion, type Variants } from 'motion/react'
+import {
+  motion,
+  useAnimate,
+  useReducedMotion,
+  type Variants,
+} from 'motion/react'
 import NextImage from 'next/image'
 import { useMemo, useRef, type MouseEventHandler, type ReactNode } from 'react'
 
@@ -78,6 +83,7 @@ export function Hero() {
             <NextImage
               src="/media/brand/agile-onion-logo-color.svg"
               alt="Agile Onion logo"
+              priority
               width={560}
               height={260}
               className="relative h-auto w-[300px] drop-shadow-[0_24px_60px_rgba(16,185,129,0.35)] sm:w-[360px] md:w-[420px]"
@@ -195,7 +201,6 @@ export function Hero() {
                 {secondaryCta.label}
               </Button>
             </div>
-
           </div>
         </div>
       </div>
