@@ -1,12 +1,13 @@
-import type { MetadataRoute } from 'next'
-import { siteConfig } from '@/lib/config/site'
+import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = "https://agileonion.rs";
+
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
+      userAgent: "*",
+      allow: "/",
     },
-    sitemap: `${siteConfig.url}/sitemap.xml`,
-  }
+    sitemap: `${baseUrl}/sitemap.xml`,
+  };
 }
