@@ -167,8 +167,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             startFrom={mappedPosts.length}
             pageSize={FEED_PAGE_SIZE}
             fetchUrl={`/api/blog/category/posts?slug=${slug}`}
-            title={`Pri?e iz ${category.title}`}
-            subtitle="Sve objave iz ove kategorije, uredno poslo_ene za ?itanje."
+            title={`Priče iz ${category.title}`}
+            subtitle="Sve objave iz ove kategorije, uredno posložene za čitanje."
           />
         </div>
       </Container>
