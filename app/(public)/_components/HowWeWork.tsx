@@ -14,16 +14,16 @@ const STEPS = [
   },
   {
     title: 'Scrum okvir',
-    description: 'Koristimo sistem za tvoj licni i profesionalni razvoj.',
+    description: 'Koristimo sistem za tvoj lični i profesionalni razvoj.',
   },
   {
     title: 'Merenje napretka',
-    description: 'Identifikujemo kriticne tacke i slavimo svaki sprint napred.',
+    description: 'Identifikujemo kritične tačke i slavimo svaki sprint napred.',
   },
   {
-    title: 'Spreman si za sledeci korak?',
+    title: 'Spreman si za sledeći korak?',
     description:
-      'Pridruzi se newsletteru i dobijaj planove i alate iz prve ruke.',
+      'Pridruži se newsletteru i dobijaj planove i alate iz prve ruke.',
     cta: { label: 'Prijavi se', href: '#newsletter' },
   },
 ]
@@ -59,8 +59,8 @@ export function HowWeWork() {
             id="how-we-work-title"
             className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl"
           >
-            Svaki sloj je praktican i merljiv, sa jasnim koracima koje mozes da
-            uvedes odmah.
+            Svaki sloj je praktičan i merljiv, sa jasnim koracima koje možeš da
+            uvedeš odmah.
           </h2>
         </div>
 
@@ -81,7 +81,7 @@ export function HowWeWork() {
           <div className="relative">
             <Steps numSteps={numSteps} stepsComplete={stepsComplete} />
 
-            <div className="my-6 min-h-[220px] rounded-2xl border border-white/10 bg-black/20 p-6 text-center sm:min-h-[240px] sm:p-8">
+            <div className="my-6 min-h-[220px] rounded-2xl border border-white/10 bg-black/20 p-6 text-center sm:min-h-60 sm:p-8">
               <p className="text-sm font-semibold tracking-[0.3em] text-[#00B3D5] uppercase">
                 Fokus korak
               </p>

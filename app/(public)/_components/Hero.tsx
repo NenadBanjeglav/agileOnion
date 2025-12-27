@@ -34,7 +34,7 @@ export function Hero() {
   const prefersReducedMotion = useReducedMotion()
   const allowMotion = !prefersReducedMotion
   const title =
-    'OVAJ BLOG JE PUT DO TVOG NESALOMIVOG MINDSETA. POCINJES SADA I TO BAS OVDE. BEZ ODLAGANJA.'
+    'OVAJ BLOG JE PUT DO TVOG NESALOMIVOG MINDSETA. POČINJES SADA I TO BAŠ OVDE. BEZ ODLAGANJA.'
   const subtitle = 'AGILNI PRINCIPI, GROWTH MINDSET METODE, SCRUM OKVIR'
   const primaryCta = { label: 'Prijavi se na newsletter', href: '#newsletter' }
   const secondaryCta = { label: 'Pogledaj blog', href: '#blog' }

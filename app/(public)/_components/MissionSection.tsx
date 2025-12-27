@@ -1,7 +1,7 @@
 import NextImage from 'next/image'
 
 const HIGHLIGHTS = [
-  'Zasto teska iskustva postaju gorivo, a ne teret.',
+  'Zašto teška iskustva postaju gorivo, a ne teret.',
   'Kako agilni rituali prave prostor za disciplinu i fokus.',
   'Na koje male pobede se oslanjas kada ti treba reset.',
 ]
@@ -13,7 +13,7 @@ export function MissionSection() {
       aria-labelledby="mission-title"
     >
       <div className="relative min-h-screen w-full">
-        <div className="absolute inset-y-0 left-0 right-0 sm:left-8 sm:right-8 lg:left-0 lg:right-0">
+        <div className="absolute inset-y-0 right-0 left-0 sm:right-8 sm:left-8 lg:right-0 lg:left-0">
           <NextImage
             src="/media/backgrounds/parallax.jpg"
             alt="Abstract editorial background"
@@ -22,8 +22,8 @@ export function MissionSection() {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30" />
+          <div className="absolute inset-0 bg-linear-to-r from-black/40 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/10 via-transparent to-black/30" />
         </div>
 
         <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl items-center px-5 py-16 sm:px-8 lg:py-24">
@@ -36,12 +36,13 @@ export function MissionSection() {
               id="mission-title"
               className="text-3xl leading-tight font-semibold sm:text-5xl sm:leading-[1.05]"
             >
-              Mesto za ljude koji hoce jasno, mirno, i stvarno kretanje.
+              Mesto za ljude koji hoće jasno, mirno, i stvarno kretanje.
             </h2>
             <p className="max-w-lg text-base leading-7 text-zinc-200 sm:text-lg">
-              AgileOnion je blog o licnom razvoju koji spaja agilno razmisljanje,
-              growth mindset praksu, i iskrene beleske iz prakse. Napravljen je
-              za ljude koji zele strukturu bez buke i energiju bez sagorevanja.
+              AgileOnion je blog o ličnom razvoju koji spaja agilno
+              razmišljanje, growth mindset praksu, i iskrene beleške iz prakse.
+              Napravljen je za ljude koji žele strukturu bez buke i energiju bez
+              sagorevanja.
             </p>
             <ul className="space-y-3 text-sm text-zinc-200 sm:text-base">
               {HIGHLIGHTS.map((item) => (

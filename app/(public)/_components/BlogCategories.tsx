@@ -48,7 +48,7 @@ export function BlogCategories() {
                 id={headingId}
                 className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl"
               >
-                Budi ti deo Agile Onion zajednice i evo sta dobijas:
+                Budi ti deo Agile Onion zajednice i evo sta dobijaš:
               </h2>
             </div>
 
@@ -56,31 +56,33 @@ export function BlogCategories() {
               <li className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
                 <span>
-                  redovne odmah primenljive lekcije o Scrum okviru i agilnoj filozofiji;
+                  redovne odmah primenljive lekcije o Scrum okviru i agilnoj
+                  filozofiji;
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
                 <span>
-                  super-mocne tehnike za razvoj mindseta i prakticne vezbe;
+                  super-moćne tehnike za razvoj mindseta i praktične vezbe;
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
                 <span>
-                  inspirativne price ljudi koji su presli put od ideje do manifestacije;
+                  inspirativne priče ljudi koji su presli put od ideje do
+                  manifestacije;
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
-                <span>moju bezrezervnu podrsku.</span>
+                <span>moju bezrezervnu podršku.</span>
               </li>
             </ul>
           </div>
         </div>
 
         <p className="text-center text-sm font-semibold tracking-[0.22em] text-[#00B3D5] uppercase sm:text-left">
-          Agile Onion blog sadrzi sledece kategorije:
+          Agile Onion blog sadrži sledeće kategorije:
         </p>
 
         <div className="grid grid-cols-1 gap-5 md:gap-6 lg:grid-cols-2">
@@ -91,7 +93,7 @@ export function BlogCategories() {
 
         <p className="mx-auto max-w-4xl text-center text-base leading-relaxed text-zinc-200 sm:text-lg">
           Otkrivaj sloj po sloj, onako kako tebi prija, i vrlo brzo ces osetiti
-          neodoljivi ukus koji te vise nece napustati. Sladak ukus tvog rasta.
+          neodoljivi ukus koji te više neće napustiti. Sladak ukus tvog rasta.
         </p>
       </div>
     </section>

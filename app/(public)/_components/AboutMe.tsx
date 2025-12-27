@@ -60,8 +60,8 @@ export function AboutMe() {
               id="about-heading"
               className="mx-auto text-3xl leading-tight font-semibold sm:text-4xl lg:mx-0"
             >
-              Ja sam Zeljko Kopric, tvoj partner za agilnost koja se zaista
-              desava.
+              Ja sam Željko Koprić, tvoj partner za agilnost koja se zaista
+              dešava.
             </h2>
             <motion.div
               style={{ y: floatY }}
@@ -83,35 +83,34 @@ export function AboutMe() {
                   priority
                 />
                 <div className="absolute right-4 bottom-4 left-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/45 px-4 py-3 text-xs tracking-[0.22em] text-[#d9fbff] uppercase">
-                  <span>Agilno, ali vrlo licno</span>
+                  <span>Agilno, ali vrlo lično</span>
                   <Sparkles className="h-4 w-4 text-amber-200" aria-hidden />
                 </div>
               </div>
             </motion.div>
             <div className="space-y-4 text-base leading-relaxed text-zinc-200 sm:text-lg">
               <p className="lg:mx-0">
-                Pomazem ljudima, da ostvare svoje ciljeve, da prevazidu stecena
-                ogranicenja, da naprave pokret u svojim karijerama i zivotima.
+                Pomažem ljudima, da ostvare svoje ciljeve, da prevaziđu stečena
+                ograničenja, da naprave pokret u svojim karijerama i životima.
                 Zajedno konkretizujemo plan, odredjujemo prioritete, uvodimo
                 ritam kroz kratke iteracije, i obezbedimo da se napredak prati i
-                meri. Bez panike i straha, uz obostranu podrsku i poverenje.
+                meri. Bez panike i straha, uz obostranu podršku i poverenje.
               </p>
               <p className="lg:mx-0">
-                Iskustvo od preko 15 godina u raznim granama industrije mi
-                pomaze da vidim i osetim i ljude i procese. Presao sam dug i
-                veoma izazovan put od operatera na proizvodnoj liniji, preko
-                vodece pozicije menadzera na kojoj sam vec godinama. I sad se
-                sigurno pitas kako sam to postigao. Koji je to recept koji sam
-                primenjivao?
+                Iskustvo od preko 15 godina mi pomaze da vidim i osetim i ljude
+                i procese. Presao sam dug i veoma izazovan put od operatera na
+                proizvodnoj liniji, preko vodeće pozicije menadžera na kojoj sam
+                već godinama. I sad se sigurno pitaš kako sam to postigao. Koji
+                je to recept koji sam primenjivao?
               </p>
               <p className="lg:mx-0">Nema recepta. Nema formule.</p>
               <p className="lg:mx-0">
-                Vazan je pristup. Stalno ucenje. Ucenje u svakom smislu,
-                formalno, neformalno; ucenje iz sopstvenih gresaka. Ipak, u mom
-                vokabularu rec &quot;greska&quot; ne postoji, nego samo signal
-                da iduci put kada dodjem na to isto mesto uradim drugacije.
+                Važan je pristup. Stalno učenje. Učenje u svakom smislu,
+                formalno, neformalno; učenje iz sopstvenih grešaka. Ipak, u mom
+                vokabularu rec &quot;greška&quot; ne postoji, nego samo signal
+                da idući put kada dodjem na to isto mesto uradim drugačije.
               </p>
-              <p className="lg:mx-0">Jednom recju bio sam agilan.</p>
+              <p className="lg:mx-0">Jednom rečju bio sam agilan.</p>
             </div>
           </div>
 

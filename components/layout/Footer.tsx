@@ -53,9 +53,9 @@ export function Footer() {
             Ostanimo u kontaktu
           </h2>
           <p className="text-base leading-relaxed text-zinc-200 sm:text-lg">
-            Ako odlucis da podelis sa mnom svoje iskustvo, imas neko pitanje ili
-            predlog, pisi mi. Zelim da cujem tvoju pricu. Spreman sam da te
-            saslusam, radujem se tome.
+            Ako odlučiš da podeliš sa mnom svoje iskustvo, imaš neko pitanje ili
+            predlog, piši mi. Želim da čujem tvoju priču. Spreman sam da te
+            saslušam, radujem se tome.
           </p>
         </div>
 
@@ -64,15 +64,15 @@ export function Footer() {
         </div>
 
         <p className="text-sm text-[#d9fbff]/80">
-          Preferiras direktan ping? Pisi mi na{' '}
+          Preferiraš direktan ping? Piši mi na{' '}
           <a
             href="mailto:agileonion.blog@gmail.com"
             className="font-semibold text-[#eaffff] underline underline-offset-4"
           >
             agileonion.blog@gmail.com
           </a>
-          . Ako zelis da budes u toku sa onim sto se desava u mojoj agilnoj
-          kuhinji i da ne propustis tekstove, prijavi se na Taste an Onion, moj
+          . Ako zeliš da budeš u toku sa onim što se dešava u mojoj agilnoj
+          kuhinji i da ne propustiš tekstove, prijavi se na Taste an Onion, moj
           nedeljni newsletter.
         </p>
 
@@ -87,7 +87,7 @@ export function Footer() {
             </Link>
             <span className="hidden text-zinc-500 sm:inline">/</span>
             <span className="text-zinc-400">
-              Ac {year} Agile Onion. Sweet taste of your growth.
+              © {year} Agile Onion. Sweet taste of your growth.
             </span>
           </div>
         </div>

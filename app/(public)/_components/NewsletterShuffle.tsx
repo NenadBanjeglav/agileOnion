@@ -180,12 +180,12 @@ export function NewsletterShuffle() {
         </span>
         <div className="space-y-3">
           <h2 className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl">
-            Pridruzi se Taste an Onion pismu
+            Pridruži se Taste an Onion pismu
           </h2>
           <p className="text-base text-zinc-200 sm:text-lg">
-            Prijavom na Taste an Onion ne dobijas jos jedan mejl u inboxu vec
-            mali podsetnik da si na putu rasta. Svake nedelje po jedan komadic
-            slatkog ukusa koji ti pomaze da ne posustanes.
+            Prijavom na Taste an Onion ne dobijaš još jedan mejl u inboxu već
+            mali podsetnik da si na putu rasta. Svake nedelje po jedan komadić
+            slatkog ukusa koji ti pomaze da ne posustaneš.
           </p>
         </div>
 
@@ -239,7 +239,7 @@ export function NewsletterShuffle() {
           </button>
           {status === 'loading' ? (
             <p className="text-sm text-[#d9fbff]/80" role="status">
-              Ucitavanje u toku...
+              Učitavanje u toku...
             </p>
           ) : null}
           {notice ? (
@@ -250,7 +250,7 @@ export function NewsletterShuffle() {
         </form>
 
         <p className="text-sm text-[#d9fbff]/80">
-          Bez spama. Jedva cekam da se upoznamo.
+          Bez spama. Jedva čekam da se upoznamo.
         </p>
       </div>
 
@@ -279,7 +279,7 @@ export function NewsletterShuffle() {
               onClick={handleShuffle}
               className="inline-flex cursor-pointer items-center justify-center rounded-full border border-[#00B3D5]/60 bg-[#00B3D5]/10 px-4 py-2 text-xs font-semibold tracking-[0.12em] text-[#e6f9ff] uppercase transition hover:scale-[1.02] hover:border-[#00B3D5] active:scale-100"
             >
-              Sledeca prica
+              Sledeća prica
             </button>
           </div>
         </div>
@@ -310,7 +310,7 @@ function AccessibleAnnouncement({
 
   return (
     <p className="sr-only" aria-live="polite">
-      Trenutna prica: {frontCard.author}. {frontCard.testimonial}
+      Trenutna priča: {frontCard.author}. {frontCard.testimonial}
     </p>
   )
 }
@@ -369,8 +369,7 @@ function Card({
         : position === 'back'
           ? 1
           : 0
-  const opacity =
-    position === 'rear' ? 0.55 : position === 'back' ? 0.75 : 1
+  const opacity = position === 'rear' ? 0.55 : position === 'back' ? 0.75 : 1
   const allowMotion = !shouldReduceMotion
   const isFront = position === 'front'
 
@@ -404,7 +403,7 @@ function Card({
           : undefined
       }
       transition={{ duration: allowMotion ? 0.35 : 0 }}
-      className="absolute top-0 left-1/2 grid h-[320px] w-56 -translate-x-1/2 cursor-grab place-content-center space-y-4 rounded-3xl border border-white/10 bg-white/10 p-5 shadow-[0_22px_70px_-38px_rgba(0,0,0,0.95)] backdrop-blur-xl select-none active:cursor-grabbing sm:h-[350px] sm:w-[240px] md:h-[400px] md:w-[300px] lg:h-[440px] lg:w-[320px]"
+      className="absolute top-0 left-1/2 grid h-80 w-56 -translate-x-1/2 cursor-grab place-content-center space-y-4 rounded-3xl border border-white/10 bg-white/10 p-5 shadow-[0_22px_70px_-38px_rgba(0,0,0,0.95)] backdrop-blur-xl select-none active:cursor-grabbing sm:h-[350px] sm:w-60 md:h-[400px] md:w-[300px] lg:h-[440px] lg:w-[320px]"
     >
       {imgUrl ? (
         <Image
@@ -433,7 +432,7 @@ function Card({
       </span>
       {allowMotion ? (
         <span className="text-center text-[11px] text-zinc-400">
-          Prevuci levo da vidis sledecu pricu
+          Prevuci levo da vidiš sledeću priču
         </span>
       ) : null}
     </motion.div>
