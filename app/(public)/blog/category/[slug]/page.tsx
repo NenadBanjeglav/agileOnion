@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { AppShell } from '@/components/layout/AppShell'
@@ -6,8 +6,9 @@ import { Container } from '@/components/layout/Container'
 import { sanityClient } from '@/lib/sanity/client'
 import { siteConfig } from '@/lib/config/site'
 import { formatDate } from '@/lib/utils/date'
-import { PostGrid } from '../../_components/PostGrid'
+import { InfinitePostGrid } from '../../_components/InfinitePostGrid'
 import {
+  CATEGORY_CARDS,
   CATEGORY_LABELS,
   CATEGORY_LOOKUP,
 } from '../../_components/categoryData'
@@ -19,11 +20,13 @@ import { JsonLd } from '@/components/seo/JsonLd'
 
 export const revalidate = 3600
 
+const FEED_PAGE_SIZE = 9
+
 const POSTS_QUERY = `*[
   _type == "post" &&
   category == $slug &&
   defined(slug.current)
-] | order(coalesce(publishedAt, _createdAt) desc) {
+] | order(coalesce(publishedAt, _createdAt) desc)[0...${FEED_PAGE_SIZE}] {
   _id,
   title,
   "slug": slug.current,
@@ -86,6 +89,10 @@ export async function generateMetadata({ params }: CategoryPageProps) {
       card: 'summary',
     },
   }
+}
+
+export function generateStaticParams() {
+  return CATEGORY_CARDS.map((category) => ({ slug: category.slug }))
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
@@ -155,10 +162,13 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </div>
           </section>
 
-          <PostGrid
-            posts={mappedPosts}
-            title={`Priče iz ${category.title}`}
-            subtitle="Sve objave iz ove kategorije, uredno posložene za čitanje."
+          <InfinitePostGrid
+            initialPosts={mappedPosts}
+            startFrom={mappedPosts.length}
+            pageSize={FEED_PAGE_SIZE}
+            fetchUrl={`/api/blog/category/posts?slug=${slug}`}
+            title={`Pri?e iz ${category.title}`}
+            subtitle="Sve objave iz ove kategorije, uredno poslo_ene za ?itanje."
           />
         </div>
       </Container>
@@ -168,3 +178,5 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     </AppShell>
   )
 }
+
+

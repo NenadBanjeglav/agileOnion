@@ -95,7 +95,7 @@ export function HowWeWork() {
                 <div className="mt-6 flex justify-center">
                   <a
                     href={activeStep.cta.href}
-                    className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-0 bg-linear-to-r from-[#01DCA0] via-[#00B3D5] to-[#3201dc] px-6 py-2 text-sm font-semibold text-black shadow-[0_12px_30px_-18px_rgba(1,220,160,0.85)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(0,179,213,0.7)] active:scale-[0.99]"
+                    className="group relative inline-flex w-full items-center justify-center overflow-hidden rounded-full border-0 bg-linear-to-r from-[#01DCA0] via-[#00B3D5] to-[#3201dc] px-6 py-2 text-sm font-semibold text-black shadow-[0_12px_30px_-18px_rgba(1,220,160,0.85)] transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_18px_40px_-18px_rgba(0,179,213,0.7)] active:scale-[0.99] sm:w-auto sm:min-w-md"
                   >
                     <span
                       className="absolute inset-0 translate-x-[-120%] bg-white/35 blur-sm transition-transform duration-500 ease-out group-hover:translate-x-[120%]"

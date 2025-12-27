@@ -6,7 +6,7 @@ import { formatDate } from '@/lib/utils/date'
 import { BlogHero } from './_components/BlogHero'
 import { CategoryGrid } from './_components/CategoryGrid'
 import { FeaturedPosts } from './_components/FeaturedPosts'
-import { PostGrid } from './_components/PostGrid'
+
 import { CATEGORY_CARDS, CATEGORY_LABELS } from './_components/categoryData'
 import type { PostCard } from './_components/types'
 import { NewsletterShuffle } from '../_components/NewsletterShuffle'
@@ -14,13 +14,18 @@ import { AboutMe } from '../_components/AboutMe'
 import { Footer } from '@/components/layout/Footer'
 import { ParallaxLogos } from '../_components/ParallaxLogos'
 import { JsonLd } from '@/components/seo/JsonLd'
+import { InfinitePostGrid } from './_components/InfinitePostGrid'
 
 export const revalidate = 3600
+
+const FEATURED_COUNT = 4
+const FEED_PAGE_SIZE = 9
+const INITIAL_POST_LIMIT = FEATURED_COUNT + FEED_PAGE_SIZE
 
 const POSTS_QUERY = `*[
   _type == "post" &&
   defined(slug.current)
-] | order(coalesce(publishedAt, _createdAt) desc)[0...24] {
+] | order(coalesce(publishedAt, _createdAt) desc)[0...${INITIAL_POST_LIMIT}] {
   _id,
   title,
   "slug": slug.current,
@@ -81,8 +86,8 @@ export default async function BlogPage() {
   const posts = await sanityClient.fetch<SanityPost[]>(POSTS_QUERY)
   const mappedPosts = posts.map(mapPost)
   const heroPost = mappedPosts[0]
-  const sidePosts = mappedPosts.slice(1, 4)
-  const feedPosts = mappedPosts.slice(4)
+  const sidePosts = mappedPosts.slice(1, FEATURED_COUNT)
+  const feedPosts = mappedPosts.slice(FEATURED_COUNT)
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
@@ -99,7 +104,11 @@ export default async function BlogPage() {
         <BlogHero />
         <FeaturedPosts heroPost={heroPost} sidePosts={sidePosts} />
         <CategoryGrid categories={CATEGORY_CARDS} />
-        <PostGrid posts={feedPosts} />
+        <InfinitePostGrid
+          initialPosts={feedPosts}
+          startFrom={FEATURED_COUNT + feedPosts.length}
+          pageSize={FEED_PAGE_SIZE}
+        />
       </Container>
       <NewsletterShuffle />
       <AboutMe />

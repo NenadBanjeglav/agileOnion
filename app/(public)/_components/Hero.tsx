@@ -40,15 +40,34 @@ export function Hero() {
   const secondaryCta = { label: 'Pogledaj blog', href: '#blog' }
   const titleWords = useMemo(() => title.split(' '), [title])
   const subtitleWords = useMemo(() => subtitle.split(' '), [subtitle])
+  const wordColors = [
+    '#01DCA0',
+    '#00B3D5',
+    '#6DDCFF',
+    '#9B5CFF',
+    '#FFD66B',
+    '#FF7A7A',
+  ]
+  const getWordGradient = (i: number) => {
+    const start = wordColors[i % wordColors.length]
+    const end = wordColors[(i + 2) % wordColors.length]
+    return `linear-gradient(120deg, ${start}, ${end})`
+  }
 
   const easing = [0.16, 1, 0.3, 1] as const
 
   const wordVariants: Variants = {
-    hidden: { y: 18, opacity: 0, filter: 'blur(6px)' },
+    hidden: {
+      y: 18,
+      opacity: 0,
+      filter: 'blur(6px)',
+      backgroundImage: 'linear-gradient(120deg, #9ca3af, #f3f4f6)',
+    },
     show: (i: number) => ({
       y: 0,
       opacity: 1,
       filter: 'blur(0px)',
+      backgroundImage: getWordGradient(i),
       transition: { duration: 0.4, delay: i * 0.05, ease: easing },
     }),
   }
@@ -103,7 +122,7 @@ export function Hero() {
                     key={`${word}-${i}`}
                     custom={i}
                     variants={wordVariants}
-                    className="inline-block pr-2"
+                    className="inline-block bg-clip-text pr-2 text-transparent"
                   >
                     {word}
                   </motion.span>
