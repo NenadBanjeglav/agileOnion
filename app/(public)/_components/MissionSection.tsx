@@ -22,7 +22,7 @@ export function MissionSection() {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-linear-to-r from-black/40 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-r from-black/20 via-black/10 to-transparent" />
           <div className="absolute inset-0 bg-linear-to-b from-black/10 via-transparent to-black/30" />
         </div>
 

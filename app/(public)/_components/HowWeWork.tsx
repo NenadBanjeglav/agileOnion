@@ -64,9 +64,9 @@ export function HowWeWork() {
           </h2>
         </div>
 
-        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-linear-to-br from-[#01DCA0]/18 via-[#00B3D5]/16 to-[#8c00d5]/12 p-6 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.9)] sm:p-8">
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 p-6 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.9)] sm:p-8">
           <div
-            className="pointer-events-none absolute inset-0 opacity-30"
+            className="pointer-events-none absolute inset-0 opacity-80"
             style={{
               backgroundImage: 'url(/media/hero/team-meeting.webp)',
               backgroundSize: 'cover',
@@ -74,10 +74,7 @@ export function HowWeWork() {
             }}
             aria-hidden
           />
-          <div
-            className="pointer-events-none absolute inset-0 bg-white/20"
-            aria-hidden
-          />
+
           <div className="relative">
             <Steps numSteps={numSteps} stepsComplete={stepsComplete} />
 
