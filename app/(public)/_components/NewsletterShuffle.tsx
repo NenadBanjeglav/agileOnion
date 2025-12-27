@@ -23,7 +23,7 @@ type SanityTestimonial = {
   imageUrl?: string
 }
 
-type ListOrderItem = 'front' | 'middle' | 'back'
+type ListOrderItem = 'front' | 'middle' | 'back' | 'rear'
 
 const TESTIMONIALS_QUERY = `*[
   _type == "testimonial" &&
@@ -61,6 +61,7 @@ export function NewsletterShuffle() {
     'front',
     'middle',
     'back',
+    'rear',
   ])
   const [cards, setCards] = useState<TestimonialCard[]>([])
   const [email, setEmail] = useState('')
@@ -89,7 +90,7 @@ export function NewsletterShuffle() {
           author: formatAuthorLine(item),
         }))
 
-        const randomized = shuffleCards(mapped).slice(0, 3)
+        const randomized = shuffleCards(mapped).slice(0, 4)
         setCards(randomized)
       } catch {
         // Keep fallback testimonials on any fetch issues.
@@ -104,11 +105,17 @@ export function NewsletterShuffle() {
   }, [])
 
   useEffect(() => {
-    setOrder(
-      cards.length >= 3
-        ? ['front', 'middle', 'back']
-        : cards.map(() => 'front'),
-    )
+    if (cards.length >= 4) {
+      setOrder(['front', 'middle', 'back', 'rear'])
+      return
+    }
+
+    if (cards.length >= 3) {
+      setOrder(['front', 'middle', 'back'])
+      return
+    }
+
+    setOrder(cards.map(() => 'front'))
   }, [cards])
 
   const handleShuffle = () => {
@@ -335,18 +342,35 @@ function Card({
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  const middleOffsetX = isSmallScreen ? '8%' : '24%'
-  const backOffsetX = isSmallScreen ? '16%' : '48%'
+  const middleOffsetX = isSmallScreen ? '7%' : '20%'
+  const backOffsetX = isSmallScreen ? '14%' : '40%'
+  const rearOffsetX = isSmallScreen ? '21%' : '60%'
   const x =
     position === 'front'
       ? '0%'
       : position === 'middle'
         ? middleOffsetX
-        : backOffsetX
+        : position === 'back'
+          ? backOffsetX
+          : rearOffsetX
   const rotateZ =
-    position === 'front' ? '-6deg' : position === 'middle' ? '0deg' : '6deg'
-  const zIndex = position === 'front' ? 2 : position === 'middle' ? 1 : 0
-  const opacity = position === 'back' ? 0.7 : 1
+    position === 'front'
+      ? '-7deg'
+      : position === 'middle'
+        ? '-2deg'
+        : position === 'back'
+          ? '2deg'
+          : '7deg'
+  const zIndex =
+    position === 'front'
+      ? 3
+      : position === 'middle'
+        ? 2
+        : position === 'back'
+          ? 1
+          : 0
+  const opacity =
+    position === 'rear' ? 0.55 : position === 'back' ? 0.75 : 1
   const allowMotion = !shouldReduceMotion
   const isFront = position === 'front'
 
