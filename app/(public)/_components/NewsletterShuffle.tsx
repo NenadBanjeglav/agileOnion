@@ -54,7 +54,20 @@ const formatAuthorLine = (item: SanityTestimonial) => {
   return details ? `${item.authorName} - ${details}` : item.authorName
 }
 
-export function NewsletterShuffle() {
+const getAuthorInitials = (authorLine: string) => {
+  const namePart = authorLine.split('-')[0]?.trim() ?? ''
+  const tokens = namePart.split(/\s+/).filter(Boolean)
+  if (tokens.length === 0) return '?'
+  const first = tokens[0]?.[0] ?? ''
+  const last = tokens.length > 1 ? tokens[tokens.length - 1]?.[0] ?? '' : ''
+  return `${first}${last}`.toUpperCase()
+}
+
+export function NewsletterShuffle({
+  hideShuffleCards = false,
+}: {
+  hideShuffleCards?: boolean
+}) {
   const prefersReducedMotion = useReducedMotion()
   const shouldReduceMotion = !!prefersReducedMotion
   const [order, setOrder] = useState<ListOrderItem[]>([
@@ -70,6 +83,12 @@ export function NewsletterShuffle() {
     'idle' | 'loading' | 'success' | 'error'
   >('idle')
   const [notice, setNotice] = useState('')
+  const sectionLayout = hideShuffleCards
+    ? 'lg:flex-col lg:items-center lg:justify-center'
+    : 'lg:flex-row lg:justify-between'
+  const contentLayout = hideShuffleCards
+    ? 'lg:mx-auto lg:max-w-2xl lg:items-center lg:text-center'
+    : 'lg:max-w-none lg:items-start lg:text-left'
 
   useEffect(() => {
     let isMounted = true
@@ -172,9 +191,11 @@ export function NewsletterShuffle() {
   return (
     <section
       id="newsletter"
-      className="relative mx-auto flex w-screen max-w-6xl flex-col items-center gap-16 overflow-x-hidden bg-transparent px-6 py-20 text-white sm:px-10 lg:flex-row lg:justify-between lg:px-12 lg:py-24"
+      className={`relative mx-auto flex w-screen max-w-6xl flex-col items-center gap-16 overflow-x-hidden bg-transparent px-6 py-20 text-white sm:px-10 lg:px-12 lg:py-24 ${sectionLayout}`}
     >
-      <div className="flex w-full max-w-xl flex-col items-center space-y-5 text-center lg:max-w-none lg:items-start lg:text-left">
+      <div
+        className={`flex w-full max-w-xl flex-col items-center space-y-5 text-center ${contentLayout}`}
+      >
         <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[#00B3D5]/30 bg-[#00B3D5]/10 px-4 py-2 text-xs font-semibold tracking-[0.14em] text-[#d9fbff] uppercase">
           Taste an Onion
         </span>
@@ -184,7 +205,7 @@ export function NewsletterShuffle() {
           </h2>
           <p className="text-base text-zinc-200 sm:text-lg">
             Prijavom na Taste an Onion ne dobijaš još jedan mejl u inboxu već
-            mali podsetnik da si na putu rasta. Svake nedelje po jedan komadić
+            mali podsetnik da si na putu rasta. Redovno, po jedan komadić
             slatkog ukusa koji ti pomaze da ne posustaneš.
           </p>
         </div>
@@ -254,7 +275,7 @@ export function NewsletterShuffle() {
         </p>
       </div>
 
-      {cards.length > 0 ? (
+      {!hideShuffleCards && cards.length > 0 ? (
         <div className="mx-auto flex w-full max-w-[640px] flex-col items-center gap-4 lg:max-w-none lg:items-end">
           <div
             className="relative h-[460px] w-full overflow-visible sm:h-[480px] lg:ml-10 xl:ml-16"
@@ -415,14 +436,9 @@ function Card({
           className="pointer-events-none mx-auto h-12 w-12 rounded-full border border-white/15 bg-white/10 object-cover sm:h-24 sm:w-24"
         />
       ) : (
-        <Image
-          src="/media/backgrounds/paralax-logo.png"
-          alt="Agile Onion logo"
-          width={96}
-          height={96}
-          sizes="96px"
-          className="pointer-events-none mx-auto h-12 w-12 rounded-full border border-white/15 bg-white/10 object-contain p-2 sm:h-24 sm:w-24 sm:p-3"
-        />
+        <div className="pointer-events-none mx-auto grid h-12 w-12 place-items-center rounded-full border border-white/15 bg-zinc-800/70 text-xs font-semibold text-[#d9fbff] sm:h-24 sm:w-24 sm:text-base">
+          {getAuthorInitials(author)}
+        </div>
       )}
       <span className="text-center text-xs text-zinc-200 italic sm:text-base">
         &quot;{testimonial}&quot;

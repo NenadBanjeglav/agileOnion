@@ -1,6 +1,9 @@
+'use client'
+
 import NextImage from 'next/image'
 import Link from 'next/link'
 import { Linkedin } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
 import { Container } from './Container'
 
@@ -13,6 +16,11 @@ const quickLinks = [
 
 export function Footer() {
   const year = new Date().getFullYear()
+  const pathname = usePathname()
+  const showAboutLink = pathname === '/'
+  const visibleQuickLinks = quickLinks.filter((link) =>
+    link.href === '#founder' ? showAboutLink : true,
+  )
 
   return (
     <footer
@@ -59,35 +67,39 @@ export function Footer() {
           </p>
         </div>
 
-        <div className="w-full max-w-md">
-          <FooterColumn title="Brzi linkovi" links={quickLinks} center />
-        </div>
-
-        <p className="text-sm text-[#d9fbff]/80">
-          Preferiraš direktan ping? Piši mi na{' '}
-          <a
-            href="mailto:agileonion.blog@gmail.com"
-            className="font-semibold text-[#eaffff] underline underline-offset-4"
-          >
-            agileonion.blog@gmail.com
-          </a>
-          . Ako zeliš da budeš u toku sa onim što se dešava u mojoj agilnoj
-          kuhinji i da ne propustiš tekstove, prijavi se na Taste an Onion, moj
-          nedeljni newsletter.
-        </p>
-
-        <div className="flex w-full flex-col items-center gap-3 border-t border-white/10 pt-6 text-sm text-zinc-300 sm:flex-row sm:justify-between">
-          <div className="mx-auto flex flex-wrap items-center justify-center gap-3 text-sm sm:justify-center">
+        <div className="space-y-3">
+          <h3 className="text-lg font-semibold text-white">Kontakt linkovi</h3>
+          <div className="flex flex-col items-center gap-3 text-sm text-[#d9fbff] sm:flex-row sm:justify-center">
             <Link
               href="https://www.linkedin.com/in/%C5%BEeljko-kopri%C4%87-0869241a8/"
-              className="inline-flex items-center gap-2 text-[#d9fbff] transition hover:text-white"
+              className="inline-flex items-center gap-2 transition hover:text-white"
             >
               <Linkedin className="h-4 w-4" aria-hidden />
               LinkedIn
             </Link>
+            <a
+              href="mailto:agileonion.blog@gmail.com"
+              className="font-semibold underline underline-offset-4 transition hover:text-white"
+            >
+              agileonion.blog@gmail.com
+            </a>
+          </div>
+          <p className="text-sm text-[#d9fbff]/80">
+            Preferiraš direktan ping? Piši mi na email. Ako želiš da budeš u
+            toku sa onim što se dešava u mojoj agilnoj kuhinji i da ne propustiš
+            tekstove, prijavi se na Taste an Onion, moj nedeljni newsletter.
+          </p>
+        </div>
+
+        <div className="w-full max-w-md">
+          <FooterColumn title="Brzi linkovi" links={visibleQuickLinks} center />
+        </div>
+
+        <div className="flex w-full flex-col items-center gap-3 border-t border-white/10 pt-6 text-sm text-zinc-300 sm:flex-row sm:justify-between">
+          <div className="mx-auto flex flex-wrap items-center justify-center gap-3 text-sm sm:justify-center">
             <span className="hidden text-zinc-500 sm:inline">/</span>
             <span className="text-zinc-400">
-              © {year} Agile Onion. Sweet taste of your growth.
+              Ac {year} Agile Onion. Sweet taste of your growth.
             </span>
           </div>
         </div>

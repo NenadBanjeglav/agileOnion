@@ -14,7 +14,6 @@ import {
 } from '../../_components/categoryData'
 import type { PostCard } from '../../_components/types'
 import { NewsletterShuffle } from '@/app/(public)/_components/NewsletterShuffle'
-import { AboutMe } from '@/app/(public)/_components/AboutMe'
 import { Footer } from '@/components/layout/Footer'
 import { JsonLd } from '@/components/seo/JsonLd'
 
@@ -172,11 +171,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           />
         </div>
       </Container>
-      <NewsletterShuffle />
-      <AboutMe />
+      <NewsletterShuffle hideShuffleCards />
       <Footer />
     </AppShell>
   )
 }
-
-

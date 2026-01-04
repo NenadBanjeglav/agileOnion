@@ -7,7 +7,6 @@ import {
   useReducedMotion,
   type Variants,
 } from 'motion/react'
-import NextImage from 'next/image'
 import { useMemo, useRef, type MouseEventHandler, type ReactNode } from 'react'
 
 const GRID_IMAGES = [
@@ -34,20 +33,18 @@ export function Hero() {
   const prefersReducedMotion = useReducedMotion()
   const allowMotion = !prefersReducedMotion
   const title =
-    'OVAJ BLOG JE PUT DO TVOG NESALOMIVOG MINDSETA. POČINJES SADA I TO BAŠ OVDE. BEZ ODLAGANJA.'
+    'OVAJ BLOG DAJE TI REALAN KONCEPT ZA RAZVOJ MINDSETA, KARIJERE I KONKRETNIH VEŠTINA'
   const subtitle = 'AGILNI PRINCIPI, GROWTH MINDSET METODE, SCRUM OKVIR'
+  const secondSubtitle = 'POČINJEŠ SADA I TO BAŠ OVDE. BEZ ODLAGANJA.'
   const primaryCta = { label: 'Prijavi se na newsletter', href: '#newsletter' }
   const secondaryCta = { label: 'Pogledaj blog', href: '#blog' }
   const titleWords = useMemo(() => title.split(' '), [title])
   const subtitleWords = useMemo(() => subtitle.split(' '), [subtitle])
-  const wordColors = [
-    '#01DCA0',
-    '#00B3D5',
-    '#6DDCFF',
-    '#9B5CFF',
-    '#FFD66B',
-    '#FF7A7A',
-  ]
+  const secondSubtitleWords = useMemo(
+    () => secondSubtitle.split(' '),
+    [secondSubtitle],
+  )
+  const wordColors = ['#00ff8f', '#00c0cf', '#00a1ff']
   const getWordGradient = (i: number) => {
     const start = wordColors[i % wordColors.length]
     const end = wordColors[(i + 2) % wordColors.length]
@@ -55,6 +52,10 @@ export function Hero() {
   }
 
   const easing = [0.16, 1, 0.3, 1] as const
+  const subtitleStartDelay = 0.4
+  const subtitleWordDelay = 0.04
+  const secondSubtitleStartDelay =
+    subtitleStartDelay + subtitleWords.length * subtitleWordDelay + 0.2
 
   const wordVariants: Variants = {
     hidden: {
@@ -72,6 +73,21 @@ export function Hero() {
     }),
   }
 
+  const secondSubtitleVariants: Variants = {
+    hidden: wordVariants.hidden,
+    show: (i: number) => ({
+      y: 0,
+      opacity: 1,
+      filter: 'blur(0px)',
+      backgroundImage: getWordGradient(i),
+      transition: {
+        duration: 0.4,
+        delay: secondSubtitleStartDelay + i * 0.05,
+        ease: easing,
+      },
+    }),
+  }
+
   const subtitleVariants: Variants = {
     hidden: { y: 10, opacity: 0 },
     show: (i: number) => ({
@@ -79,7 +95,7 @@ export function Hero() {
       opacity: 1,
       transition: {
         duration: 0.28,
-        delay: 0.4 + i * 0.04,
+        delay: subtitleStartDelay + i * subtitleWordDelay,
         ease: easing,
       },
     }),
@@ -94,7 +110,7 @@ export function Hero() {
     >
       <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center justify-start gap-10 pt-6 text-center sm:pt-8 lg:justify-center lg:pt-0">
         <div className="relative z-20 flex w-full flex-col items-center gap-8 sm:gap-10">
-          <div className="relative flex w-full items-center justify-center">
+          {/* <div className="relative flex w-full items-center justify-center">
             <div
               className="absolute inset-4 rounded-[28px] bg-[#01DCA0]/20 blur-3xl"
               aria-hidden
@@ -107,7 +123,7 @@ export function Hero() {
               height={260}
               className="relative h-auto w-[300px] drop-shadow-[0_24px_60px_rgba(16,185,129,0.35)] sm:w-[360px] md:w-[420px]"
             />
-          </div>
+          </div> */}
 
           <div className="space-y-5 sm:space-y-6">
             {allowMotion ? (
@@ -143,21 +159,48 @@ export function Hero() {
                 initial="hidden"
                 animate="show"
               >
-                {subtitleWords.map((word, i) => (
+                <span className="inline-flex flex-wrap justify-center border-b border-[#00B3D5]/70 pb-1">
+                  {subtitleWords.map((word, i) => (
+                    <motion.span
+                      key={`${word}-${i}`}
+                      custom={i}
+                      variants={subtitleVariants}
+                      className="inline-block pr-1"
+                    >
+                      {word}
+                    </motion.span>
+                  ))}
+                </span>
+              </motion.p>
+            ) : (
+              <p className="mx-auto max-w-2xl text-base leading-7 text-zinc-200 sm:text-lg">
+                <span className="inline-block border-b border-[#00B3D5]/70 pb-1">
+                  {subtitle}
+                </span>
+              </p>
+            )}
+
+            {allowMotion ? (
+              <motion.h2
+                className="relative inline-block max-w-3xl text-3xl leading-tight font-semibold tracking-tight sm:text-5xl sm:leading-[1.05]"
+                initial="hidden"
+                animate="show"
+              >
+                {secondSubtitleWords.map((word, i) => (
                   <motion.span
                     key={`${word}-${i}`}
                     custom={i}
-                    variants={subtitleVariants}
-                    className="inline-block pr-1"
+                    variants={secondSubtitleVariants}
+                    className="inline-block bg-clip-text pr-2 text-transparent"
                   >
                     {word}
                   </motion.span>
                 ))}
-              </motion.p>
+              </motion.h2>
             ) : (
-              <p className="mx-auto max-w-2xl text-base leading-7 text-zinc-200 sm:text-lg">
-                {subtitle}
-              </p>
+              <h2 className="relative inline-block max-w-3xl text-3xl leading-tight font-semibold tracking-tight sm:text-5xl sm:leading-[1.05]">
+                {secondSubtitle}
+              </h2>
             )}
 
             <div className="space-y-2">

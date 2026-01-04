@@ -10,6 +10,7 @@ import {
 } from 'motion/react'
 import { ChevronDown, Menu, Search, X } from 'lucide-react'
 import { type ElementType, type ReactNode, useCallback, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { blogSections } from '@/lib/content/blog'
 import { BlogSearchModal } from './BlogSearchModal'
 
@@ -30,6 +31,8 @@ export function FloatingNav() {
   const { scrollY } = useScroll()
   const [scrolled, setScrolled] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const pathname = usePathname()
+  const showAboutLink = pathname === '/'
 
   const handleNavClick = useCallback(
     (href: string, onDone?: () => void) =>
@@ -59,11 +62,14 @@ export function FloatingNav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6">
         <BrandLogo />
         <div className="hidden items-center gap-6 lg:flex">
-          <Links onNavClick={handleNavClick} />
+          <Links onNavClick={handleNavClick} showAboutLink={showAboutLink} />
         </div>
         <div className="flex items-center gap-3">
           <SearchButton onClick={() => setSearchOpen(true)} />
-          <MobileMenu onNavClick={handleNavClick} />
+          <MobileMenu
+            onNavClick={handleNavClick}
+            showAboutLink={showAboutLink}
+          />
         </div>
       </div>
       <BlogSearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
@@ -92,15 +98,19 @@ function BrandLogo() {
 
 function Links({
   onNavClick,
+  showAboutLink,
 }: {
   onNavClick: (
     href: string,
     onDone?: () => void,
   ) => (event: React.MouseEvent<HTMLAnchorElement>) => void
+  showAboutLink: boolean
 }) {
   return (
     <div className="flex items-center gap-6">
-      {NAV_ITEMS.map((item) => (
+      {NAV_ITEMS.filter((item) =>
+        item.href === '#founder' ? showAboutLink : true,
+      ).map((item) => (
         <NavLink
           key={item.href}
           href={item.href}
@@ -182,12 +192,12 @@ function BlogFlyout() {
   }
 
   return (
-    <div className="grid w-[520px] grid-cols-2 gap-3 rounded-2xl border border-emerald-900/40 bg-neutral-900 p-5 text-white shadow-xl">
+    <div className="grid w-[640px] grid-cols-2 gap-5 rounded-2xl border border-emerald-900/40 bg-neutral-900 p-7 text-white shadow-xl">
       {blogSections.map((section) => (
         <Link
           key={section.slug}
           href={`/blog/category/${section.slug}`}
-          className="group hover:bg-neutral-750 relative overflow-hidden rounded-lg border border-emerald-200/10 bg-neutral-800 p-3 shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-emerald-200/70 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900 focus-visible:outline-none"
+          className="group hover:bg-neutral-750 relative overflow-hidden rounded-lg border border-emerald-200/10 bg-neutral-800 p-5 shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-emerald-200/70 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900 focus-visible:outline-none"
         >
           <div
             className="absolute inset-0 opacity-45 transition duration-300 group-hover:opacity-70"
@@ -208,13 +218,13 @@ function BlogFlyout() {
             whileHover={{ y: -2, scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="relative space-y-1"
+            className="relative space-y-2"
           >
-            <h3 className="text-sm font-semibold text-white transition-colors duration-200 group-hover:text-emerald-100">
+            <h3 className="text-base font-semibold text-white transition-colors duration-200 group-hover:text-emerald-100">
               {section.title}
             </h3>
             <p
-              className="text-xs text-white/70 transition-colors duration-200 group-hover:text-white/80"
+              className="text-sm text-white/70 transition-colors duration-200 group-hover:text-white/80"
               style={{
                 display: '-webkit-box',
                 WebkitLineClamp: 2,
@@ -245,14 +255,19 @@ function SearchButton({ onClick }: { onClick: () => void }) {
 
 function MobileMenu({
   onNavClick,
+  showAboutLink,
 }: {
   onNavClick: (
     href: string,
     onDone?: () => void,
   ) => (event: React.MouseEvent<HTMLAnchorElement>) => void
+  showAboutLink: boolean
 }) {
   const [open, setOpen] = useState(false)
   const [blogOpen, setBlogOpen] = useState(false)
+  const navItems = NAV_ITEMS.filter((item) =>
+    item.href === '#founder' ? showAboutLink : true,
+  )
 
   return (
     <div className="block lg:hidden">
@@ -275,7 +290,7 @@ function MobileMenu({
               </button>
             </div>
             <div className="flex-1 overflow-y-auto bg-neutral-900 p-6">
-              {NAV_ITEMS.map((item) =>
+              {navItems.map((item) =>
                 item.flyout ? (
                   <div
                     key={item.href}

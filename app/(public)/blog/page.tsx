@@ -10,7 +10,6 @@ import { FeaturedPosts } from './_components/FeaturedPosts'
 import { CATEGORY_CARDS, CATEGORY_LABELS } from './_components/categoryData'
 import type { PostCard } from './_components/types'
 import { NewsletterShuffle } from '../_components/NewsletterShuffle'
-import { AboutMe } from '../_components/AboutMe'
 import { Footer } from '@/components/layout/Footer'
 import { ParallaxLogos } from '../_components/ParallaxLogos'
 import { JsonLd } from '@/components/seo/JsonLd'
@@ -110,8 +109,7 @@ export default async function BlogPage() {
           pageSize={FEED_PAGE_SIZE}
         />
       </Container>
-      <NewsletterShuffle />
-      <AboutMe />
+      <NewsletterShuffle hideShuffleCards />
       <Footer />
     </AppShell>
   )

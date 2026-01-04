@@ -17,7 +17,6 @@ import { urlFor } from '@/lib/sanity/image'
 import { formatDate } from '@/lib/utils/date'
 import { CATEGORY_LABELS } from '../_components/categoryData'
 import { NewsletterShuffle } from '../../_components/NewsletterShuffle'
-import { AboutMe } from '../../_components/AboutMe'
 import { Footer } from '@/components/layout/Footer'
 import { ParallaxLogos } from '../../_components/ParallaxLogos'
 import { JsonLd } from '@/components/seo/JsonLd'
@@ -432,8 +431,8 @@ export default async function BlogPostPage({
           </section>
         </article>
       </Container>
-      <NewsletterShuffle />
-      <AboutMe />
+      <NewsletterShuffle hideShuffleCards />
+
       <Footer />
 
       <JsonLd data={jsonLd} />

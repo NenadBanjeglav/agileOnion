@@ -16,9 +16,6 @@ export function AboutMe() {
 
   const floatY = useTransform(scrollYProgress, [0, 1], [0, -36])
   const glowScale = useTransform(scrollYProgress, [0, 1], [1, 1.08])
-  const logoY = useTransform(scrollYProgress, [0, 1], [0, 240])
-  const logoRotate = useTransform(scrollYProgress, [0, 1], [0, 18])
-  const logoScale = useTransform(scrollYProgress, [0, 1], [1, 1.12])
 
   const bullets = useMemo(() => highlights, [])
 
@@ -35,13 +32,6 @@ export function AboutMe() {
           className="absolute inset-x-0 top-6 mx-auto h-72 w-3/4 rounded-4xl bg-[#01DCA0]/18 blur-[120px]"
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(1,220,160,0.14),transparent_28%),radial-gradient(circle_at_82%_14%,rgba(0,179,213,0.16),transparent_28%),linear-gradient(135deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0)_40%)]" />
-        <motion.img
-          src="/media/backgrounds/paralax-logo.png"
-          alt=""
-          aria-hidden
-          className="absolute top-10 -right-10 w-52 opacity-70 lg:top-6 lg:-right-6 lg:w-64"
-          style={{ y: logoY, rotate: logoRotate, scale: logoScale }}
-        />
       </div>
 
       <div className="mt-6 lg:mt-8 lg:flow-root">
@@ -83,34 +73,36 @@ export function AboutMe() {
                   priority
                 />
                 <div className="absolute right-4 bottom-4 left-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/45 px-4 py-3 text-xs tracking-[0.22em] text-[#d9fbff] uppercase">
-                  <span>Agilno, ali vrlo lično</span>
+                  <span>Agilno, ali vrlo li?no</span>
                   <Sparkles className="h-4 w-4 text-amber-200" aria-hidden />
                 </div>
               </div>
             </motion.div>
             <div className="space-y-4 text-base leading-relaxed text-zinc-200 sm:text-lg">
               <p className="lg:mx-0">
-                Pomažem ljudima, da ostvare svoje ciljeve, da prevaziđu stečena
-                ograničenja, da naprave pokret u svojim karijerama i životima.
-                Zajedno konkretizujemo plan, odredjujemo prioritete, uvodimo
-                ritam kroz kratke iteracije, i obezbedimo da se napredak prati i
-                meri. Bez panike i straha, uz obostranu podršku i poverenje.
+                Pomažem ljudima da ostvare svoje ciljeve, da prevaziđu stečena
+                ograničenja i da naprave preokret u svojim karijerama i
+                životima. Zajedno konkretizujemo plan, određujemo prioritete,
+                uvodimo ritam kroz kratke iteracije i obezbeđujemo da se
+                napredak prati i meri. Bez panike i straha, uz obostranu podršku
+                i poverenje.
               </p>
               <p className="lg:mx-0">
-                Iskustvo od preko 15 godina mi pomaze da vidim i osetim i ljude
-                i procese. Presao sam dug i veoma izazovan put od operatera na
-                proizvodnoj liniji, preko vodeće pozicije menadžera na kojoj sam
-                već godinama. I sad se sigurno pitaš kako sam to postigao. Koji
-                je to recept koji sam primenjivao?
+                Iskustvo od preko 15 godina u farmaceutskoj industriji pomaže mi
+                da vidim i osetim i ljude i procese. Prešao sam dug i veoma
+                izazovan put od operatera na proizvodnoj liniji, davno, do
+                pozicije menadžera na kojoj sam već godinama. I sad se sigurno
+                pitaš: Koji je to koncept koji sam primenjivao?
               </p>
-              <p className="lg:mx-0">Nema recepta. Nema formule.</p>
+
               <p className="lg:mx-0">
                 Važan je pristup. Stalno učenje. Učenje u svakom smislu,
-                formalno, neformalno; učenje iz sopstvenih grešaka. Ipak, u mom
-                vokabularu rec &quot;greška&quot; ne postoji, nego samo signal
-                da idući put kada dodjem na to isto mesto uradim drugačije.
+                formalno i neformalno; učenje iz sopstvenih grešaka. Ipak, u mom
+                vokabularu reč &quot;greška&quot; ne postoji, već samo signal da
+                idući put, kada dođem na isto mesto, uradim drugačije.
               </p>
-              <p className="lg:mx-0">Jednom rečju bio sam agilan.</p>
+
+              <p className="lg:mx-0">Jednom rečju, bio sam agilan.</p>
             </div>
           </div>
 
