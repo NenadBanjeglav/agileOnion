@@ -11,8 +11,9 @@ import {
 import { ChevronDown, Menu, Search, X } from 'lucide-react'
 import { type ElementType, type ReactNode, useCallback, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { blogSections } from '@/lib/content/blog'
+
 import { BlogSearchModal } from './BlogSearchModal'
+import { CATEGORY_CARDS } from '@/app/(public)/blog/_components/categoryData'
 
 type NavItem = {
   label: string
@@ -160,7 +161,7 @@ function NavLink({
         </motion.span>
         <span
           style={{ transform: showUnderline ? 'scaleX(1)' : 'scaleX(0)' }}
-          className="absolute -right-2 -bottom-2 -left-2 h-0.5 origin-left scale-x-0 rounded-full bg-gradient-to-r from-[#01DCA0] via-[#00B3D5] to-emerald-200 transition-transform duration-300 ease-out group-hover:scale-x-100 sm:h-1"
+          className="absolute -right-2 -bottom-2 -left-2 h-0.5 origin-left scale-x-0 rounded-full bg-linear-to-r from-[#01DCA0] via-[#00B3D5] to-emerald-200 transition-transform duration-300 ease-out group-hover:scale-x-100 sm:h-1"
         />
       </Link>
       <AnimatePresence>
@@ -184,16 +185,11 @@ function NavLink({
 }
 
 function BlogFlyout() {
-  const categoryImages: Record<string, string> = {
-    'mindset-lab': '/media/trail/trail-notebook.webp',
-    'agile-club': '/media/trail/trail-collab.webp',
-    'scrum-office': '/media/trail/trail-office.webp',
-    'very-agile-personas': '/media/trail/trail-retro.webp',
-  }
+  const fallbackImage = '/media/trail/trail-notes.webp'
 
   return (
     <div className="grid w-[640px] grid-cols-2 gap-5 rounded-2xl border border-emerald-900/40 bg-neutral-900 p-7 text-white shadow-xl">
-      {blogSections.map((section) => (
+      {CATEGORY_CARDS.map((section) => (
         <Link
           key={section.slug}
           href={`/blog/category/${section.slug}`}
@@ -202,9 +198,7 @@ function BlogFlyout() {
           <div
             className="absolute inset-0 opacity-45 transition duration-300 group-hover:opacity-70"
             style={{
-              backgroundImage: `url(${
-                categoryImages[section.slug] ?? '/media/trail/trail-notes.webp'
-              })`,
+              backgroundImage: `url(${section.image ?? fallbackImage})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
@@ -227,12 +221,12 @@ function BlogFlyout() {
               className="text-sm text-white/70 transition-colors duration-200 group-hover:text-white/80"
               style={{
                 display: '-webkit-box',
-                WebkitLineClamp: 2,
+                WebkitLineClamp: 3,
                 WebkitBoxOrient: 'vertical',
                 overflow: 'hidden',
               }}
             >
-              {section.summary}
+              {section.description}
             </p>
           </motion.div>
         </Link>
@@ -310,7 +304,7 @@ function MobileMenu({
                     </button>
                     {blogOpen && (
                       <div className="mt-4 space-y-3 pl-1 text-sm text-white/60">
-                        {blogSections.map((section) => (
+                        {CATEGORY_CARDS.map((section) => (
                           <Link
                             key={section.slug}
                             href={`/blog/category/${section.slug}`}

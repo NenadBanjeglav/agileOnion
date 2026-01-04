@@ -37,7 +37,15 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
               <h3 className="text-lg font-semibold text-white transition-colors duration-300 group-hover:text-emerald-100">
                 {category.title}
               </h3>
-              <p className="text-sm leading-relaxed text-zinc-200 transition-colors duration-300 group-hover:text-zinc-100">
+              <p
+                className="text-sm leading-relaxed text-zinc-200 transition-colors duration-300 group-hover:text-zinc-100"
+                style={{
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                }}
+              >
                 {category.description}
               </p>
             </div>

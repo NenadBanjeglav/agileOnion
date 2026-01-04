@@ -12,5 +12,6 @@ export type CategoryCard = {
   slug: string
   title: string
   description: string
+  pitch?: string
   image: string
 }

@@ -158,6 +158,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               <p className="max-w-3xl text-base leading-relaxed text-zinc-200 sm:text-lg">
                 {category.description}
               </p>
+              {category.pitch ? (
+                <p className="max-w-3xl text-base font-semibold text-[#01DCA0] sm:text-lg">
+                  {category.pitch}
+                </p>
+              ) : null}
             </div>
           </section>
 
@@ -167,7 +172,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             pageSize={FEED_PAGE_SIZE}
             fetchUrl={`/api/blog/category/posts?slug=${slug}`}
             title={`Priče iz ${category.title}`}
-            subtitle="Sve objave iz ove kategorije, uredno posložene za čitanje."
+            subtitle="Sve objave iz ove kategorije, uredno poslo?ene za ?itanje."
           />
         </div>
       </Container>

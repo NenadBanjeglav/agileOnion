@@ -3,28 +3,7 @@
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
-import { blogSections } from '@/lib/content/blog'
-
-type AltLayer = {
-  id: string
-  title: string
-  description: string
-  image: string
-}
-
-const layerImages: Record<string, string> = {
-  'mindset-lab': '/media/trail/trail-notebook.webp',
-  'agile-club': '/media/trail/trail-collab.webp',
-  'scrum-office': '/media/trail/trail-office.webp',
-  'very-agile-personas': '/media/trail/trail-retro.webp',
-}
-
-const altLayers: AltLayer[] = blogSections.map((section) => ({
-  id: section.slug,
-  title: section.title,
-  description: section.summary,
-  image: layerImages[section.slug] ?? '/media/trail/trail-notes.webp',
-}))
+import { CATEGORY_CARDS } from '@/app/(public)/blog/_components/categoryData'
 
 export function BlogCategories() {
   const prefersReducedMotion = useReducedMotion()
@@ -48,7 +27,7 @@ export function BlogCategories() {
                 id={headingId}
                 className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl"
               >
-                Budi ti deo Agile Onion zajednice i evo sta dobijaš:
+                Budi ti deo Agile Onion zajednice i evo sta dobija?:
               </h2>
             </div>
 
@@ -56,44 +35,44 @@ export function BlogCategories() {
               <li className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
                 <span>
-                  redovne odmah primenljive lekcije o Scrum okviru i agilnoj
+                  Redovne, odmah primenljive lekcije o Scrum okviru i agilnoj
                   filozofiji;
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
                 <span>
-                  super-moćne tehnike za razvoj mindseta i praktične vezbe;
+                  Super-mo?ne tehnike za razvoj mindseta i prakti?ne ve?be;
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
                 <span>
-                  inspirativne priče ljudi koji su presli put od ideje do
+                  Inspirativne pri?e ljudi koji su pre?li put od ideje do
                   manifestacije;
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
-                <span>moju bezrezervnu podršku.</span>
+                <span>Moju bezrezervnu podr?ku.</span>
               </li>
             </ul>
           </div>
         </div>
 
         <p className="text-center text-sm font-semibold tracking-[0.22em] text-[#00B3D5] uppercase sm:text-left">
-          Agile Onion blog sadrži sledeće kategorije:
+          Agile Onion blog sadr?i slede?e kategorije:
         </p>
 
         <div className="grid grid-cols-1 gap-5 md:gap-6 lg:grid-cols-2">
-          {altLayers.map((layer) => (
-            <ColorCard key={layer.id} layer={layer} allowMotion={allowMotion} />
+          {CATEGORY_CARDS.map((layer) => (
+            <ColorCard key={layer.slug} layer={layer} allowMotion={allowMotion} />
           ))}
         </div>
 
         <p className="mx-auto max-w-4xl text-center text-base leading-relaxed text-zinc-200 sm:text-lg">
           Otkrivaj sloj po sloj, onako kako tebi prija, i vrlo brzo ces osetiti
-          neodoljivi ukus koji te više neće napustiti. Sladak ukus tvog rasta.
+          neodoljivi ukus koji te vi?e ne?e napustiti. Sladak ukus tvog rasta.
         </p>
       </div>
     </section>
@@ -104,17 +83,17 @@ function ColorCard({
   layer,
   allowMotion,
 }: {
-  layer: AltLayer
+  layer: (typeof CATEGORY_CARDS)[number]
   allowMotion: boolean
 }) {
   return (
     <Link
-      href={`/blog/category/${layer.id}`}
+      href={`/blog/category/${layer.slug}`}
       className="group block rounded-3xl focus-visible:ring-2 focus-visible:ring-[#00B3D5]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
       aria-label={`${layer.title} category`}
     >
       <motion.article
-        id={layer.id}
+        id={layer.slug}
         className="relative h-[280px] transform-gpu overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 shadow-[0_28px_70px_-38px_rgba(0,0,0,0.9)] ring-1 ring-white/5 transition duration-200"
         whileHover={allowMotion ? 'hover' : undefined}
       >
@@ -151,7 +130,7 @@ function ColorCard({
               <h3 className="text-2xl leading-tight font-semibold text-white transition-colors duration-300 sm:text-[26px]">
                 {layer.title.split('').map((letter, idx) => (
                   <ShiftLetter
-                    key={`${layer.id}-${idx}-${letter}`}
+                    key={`${layer.slug}-${idx}-${letter}`}
                     letter={letter}
                     allowMotion={allowMotion}
                   />
@@ -168,6 +147,11 @@ function ColorCard({
               >
                 {layer.description}
               </p>
+              {layer.pitch ? (
+                <p className="text-sm font-semibold text-[#01DCA0] sm:text-base">
+                  {layer.pitch}
+                </p>
+              ) : null}
             </div>
           </div>
         </div>
