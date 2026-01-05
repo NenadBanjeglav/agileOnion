@@ -1,4 +1,8 @@
+import crypto from 'crypto'
 import {NextResponse} from 'next/server'
+import {NewsletterConfirm} from '@/emails/NewsletterConfirm'
+import {siteConfig} from '@/lib/config/site'
+import {sendEmail} from '@/lib/email/resend'
 import {sanityAdminClient} from '@/lib/sanity/adminClient'
 
 export const runtime = 'nodejs'
@@ -12,6 +16,7 @@ type NewsletterRequest = {
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000
 const RATE_LIMIT_MAX = 5
 const rateLimitStore = new Map<string, {count: number; resetAt: number}>()
+const CONFIRMATION_EXPIRY_MS = 24 * 60 * 60 * 1000
 
 const isValidEmail = (value: string) => {
   if (value.length > 254) return false
@@ -22,6 +27,8 @@ const normalizeEmail = (value: string) => value.trim().toLowerCase()
 
 const idForEmail = (email: string) =>
   `newsletterSubscriber.${Buffer.from(email).toString('base64url')}`
+
+const createConfirmationToken = () => crypto.randomBytes(32).toString('hex')
 
 const getClientIp = (request: Request) => {
   const forwarded = request.headers.get('x-forwarded-for')
@@ -78,12 +85,14 @@ export async function POST(request: Request) {
   const existing = await sanityAdminClient.fetch<{
     _id: string
     status?: string
-    unsubscribedAt?: string
+    confirmationToken?: string
+    confirmationExpiresAt?: string
   } | null>(
     `*[_type == "newsletterSubscriber" && email == $email][0]{
       _id,
       status,
-      unsubscribedAt
+      confirmationToken,
+      confirmationExpiresAt
     }`,
     {email},
   )
@@ -92,33 +101,71 @@ export async function POST(request: Request) {
     return NextResponse.json({ok: true, alreadySubscribed: true})
   }
 
-  const now = new Date().toISOString()
+  const now = new Date()
+  const nowIso = now.toISOString()
+  const expiresAtIso = new Date(now.getTime() + CONFIRMATION_EXPIRY_MS)
+    .toISOString()
+  const hasValidToken =
+    existing?.confirmationToken &&
+    existing?.confirmationExpiresAt &&
+    new Date(existing.confirmationExpiresAt).getTime() > now.getTime()
+  const confirmationToken = hasValidToken
+    ? existing?.confirmationToken
+    : createConfirmationToken()
+  const confirmationExpiresAt = hasValidToken
+    ? existing?.confirmationExpiresAt
+    : expiresAtIso
 
   let subscriberId = existing?._id
   if (subscriberId) {
     await sanityAdminClient
       .patch(subscriberId)
       .set({
-        status: 'subscribed',
-        subscribedAt: now,
+        status: 'pending',
+        subscribedAt: nowIso,
         source: payload.source ?? 'newsletter-shuffle',
         ip,
         userAgent: request.headers.get('user-agent') ?? undefined,
+        confirmationToken,
+        confirmationSentAt: nowIso,
+        confirmationExpiresAt,
       })
-      .unset(['unsubscribedAt'])
+      .unset(['confirmedAt', 'unsubscribedAt', 'introEmailSentAt'])
       .commit({autoGenerateArrayKeys: true})
   } else {
     const created = await sanityAdminClient.create({
       _id: idForEmail(email),
       _type: 'newsletterSubscriber',
       email,
-      status: 'subscribed',
-      subscribedAt: now,
+      status: 'pending',
+      subscribedAt: nowIso,
       source: payload.source ?? 'newsletter-shuffle',
       ip,
       userAgent: request.headers.get('user-agent') ?? undefined,
+      confirmationToken,
+      confirmationSentAt: nowIso,
+      confirmationExpiresAt,
     })
     subscriberId = created._id
+  }
+
+  const confirmationUrl = `${siteConfig.url}/api/newsletter/confirm?token=${confirmationToken}`
+  const {data, error} = await sendEmail({
+    to: email,
+    subject: 'Potvrdi svoju prijavu na Agile Onion',
+    react: NewsletterConfirm({confirmUrl: confirmationUrl}),
+    replyTo: 'agileonion.blog@gmail.com',
+  })
+
+  if (error) {
+    return NextResponse.json({error: 'Email delivery failed'}, {status: 500})
+  }
+
+  if (data?.id && subscriberId) {
+    await sanityAdminClient
+      .patch(subscriberId)
+      .set({confirmationMessageId: data.id})
+      .commit({autoGenerateArrayKeys: true})
   }
 
   return NextResponse.json({ok: true, alreadySubscribed: false})

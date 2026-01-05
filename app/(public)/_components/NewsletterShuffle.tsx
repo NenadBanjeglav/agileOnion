@@ -178,7 +178,7 @@ export function NewsletterShuffle({
         if (data?.alreadySubscribed) {
           return 'Vec si prijavljen. Hvala!'
         }
-        return 'Hvala! Prijava je sacuvana.'
+        return 'Hvala! Proveri email i potvrdi prijavu.'
       })
       setEmail('')
       setCompany('')

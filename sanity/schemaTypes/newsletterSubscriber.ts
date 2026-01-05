@@ -50,6 +50,16 @@ export const newsletterSubscriber = defineType({
       type: 'datetime',
     }),
     defineField({
+      name: 'confirmationExpiresAt',
+      title: 'Confirmation Expires At',
+      type: 'datetime',
+    }),
+    defineField({
+      name: 'confirmationMessageId',
+      title: 'Confirmation Message Id',
+      type: 'string',
+    }),
+    defineField({
       name: 'unsubscribeToken',
       title: 'Unsubscribe Token',
       type: 'string',
@@ -63,6 +73,11 @@ export const newsletterSubscriber = defineType({
       name: 'introEmailSentAt',
       title: 'Intro Email Sent At',
       type: 'datetime',
+    }),
+    defineField({
+      name: 'welcomeMessageId',
+      title: 'Welcome Message Id',
+      type: 'string',
     }),
     defineField({
       name: 'ip',
