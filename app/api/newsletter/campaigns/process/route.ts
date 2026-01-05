@@ -112,7 +112,7 @@ export async function POST(request: Request) {
   }
 
   const postUrl = `${siteConfig.url}/blog/${campaign.postSlug}`
-  const logoUrl = `${siteConfig.url}/media/brand/agile-onion-logo-color.svg`
+  const logoUrl = `${siteConfig.url}/media/brand/og-image.png`
   let sentCount = campaign.sentCount ?? 0
   let lastError: string | undefined
 
