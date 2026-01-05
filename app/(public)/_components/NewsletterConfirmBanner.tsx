@@ -6,6 +6,7 @@ const MESSAGES: Record<string, string> = {
   confirmed: 'Prijava je potvrđena. Dobrodošao/la u Agile Onion!',
   invalid: 'Link za potvrdu nije važeći. Pokušaj ponovo.',
   expired: 'Link za potvrdu je istekao. Prijavi se ponovo.',
+  unsubscribed: 'Odjava je uspešna. Više nećeš dobijati mejlove.',
 }
 
 export function NewsletterConfirmBanner() {

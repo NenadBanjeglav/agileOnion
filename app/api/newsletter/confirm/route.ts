@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { NewsletterWelcome } from '@/emails/NewsletterWelcome'
 import { siteConfig } from '@/lib/config/site'
 import { sendEmail } from '@/lib/email/resend'
+import { createToken } from '@/lib/newsletter/tokens'
 import { sanityAdminClient } from '@/lib/sanity/adminClient'
 
 export const runtime = 'nodejs'
@@ -36,6 +37,7 @@ export async function GET(request: Request) {
       status?: string
       confirmationExpiresAt?: string
       introEmailSentAt?: string
+      unsubscribeToken?: string
     } | null,
     { confirmationToken: string }
   >(
@@ -44,7 +46,8 @@ export async function GET(request: Request) {
       email,
       status,
       confirmationExpiresAt,
-      introEmailSentAt
+      introEmailSentAt,
+      unsubscribeToken
     }`,
     { confirmationToken: token },
   )
@@ -62,11 +65,14 @@ export async function GET(request: Request) {
 
   const nowIso = new Date().toISOString()
 
+  const unsubscribeToken = subscriber.unsubscribeToken ?? createToken()
+
   await sanityAdminClient
     .patch(subscriber._id)
     .set({
       status: 'subscribed',
       confirmedAt: nowIso,
+      unsubscribeToken,
     })
     .unset(['confirmationToken', 'confirmationExpiresAt'])
     .commit({ autoGenerateArrayKeys: true })
