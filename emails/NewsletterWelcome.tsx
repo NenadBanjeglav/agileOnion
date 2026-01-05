@@ -4,6 +4,7 @@ import {
   Head,
   Heading,
   Html,
+  Img,
   Link,
   Preview,
   Section,
@@ -14,11 +15,15 @@ import React from 'react'
 type NewsletterWelcomeProps = {
   latestPostUrl: string
   latestPostTitle?: string
+  latestPostImageUrl?: string
+  logoUrl?: string
 }
 
 export function NewsletterWelcome({
   latestPostUrl,
   latestPostTitle,
+  latestPostImageUrl,
+  logoUrl,
 }: NewsletterWelcomeProps) {
   return (
     <Html>
@@ -26,6 +31,15 @@ export function NewsletterWelcome({
       <Preview>Hvala ti na pretplati – dobrodošao/la u Agile Onion.</Preview>
       <Body style={styles.body}>
         <Container style={styles.container}>
+          {logoUrl ? (
+            <Img
+              src={logoUrl}
+              alt="Agile Onion"
+              width="96"
+              height="96"
+              style={styles.logo}
+            />
+          ) : null}
           <Heading style={styles.heading}>Dobrodošao/la u Agile Onion</Heading>
           <Section>
             <Text style={styles.text}>Pozdrav,</Text>
@@ -52,6 +66,15 @@ export function NewsletterWelcome({
               Kao prvi korak, pročitaj najnoviji tekst na blogu i započni svoj
               prvi sprint:
             </Text>
+            {latestPostImageUrl ? (
+              <Img
+                src={latestPostImageUrl}
+                alt={latestPostTitle ?? 'Najnoviji tekst na blogu'}
+                width="600"
+                height="360"
+                style={styles.postImage}
+              />
+            ) : null}
             <Link href={latestPostUrl} style={styles.link}>
               {latestPostTitle ?? 'Najnoviji tekst na blogu'}
             </Link>
@@ -101,6 +124,17 @@ const styles = {
   link: {
     color: '#00b3d5',
     textDecoration: 'underline',
+  },
+  logo: {
+    display: 'block',
+    margin: '0 auto 16px',
+  },
+  postImage: {
+    display: 'block',
+    width: '100%',
+    height: 'auto',
+    borderRadius: '12px',
+    margin: '8px 0 16px',
   },
   signature: {
     fontSize: '16px',

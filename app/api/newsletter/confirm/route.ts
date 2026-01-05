@@ -18,7 +18,8 @@ const LATEST_POST_QUERY = `*[
   defined(slug.current)
 ] | order(coalesce(publishedAt, _createdAt) desc)[0]{
   title,
-  "slug": slug.current
+  "slug": slug.current,
+  "coverImageUrl": coverImage.asset->url
 }`
 
 export async function GET(request: Request) {
@@ -74,10 +75,12 @@ export async function GET(request: Request) {
     const latestPost = await sanityAdminClient.fetch<{
       title?: string
       slug?: string
+      coverImageUrl?: string
     } | null>(LATEST_POST_QUERY)
     const latestPostUrl = latestPost?.slug
       ? `${siteConfig.url}/blog/${latestPost.slug}`
       : `${siteConfig.url}/blog`
+    const logoUrl = `${siteConfig.url}/media/brand/favicon-android.png`
 
     const { data, error } = await sendEmail({
       to: subscriber.email,
@@ -85,6 +88,8 @@ export async function GET(request: Request) {
       react: NewsletterWelcome({
         latestPostUrl,
         latestPostTitle: latestPost?.title,
+        latestPostImageUrl: latestPost?.coverImageUrl ?? undefined,
+        logoUrl,
       }),
       replyTo: 'agileonion.blog@gmail.com',
     })

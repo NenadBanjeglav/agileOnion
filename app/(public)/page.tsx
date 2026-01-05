@@ -6,6 +6,7 @@ import { HowWeWork } from './_components/HowWeWork'
 import { BlogCategories } from './_components/BlogCategories'
 import { LatestBlogs } from './_components/LatestBlogs'
 import { NewsletterShuffle } from './_components/NewsletterShuffle'
+import { NewsletterConfirmBanner } from './_components/NewsletterConfirmBanner'
 import { AboutMe } from './_components/AboutMe'
 import { Footer } from '@/components/layout/Footer'
 import { JsonLd } from '@/components/seo/JsonLd'
@@ -24,6 +25,7 @@ export default function HomePage() {
     <>
       <JsonLd data={structuredData} />
       <AppShell padded={false}>
+        <NewsletterConfirmBanner />
         <ParallaxLogosClient />
         <Hero />
         <MissionSection />
