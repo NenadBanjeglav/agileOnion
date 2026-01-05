@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { DocumentActionComponent } from 'sanity'
 import { useToast } from '@sanity/ui'
 
-const SECRET = process.env.SANITY_STUDIO_NEWSLETTER_WEBHOOK_SECRET
+const SECRET = process.env.NEXT_PUBLIC_NEWSLETTER_WEBHOOK_SECRET
 
 export const SendNewsletterAction: DocumentActionComponent = (props) => {
   const { id, type, published } = props
@@ -19,7 +19,7 @@ export const SendNewsletterAction: DocumentActionComponent = (props) => {
       if (!SECRET) {
         toast.push({
           status: 'error',
-          title: 'Missing SANITY_STUDIO_NEWSLETTER_WEBHOOK_SECRET',
+          title: 'Missing NEXT_PUBLIC_NEWSLETTER_WEBHOOK_SECRET',
         })
         props.onComplete()
         return
