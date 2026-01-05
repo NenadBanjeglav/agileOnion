@@ -1,11 +1,11 @@
-import {useState} from 'react'
-import type {DocumentActionComponent} from 'sanity'
-import {useToast} from '@sanity/ui'
+import { useState } from 'react'
+import type { DocumentActionComponent } from 'sanity'
+import { useToast } from '@sanity/ui'
 
-const SECRET = process.env.NEXT_PUBLIC_NEWSLETTER_WEBHOOK_SECRET
+const SECRET = process.env.SANITY_STUDIO_NEWSLETTER_WEBHOOK_SECRET
 
 export const SendNewsletterAction: DocumentActionComponent = (props) => {
-  const {id, type, published} = props
+  const { id, type, published } = props
   const toast = useToast()
   const [isSending, setIsSending] = useState(false)
 
@@ -34,7 +34,7 @@ export const SendNewsletterAction: DocumentActionComponent = (props) => {
             'Content-Type': 'application/json',
             'x-webhook-secret': SECRET,
           },
-          body: JSON.stringify({postId: id}),
+          body: JSON.stringify({ postId: id }),
         })
 
         const response = await fetch(
