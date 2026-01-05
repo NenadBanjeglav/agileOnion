@@ -172,7 +172,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             pageSize={FEED_PAGE_SIZE}
             fetchUrl={`/api/blog/category/posts?slug=${slug}`}
             title={`Priče iz ${category.title}`}
-            subtitle="Sve objave iz ove kategorije, uredno poslo?ene za ?itanje."
+            subtitle="Sve objave iz ove kategorije, uredno posložene za čitanje."
           />
         </div>
       </Container>

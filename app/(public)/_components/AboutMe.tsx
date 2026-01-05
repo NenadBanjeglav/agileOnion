@@ -73,7 +73,8 @@ export function AboutMe() {
                   priority
                 />
                 <div className="absolute right-4 bottom-4 left-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/45 px-4 py-3 text-xs tracking-[0.22em] text-[#d9fbff] uppercase">
-                  <span>Agilno, ali vrlo li?no</span>
+                  <span>Agilno, ali vrlo lično</span>
+
                   <Sparkles className="h-4 w-4 text-amber-200" aria-hidden />
                 </div>
               </div>

@@ -21,13 +21,14 @@ export function BlogCategories() {
           <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[#00B3D5]/30 bg-[#00B3D5]/10 px-4 py-2 text-xs font-semibold tracking-[0.14em] text-[#d9fbff] uppercase">
             Agile Onion slojevi
           </span>
+
           <div className="grid w-full gap-6 sm:gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start">
             <div className="space-y-4 sm:space-y-5">
               <h2
                 id={headingId}
                 className="text-3xl leading-tight font-semibold sm:text-4xl md:text-5xl"
               >
-                Budi ti deo Agile Onion zajednice i evo sta dobija?:
+                Budi ti deo Agile Onion zajednice i evo šta dobijaš:
               </h2>
             </div>
 
@@ -39,40 +40,46 @@ export function BlogCategories() {
                   filozofiji;
                 </span>
               </li>
+
               <li className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
                 <span>
-                  Super-mo?ne tehnike za razvoj mindseta i prakti?ne ve?be;
+                  Super-moćne tehnike za razvoj mindseta i praktične vežbe;
                 </span>
               </li>
+
               <li className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
                 <span>
-                  Inspirativne pri?e ljudi koji su pre?li put od ideje do
+                  Inspirativne priče ljudi koji su prešli put od ideje do
                   manifestacije;
                 </span>
               </li>
+
               <li className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#01DCA0]" />
-                <span>Moju bezrezervnu podr?ku.</span>
+                <span>Moju bezrezervnu podršku.</span>
               </li>
             </ul>
           </div>
         </div>
 
         <p className="text-center text-sm font-semibold tracking-[0.22em] text-[#00B3D5] uppercase sm:text-left">
-          Agile Onion blog sadr?i slede?e kategorije:
+          Agile Onion blog sadrži sledeće kategorije:
         </p>
 
         <div className="grid grid-cols-1 gap-5 md:gap-6 lg:grid-cols-2">
           {CATEGORY_CARDS.map((layer) => (
-            <ColorCard key={layer.slug} layer={layer} allowMotion={allowMotion} />
+            <ColorCard
+              key={layer.slug}
+              layer={layer}
+              allowMotion={allowMotion}
+            />
           ))}
         </div>
-
         <p className="mx-auto max-w-4xl text-center text-base leading-relaxed text-zinc-200 sm:text-lg">
-          Otkrivaj sloj po sloj, onako kako tebi prija, i vrlo brzo ces osetiti
-          neodoljivi ukus koji te vi?e ne?e napustiti. Sladak ukus tvog rasta.
+          Otkrivaj sloj po sloj, onako kako tebi prija, i vrlo brzo ćeš osetiti
+          neodoljivi ukus koji te više neće napustiti. Sladak ukus tvog rasta.
         </p>
       </div>
     </section>
