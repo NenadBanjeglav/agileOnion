@@ -1,20 +1,20 @@
-import { useState } from 'react'
-import type { DocumentActionComponent } from 'sanity'
-import { useToast } from '@sanity/ui'
+import {useState} from 'react'
+import type {DocumentActionComponent} from 'sanity'
+import {useToast} from '@sanity/ui'
 
 const SECRET = process.env.NEXT_PUBLIC_NEWSLETTER_WEBHOOK_SECRET
 
 export const SendNewsletterAction: DocumentActionComponent = (props) => {
-  const { id, type, published } = props
+  const {type} = props
   const toast = useToast()
   const [isSending, setIsSending] = useState(false)
 
-  if (type !== 'post' || !published) {
+  if (type !== 'newsletterCampaign') {
     return null
   }
 
   return {
-    label: isSending ? 'Šaljem...' : 'Pošalji newsletter',
+    label: isSending ? 'Saljem...' : 'Posalji newsletter',
     onHandle: async () => {
       if (!SECRET) {
         toast.push({
@@ -28,15 +28,6 @@ export const SendNewsletterAction: DocumentActionComponent = (props) => {
       setIsSending(true)
       try {
         const baseUrl = window.location.origin
-        await fetch(`${baseUrl}/api/newsletter/campaigns/post-published`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-webhook-secret': SECRET,
-          },
-          body: JSON.stringify({ postId: id }),
-        })
-
         const response = await fetch(
           `${baseUrl}/api/newsletter/campaigns/process`,
           {

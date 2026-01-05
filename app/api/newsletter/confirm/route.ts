@@ -86,7 +86,7 @@ export async function GET(request: Request) {
     const latestPostUrl = latestPost?.slug
       ? `${siteConfig.url}/blog/${latestPost.slug}`
       : `${siteConfig.url}/blog`
-    const logoUrl = `${siteConfig.url}/media/brand/favicon-android.png`
+    const logoUrl = `${siteConfig.url}/media/brand/agile-onion-logo-color.svg`
 
     const { data, error } = await sendEmail({
       to: subscriber.email,

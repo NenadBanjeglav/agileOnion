@@ -33,6 +33,13 @@ export const newsletterCampaign = defineType({
       type: 'url',
     }),
     defineField({
+      name: 'customMessage',
+      title: 'Custom Message',
+      type: 'text',
+      rows: 4,
+      description: 'Optional intro text for the campaign email.',
+    }),
+    defineField({
       name: 'status',
       title: 'Status',
       type: 'string',

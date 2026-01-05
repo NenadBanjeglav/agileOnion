@@ -20,7 +20,7 @@ export default defineConfig({
   plugins: [deskTool()],
   document: {
     actions: (prev, context) => {
-      if (context.schemaType === 'post') {
+      if (context.schemaType === 'newsletterCampaign') {
         return [SendNewsletterAction, ...prev]
       }
       return prev

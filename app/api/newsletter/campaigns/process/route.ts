@@ -19,6 +19,7 @@ const CAMPAIGN_QUERY = `*[
   postSlug,
   postExcerpt,
   postImageUrl,
+  customMessage,
   nextOffset,
   sentCount,
   totalRecipients
@@ -47,13 +48,14 @@ export async function POST(request: Request) {
       status?: string
       postTitle?: string
       postSlug?: string
-      postExcerpt?: string
-      postImageUrl?: string
-      nextOffset?: number
-      sentCount?: number
-      totalRecipients?: number
-    } | null
-  >(CAMPAIGN_QUERY)
+  postExcerpt?: string
+  postImageUrl?: string
+  customMessage?: string
+  nextOffset?: number
+  sentCount?: number
+  totalRecipients?: number
+} | null
+>(CAMPAIGN_QUERY)
 
   if (!campaign) {
     return NextResponse.json({ok: true, idle: true})
@@ -110,7 +112,7 @@ export async function POST(request: Request) {
   }
 
   const postUrl = `${siteConfig.url}/blog/${campaign.postSlug}`
-  const logoUrl = `${siteConfig.url}/media/brand/favicon-android.png`
+  const logoUrl = `${siteConfig.url}/media/brand/agile-onion-logo-color.svg`
   let sentCount = campaign.sentCount ?? 0
   let lastError: string | undefined
 
@@ -135,11 +137,12 @@ export async function POST(request: Request) {
       react: NewsletterPost({
         postTitle: campaign.postTitle ?? 'Novi tekst na blogu',
         postUrl,
-        postExcerpt: campaign.postExcerpt ?? undefined,
-        postImageUrl: campaign.postImageUrl ?? undefined,
-        logoUrl,
-        unsubscribeUrl,
-      }),
+      postExcerpt: campaign.postExcerpt ?? undefined,
+      postImageUrl: campaign.postImageUrl ?? undefined,
+      logoUrl,
+      unsubscribeUrl,
+      customMessage: campaign.customMessage ?? undefined,
+    }),
       replyTo: 'agileonion.blog@gmail.com',
     })
 

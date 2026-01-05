@@ -19,6 +19,7 @@ type NewsletterPostProps = {
   postImageUrl?: string
   logoUrl?: string
   unsubscribeUrl: string
+  customMessage?: string
 }
 
 export function NewsletterPost({
@@ -28,6 +29,7 @@ export function NewsletterPost({
   postImageUrl,
   logoUrl,
   unsubscribeUrl,
+  customMessage,
 }: NewsletterPostProps) {
   return (
     <Html>
@@ -46,6 +48,9 @@ export function NewsletterPost({
           ) : null}
           <Heading style={styles.heading}>Novi tekst na blogu</Heading>
           <Section>
+            {customMessage ? (
+              <Text style={styles.text}>{customMessage}</Text>
+            ) : null}
             <Text style={styles.text}>{postTitle}</Text>
             {postImageUrl ? (
               <Img
