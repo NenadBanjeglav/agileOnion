@@ -8,6 +8,9 @@ import {sanityAdminClient} from '@/lib/sanity/adminClient'
 export const runtime = 'nodejs'
 
 const BATCH_SIZE = 50
+const SEND_DELAY_MS = 600
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 const CAMPAIGN_QUERY = `*[
   _type == "newsletterCampaign" &&
@@ -116,7 +119,8 @@ export async function POST(request: Request) {
   let sentCount = campaign.sentCount ?? 0
   let lastError: string | undefined
 
-  for (const subscriber of subscribers) {
+  for (let index = 0; index < subscribers.length; index += 1) {
+    const subscriber = subscribers[index]
     const unsubscribeToken =
       subscriber.unsubscribeToken ?? createToken()
 
@@ -152,6 +156,9 @@ export async function POST(request: Request) {
     }
 
     sentCount += 1
+    if (index < subscribers.length - 1) {
+      await delay(SEND_DELAY_MS)
+    }
   }
 
   const isComplete = subscribers.length < BATCH_SIZE
