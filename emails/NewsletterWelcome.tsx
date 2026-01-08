@@ -35,8 +35,6 @@ export function NewsletterWelcome({
             <Img
               src={logoUrl}
               alt="Agile Onion"
-              width="96"
-              height="96"
               style={styles.logo}
             />
           ) : null}
@@ -128,6 +126,9 @@ const styles = {
   logo: {
     display: 'block',
     margin: '0 auto 16px',
+    width: '100%',
+    maxWidth: '600px',
+    height: 'auto',
   },
   postImage: {
     display: 'block',
