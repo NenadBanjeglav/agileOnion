@@ -87,7 +87,7 @@ export function Footer() {
           <p className="text-sm text-[#d9fbff]/80">
             Preferiraš direktan ping? Piši mi na email. Ako želiš da budeš u
             toku sa onim što se dešava u mojoj agilnoj kuhinji i da ne propustiš
-            tekstove, prijavi se na Taste an Onion, moj nedeljni newsletter.
+            tekstove, prijavi se na Taste an Onion newsletter.
           </p>
         </div>
 

@@ -93,7 +93,7 @@ export function AboutMe() {
                 da vidim i osetim i ljude i procese. Prešao sam dug i veoma
                 izazovan put od operatera na proizvodnoj liniji, davno, do
                 pozicije menadžera na kojoj sam već godinama. I sad se sigurno
-                pitaš: Koji je to koncept koji sam primenjivao?
+                pitaš: koji je to koncept koji sam primenjivao?
               </p>
 
               <p className="lg:mx-0">

@@ -3,7 +3,7 @@ import NextImage from 'next/image'
 const PROBLEMS = [
   'Sagorevaš i gubiš energiju',
   'Osećaš jaz između obrazovanja i realnih veština',
-  'Nemaš jasan mapu svoje budućnosti',
+  'Nemaš jasnu mapu svoje budućnosti',
   'Plašiš se promena, pa ostaješ u mestu',
   'Započneš motivisano, a onda naglo odustaneš',
 ]
@@ -14,12 +14,12 @@ const OUTCOME = [
   'Ličnost koja motivaciju i disciplinu pretvara u svoj najjači alat',
 ]
 
-const YOU_GET = [
-  'Redovne, odmah primenljive lekcije o Scrum okviru i agilnoj filozofiji',
-  'Super-moćne tehnike za razvoj mindseta i praktične vežbe',
-  'Inspirativne priče ljudi koji su prešli put od ideje do manifestacije',
-  'Moju bezrezervnu podršku',
-]
+// const YOU_GET = [
+//   'Redovne, odmah primenljive lekcije o Scrum okviru i agilnoj filozofiji',
+//   'Super-moćne tehnike za razvoj mindseta i praktične vežbe',
+//   'Inspirativne priče ljudi koji su prešli put od ideje do manifestacije',
+//   'Moju bezrezervnu podršku',
+// ]
 
 export function MissionSection() {
   return (
@@ -89,7 +89,7 @@ export function MissionSection() {
                 </ul>
               </div>
 
-              <div className="space-y-3">
+              {/* <div className="space-y-3">
                 <p className="text-xs font-semibold tracking-[0.22em] text-[#00B3D5] uppercase">
                   Na ovom blogu ćeš pronaći:
                 </p>
@@ -104,7 +104,7 @@ export function MissionSection() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
