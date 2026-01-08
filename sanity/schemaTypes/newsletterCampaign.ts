@@ -91,6 +91,12 @@ export const newsletterCampaign = defineType({
       type: 'text',
       rows: 3,
     }),
+    defineField({
+      name: 'failedEmails',
+      title: 'Failed Emails',
+      type: 'array',
+      of: [{type: 'string'}],
+    }),
   ],
   preview: {
     select: {

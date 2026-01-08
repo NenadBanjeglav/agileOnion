@@ -25,7 +25,8 @@ const CAMPAIGN_QUERY = `*[
   customMessage,
   nextOffset,
   sentCount,
-  totalRecipients
+  totalRecipients,
+  failedEmails
 }`
 
 const SUBSCRIBERS_QUERY = `*[
@@ -51,12 +52,13 @@ export async function POST(request: Request) {
       status?: string
       postTitle?: string
       postSlug?: string
-  postExcerpt?: string
-  postImageUrl?: string
-  customMessage?: string
-  nextOffset?: number
-  sentCount?: number
-  totalRecipients?: number
+      postExcerpt?: string
+      postImageUrl?: string
+      customMessage?: string
+      nextOffset?: number
+      sentCount?: number
+      totalRecipients?: number
+      failedEmails?: string[]
 } | null
 >(CAMPAIGN_QUERY)
 
@@ -91,6 +93,9 @@ export async function POST(request: Request) {
       `count(*[_type == "newsletterSubscriber" && status == "subscribed" && defined(email)])`,
     ))
 
+  const failedSet = new Set(campaign.failedEmails ?? [])
+  const retryEmails = [...failedSet].slice(0, BATCH_SIZE)
+
   const end = startOffset + BATCH_SIZE
   const subscribers = await sanityAdminClient.fetch<
     {
@@ -101,7 +106,84 @@ export async function POST(request: Request) {
     {offset: number; end: number}
   >(SUBSCRIBERS_QUERY, {offset: startOffset, end})
 
-  if (!subscribers.length) {
+  const postUrl = `${siteConfig.url}/blog/${campaign.postSlug}`
+  const logoUrl = `${siteConfig.url}/media/brand/og-image.png`
+  let sentCount = campaign.sentCount ?? 0
+  let lastError: string | undefined
+
+  if (retryEmails.length) {
+    const retrySubscribers = await sanityAdminClient.fetch<
+      {
+        _id: string
+        email: string
+        unsubscribeToken?: string
+        status?: string
+      }[],
+      {emails: string[]}
+    >(
+      `*[_type == "newsletterSubscriber" && email in $emails]{_id, email, unsubscribeToken, status}`,
+      {emails: retryEmails},
+    )
+
+    const retryMap = new Map(
+      retrySubscribers.map((subscriber) => [subscriber.email, subscriber]),
+    )
+
+    for (let index = 0; index < retryEmails.length; index += 1) {
+      const email = retryEmails[index]
+      const subscriber = retryMap.get(email)
+
+      if (!subscriber || subscriber.status !== 'subscribed') {
+        failedSet.delete(email)
+        continue
+      }
+
+      const unsubscribeToken = subscriber.unsubscribeToken ?? createToken()
+
+      if (!subscriber.unsubscribeToken) {
+        await sanityAdminClient
+          .patch(subscriber._id)
+          .set({unsubscribeToken})
+          .commit({autoGenerateArrayKeys: true})
+      }
+
+      const unsubscribeUrl = `${siteConfig.url}/api/newsletter/unsubscribe?token=${unsubscribeToken}`
+
+      const {error} = await sendEmail({
+        to: subscriber.email,
+        subject: campaign.postTitle
+          ? `Novi tekst: ${campaign.postTitle}`
+          : 'Novi tekst na Agile Onion',
+        react: NewsletterPost({
+          postTitle: campaign.postTitle ?? 'Novi tekst na blogu',
+          postUrl,
+          postExcerpt: campaign.postExcerpt ?? undefined,
+          postImageUrl: campaign.postImageUrl ?? undefined,
+          logoUrl,
+          unsubscribeUrl,
+          customMessage: campaign.customMessage ?? undefined,
+        }),
+        replyTo: 'agileonion.blog@gmail.com',
+      })
+
+      if (error) {
+        lastError = error.message ?? 'Email delivery failed'
+      } else {
+        failedSet.delete(email)
+        sentCount += 1
+      }
+
+      if (index < retryEmails.length - 1) {
+        await delay(SEND_DELAY_MS)
+      }
+    }
+  }
+
+  if (retryEmails.length && subscribers.length) {
+    await delay(SEND_DELAY_MS)
+  }
+
+  if (!subscribers.length && failedSet.size === 0) {
     await sanityAdminClient
       .patch(campaign._id)
       .set({
@@ -114,10 +196,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ok: true, completed: true})
   }
 
-  const postUrl = `${siteConfig.url}/blog/${campaign.postSlug}`
-  const logoUrl = `${siteConfig.url}/media/brand/og-image.png`
-  let sentCount = campaign.sentCount ?? 0
-  let lastError: string | undefined
+  if (!subscribers.length) {
+    await sanityAdminClient
+      .patch(campaign._id)
+      .set({
+        lastRunAt: nowIso,
+        totalRecipients,
+        failedEmails: Array.from(failedSet),
+        ...(lastError ? {lastError} : {}),
+      })
+      .commit({autoGenerateArrayKeys: true})
+    return NextResponse.json({ok: true, pendingFailures: failedSet.size})
+  }
 
   for (let index = 0; index < subscribers.length; index += 1) {
     const subscriber = subscribers[index]
@@ -152,6 +242,7 @@ export async function POST(request: Request) {
 
     if (error) {
       lastError = error.message ?? 'Email delivery failed'
+      failedSet.add(subscriber.email)
       continue
     }
 
@@ -161,7 +252,7 @@ export async function POST(request: Request) {
     }
   }
 
-  const isComplete = subscribers.length < BATCH_SIZE
+  const isComplete = subscribers.length < BATCH_SIZE && failedSet.size === 0
   await sanityAdminClient
     .patch(campaign._id)
     .set({
@@ -169,6 +260,7 @@ export async function POST(request: Request) {
       nextOffset: startOffset + subscribers.length,
       lastRunAt: nowIso,
       totalRecipients,
+      failedEmails: Array.from(failedSet),
       ...(lastError ? {lastError} : {}),
       ...(isComplete ? {status: 'completed', completedAt: nowIso} : {}),
     })
@@ -178,5 +270,6 @@ export async function POST(request: Request) {
     ok: true,
     sent: sentCount,
     nextOffset: isComplete ? null : startOffset + subscribers.length,
+    pendingFailures: failedSet.size,
   })
 }
