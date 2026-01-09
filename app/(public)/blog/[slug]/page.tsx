@@ -23,6 +23,23 @@ import { JsonLd } from '@/components/seo/JsonLd'
 
 export const revalidate = 3600
 
+const SANITY_TIMEOUT_MS = 8000
+
+const withTimeout = async <T,>(promise: Promise<T>) => {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(() => {
+      reject(new Error('Sanity request timed out'))
+    }, SANITY_TIMEOUT_MS)
+  })
+
+  try {
+    return (await Promise.race([promise, timeout])) as T
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId)
+  }
+}
+
 const POST_QUERY = `*[
   _type == "post" &&
   slug.current == $slug
@@ -85,12 +102,14 @@ const hasPortableText = (
 ): value is PortableTextValue => Array.isArray(value) && value.length > 0
 
 const getPost = cache(async (slug: string) =>
-  sanityClient.fetch<Post | null>(POST_QUERY, { slug }),
+  withTimeout(sanityClient.fetch<Post | null>(POST_QUERY, { slug })),
 )
 
 const getRelatedPosts = cache(async (slug: string, category?: string) => {
   if (!category) return []
-  return sanityClient.fetch<Post[]>(RELATED_QUERY, { slug, category })
+  return withTimeout(
+    sanityClient.fetch<Post[]>(RELATED_QUERY, { slug, category }),
+  )
 })
 
 const getReadingTime = (value?: PortableTextValue) => {
@@ -209,7 +228,9 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const slugs = await sanityClient.fetch<{ slug: string }[]>(SLUGS_QUERY)
+  const slugs = await withTimeout(
+    sanityClient.fetch<{ slug: string }[]>(SLUGS_QUERY),
+  )
   return slugs.map(({ slug }) => ({ slug }))
 }
 

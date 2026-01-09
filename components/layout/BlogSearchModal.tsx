@@ -29,34 +29,55 @@ const CATEGORY_OPTIONS = [
 ]
 
 const FALLBACK_IMAGE = '/media/trail/trail-notes.webp'
+const SEARCH_TIMEOUT_MS = 8000
 
 export function BlogSearchModal({ open, onClose }: BlogSearchModalProps) {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('')
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [retryToken, setRetryToken] = useState(0)
   const emptyState = useMemo(() => query.trim().length === 0, [query])
 
   useEffect(() => {
     if (!open) return
     const controller = new AbortController()
+    let fetchTimeoutId: number | undefined
+    let didTimeout = false
     const timer = setTimeout(async () => {
       try {
         setLoading(true)
+        setErrorMessage(null)
         const params = new URLSearchParams()
         if (query.trim()) params.set('q', query.trim())
         if (category) params.set('category', category)
+        fetchTimeoutId = window.setTimeout(() => {
+          didTimeout = true
+          controller.abort()
+        }, SEARCH_TIMEOUT_MS)
         const res = await fetch(`/api/search/blog?${params.toString()}`, {
           signal: controller.signal,
         })
         if (!res.ok) throw new Error('Search failed')
         const data = (await res.json()) as { results: SearchResult[] }
-        setResults(data.results)
+        const nextResults = Array.isArray(data.results) ? data.results : []
+        setResults(nextResults)
+        if (!Array.isArray(data.results)) {
+          setErrorMessage('Neispravan odgovor sa servera.')
+        }
       } catch (error) {
-        if (!(error instanceof DOMException && error.name === 'AbortError')) {
+        if (didTimeout) {
           setResults([])
+          setErrorMessage('Pretraga je istekla. Pokusaj ponovo.')
+        } else if (
+          !(error instanceof DOMException && error.name === 'AbortError')
+        ) {
+          setResults([])
+          setErrorMessage('Pretraga nije uspela. Pokusaj ponovo.')
         }
       } finally {
+        if (fetchTimeoutId) window.clearTimeout(fetchTimeoutId)
         setLoading(false)
       }
     }, 250)
@@ -64,8 +85,9 @@ export function BlogSearchModal({ open, onClose }: BlogSearchModalProps) {
     return () => {
       clearTimeout(timer)
       controller.abort()
+      if (fetchTimeoutId) window.clearTimeout(fetchTimeoutId)
     }
-  }, [query, category, open])
+  }, [query, category, open, retryToken])
 
   useEffect(() => {
     if (!open) return
@@ -161,7 +183,19 @@ export function BlogSearchModal({ open, onClose }: BlogSearchModalProps) {
                   )}
                 </div>
                 <div className="space-y-2">
-                  {!loading && results.length === 0 && (
+                  {!loading && errorMessage && (
+                    <div className="rounded-2xl border border-white/10 bg-neutral-900/60 px-4 py-5 text-sm text-white/70">
+                      <p>{errorMessage}</p>
+                      <button
+                        type="button"
+                        onClick={() => setRetryToken((prev) => prev + 1)}
+                        className="mt-3 inline-flex items-center justify-center rounded-full border border-emerald-200/60 px-4 py-1.5 text-xs font-semibold tracking-[0.12em] text-emerald-100 uppercase transition hover:border-emerald-200 hover:text-emerald-50"
+                      >
+                        Pokusaj ponovo
+                      </button>
+                    </div>
+                  )}
+                  {!loading && !errorMessage && results.length === 0 && (
                     <p className="rounded-2xl border border-white/10 bg-neutral-900/60 px-4 py-6 text-sm text-white/60">
                       Nema rezultata. Probaj drugi naziv ili kategoriju.
                     </p>

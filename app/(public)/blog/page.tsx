@@ -17,6 +17,23 @@ import { InfinitePostGrid } from './_components/InfinitePostGrid'
 
 export const revalidate = 3600
 
+const SANITY_TIMEOUT_MS = 8000
+
+const withTimeout = async <T,>(promise: Promise<T>) => {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(() => {
+      reject(new Error('Sanity request timed out'))
+    }, SANITY_TIMEOUT_MS)
+  })
+
+  try {
+    return (await Promise.race([promise, timeout])) as T
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId)
+  }
+}
+
 const FEATURED_COUNT = 4
 const FEED_PAGE_SIZE = 9
 const INITIAL_POST_LIMIT = FEATURED_COUNT + FEED_PAGE_SIZE
@@ -82,7 +99,9 @@ export const generateMetadata = () => {
 }
 
 export default async function BlogPage() {
-  const posts = await sanityClient.fetch<SanityPost[]>(POSTS_QUERY)
+  const posts = await withTimeout(
+    sanityClient.fetch<SanityPost[]>(POSTS_QUERY),
+  )
   const mappedPosts = posts.map(mapPost)
   const heroPost = mappedPosts[0]
   const sidePosts = mappedPosts.slice(1, FEATURED_COUNT)

@@ -38,6 +38,8 @@ const TESTIMONIALS_QUERY = `*[
   "imageUrl": image.asset->url
 }`
 
+const SUBMIT_TIMEOUT_MS = 8000
+
 const shuffleCards = (cards: TestimonialCard[]) => {
   const shuffled = [...cards]
   for (let i = shuffled.length - 1; i > 0; i -= 1) {
@@ -156,6 +158,12 @@ export function NewsletterShuffle({
     setNotice('')
     setShowSpamNotice(false)
 
+    const controller = new AbortController()
+    const timeoutId = window.setTimeout(
+      () => controller.abort(),
+      SUBMIT_TIMEOUT_MS,
+    )
+
     try {
       const response = await fetch('/api/newsletter', {
         method: 'POST',
@@ -165,6 +173,7 @@ export function NewsletterShuffle({
           source: 'newsletter-shuffle',
           company,
         }),
+        signal: controller.signal,
       })
       const data = (await response.json().catch(() => null)) as {
         error?: string
@@ -186,9 +195,15 @@ export function NewsletterShuffle({
       })
       setEmail('')
       setCompany('')
-    } catch {
+    } catch (error) {
       setStatus('error')
-      setNotice('Nesto nije uspelo. Pokusaj ponovo.')
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        setNotice('Zahtev je istekao. Pokusaj ponovo.')
+      } else {
+        setNotice('Nesto nije uspelo. Pokusaj ponovo.')
+      }
+    } finally {
+      window.clearTimeout(timeoutId)
     }
   }
 

@@ -7,6 +7,8 @@ import Link from 'next/link'
 import type { PostCard } from './types'
 import { SectionHeader } from './SectionHeader'
 
+const FETCH_TIMEOUT_MS = 8000
+
 type InfinitePostGridProps = {
   initialPosts: PostCard[]
   startFrom: number
@@ -28,22 +30,31 @@ export function InfinitePostGrid({
   const [offset, setOffset] = useState(startFrom)
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
+  const [loadError, setLoadError] = useState(false)
   const sentinelRef = useRef<HTMLDivElement | null>(null)
 
   const loadMore = useCallback(async () => {
     if (isLoading || !hasMore) return
     setIsLoading(true)
+    setLoadError(false)
+    const controller = new AbortController()
+    const timeoutId = window.setTimeout(
+      () => controller.abort(),
+      FETCH_TIMEOUT_MS,
+    )
 
     try {
       const res = await fetch(
         `${fetchUrl}${fetchUrl.includes('?') ? '&' : '?'}start=${offset}&limit=${pageSize}`,
+        { signal: controller.signal },
       )
       if (!res.ok) {
         setHasMore(false)
+        setLoadError(true)
         return
       }
       const nextPosts = (await res.json()) as PostCard[]
-      if (!nextPosts.length) {
+      if (!Array.isArray(nextPosts) || !nextPosts.length) {
         setHasMore(false)
         return
       }
@@ -52,7 +63,11 @@ export function InfinitePostGrid({
       if (nextPosts.length < pageSize) {
         setHasMore(false)
       }
+    } catch {
+      setHasMore(false)
+      setLoadError(true)
     } finally {
+      window.clearTimeout(timeoutId)
       setIsLoading(false)
     }
   }, [fetchUrl, hasMore, isLoading, offset, pageSize])
@@ -120,7 +135,23 @@ export function InfinitePostGrid({
             ))}
           </div>
           <div ref={sentinelRef} className="flex justify-center py-4">
-            {hasMore ? (
+            {loadError ? (
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-xs uppercase tracking-[0.2em] text-emerald-200/80">
+                  Ucitavanje nije uspelo
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLoadError(false)
+                    setHasMore(true)
+                  }}
+                  className="inline-flex items-center justify-center rounded-full border border-emerald-200/60 px-4 py-1.5 text-xs font-semibold tracking-[0.12em] text-emerald-100 uppercase transition hover:border-emerald-200 hover:text-emerald-50"
+                >
+                  Pokusaj ponovo
+                </button>
+              </div>
+            ) : hasMore ? (
               <span className="text-xs uppercase tracking-[0.2em] text-emerald-200/80">
                 {isLoading ? 'Učitavanje...' : 'Skroluj za još'}
               </span>

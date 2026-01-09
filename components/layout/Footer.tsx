@@ -2,6 +2,7 @@
 
 import NextImage from 'next/image'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { Linkedin } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
@@ -15,12 +16,16 @@ const quickLinks = [
 ]
 
 export function Footer() {
-  const year = new Date().getFullYear()
+  const [year, setYear] = useState<number | null>(null)
   const pathname = usePathname()
   const showAboutLink = pathname === '/'
   const visibleQuickLinks = quickLinks.filter((link) =>
     link.href === '#founder' ? showAboutLink : true,
   )
+
+  useEffect(() => {
+    setYear(new Date().getFullYear())
+  }, [])
 
   return (
     <footer
@@ -99,7 +104,7 @@ export function Footer() {
           <div className="mx-auto flex flex-wrap items-center justify-center gap-3 text-sm sm:justify-center">
             <span className="hidden text-zinc-500 sm:inline">/</span>
             <span className="text-zinc-400">
-              Ac {year} Agile Onion. Sweet taste of your growth.
+              Ac {year ? `${year} ` : ''}Agile Onion. Sweet taste of your growth.
             </span>
           </div>
         </div>

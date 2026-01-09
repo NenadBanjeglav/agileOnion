@@ -19,6 +19,23 @@ import { JsonLd } from '@/components/seo/JsonLd'
 
 export const revalidate = 3600
 
+const SANITY_TIMEOUT_MS = 8000
+
+const withTimeout = async <T,>(promise: Promise<T>) => {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(() => {
+      reject(new Error('Sanity request timed out'))
+    }, SANITY_TIMEOUT_MS)
+  })
+
+  try {
+    return (await Promise.race([promise, timeout])) as T
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId)
+  }
+}
+
 const FEED_PAGE_SIZE = 9
 
 const POSTS_QUERY = `*[
@@ -101,9 +118,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound()
   }
 
-  const posts = await sanityClient.fetch<SanityPost[]>(POSTS_QUERY, {
-    slug,
-  })
+  const posts = await withTimeout(
+    sanityClient.fetch<SanityPost[]>(POSTS_QUERY, {
+      slug,
+    }),
+  )
   const mappedPosts = posts.map(mapPost)
   const jsonLd = {
     '@context': 'https://schema.org',
