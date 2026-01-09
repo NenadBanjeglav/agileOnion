@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { motion, useReducedMotion } from 'motion/react'
-import { Loader2 } from 'lucide-react'
+import { AlertCircle, Loader2 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { sanityClient } from '@/lib/sanity/client'
 
@@ -59,7 +59,7 @@ const getAuthorInitials = (authorLine: string) => {
   const tokens = namePart.split(/\s+/).filter(Boolean)
   if (tokens.length === 0) return '?'
   const first = tokens[0]?.[0] ?? ''
-  const last = tokens.length > 1 ? tokens[tokens.length - 1]?.[0] ?? '' : ''
+  const last = tokens.length > 1 ? (tokens[tokens.length - 1]?.[0] ?? '') : ''
   return `${first}${last}`.toUpperCase()
 }
 
@@ -83,6 +83,7 @@ export function NewsletterShuffle({
     'idle' | 'loading' | 'success' | 'error'
   >('idle')
   const [notice, setNotice] = useState('')
+  const [showSpamNotice, setShowSpamNotice] = useState(false)
   const sectionLayout = hideShuffleCards
     ? 'lg:flex-col lg:items-center lg:justify-center'
     : 'lg:flex-row lg:justify-between'
@@ -153,6 +154,7 @@ export function NewsletterShuffle({
 
     setStatus('loading')
     setNotice('')
+    setShowSpamNotice(false)
 
     try {
       const response = await fetch('/api/newsletter', {
@@ -176,9 +178,11 @@ export function NewsletterShuffle({
       setStatus('success')
       setNotice(() => {
         if (data?.alreadySubscribed) {
+          setShowSpamNotice(false)
           return 'Vec si prijavljen. Hvala!'
         }
-        return 'Hvala! Proveri email i potvrdi prijavu.'
+        setShowSpamNotice(true)
+        return 'Hvala! Proveri email i potvrdi prijavu!'
       })
       setEmail('')
       setCompany('')
@@ -268,11 +272,15 @@ export function NewsletterShuffle({
               {notice}
             </p>
           ) : null}
+          {showSpamNotice ? (
+            <p className="inline-flex items-center gap-2 text-sm font-semibold text-amber-200/90">
+              <AlertCircle className="h-4 w-4" aria-hidden />
+              Proveri i spam/promotions folder.
+            </p>
+          ) : null}
         </form>
 
-        <p className="text-sm text-[#d9fbff]/80">
-          Bez spama. Jedva čekam da se upoznamo.
-        </p>
+        <p className="text-sm text-[#d9fbff]/80">Jedva čekam da se upoznamo.</p>
       </div>
 
       {!hideShuffleCards && cards.length > 0 ? (
