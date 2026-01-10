@@ -21,7 +21,7 @@ import { Footer } from '@/components/layout/Footer'
 import { ParallaxLogos } from '../../_components/ParallaxLogos'
 import { JsonLd } from '@/components/seo/JsonLd'
 
-export const revalidate = 3600
+export const revalidate = 300
 
 const SANITY_TIMEOUT_MS = 8000
 

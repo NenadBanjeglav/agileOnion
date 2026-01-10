@@ -12,6 +12,8 @@ import { Footer } from '@/components/layout/Footer'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { ParallaxLogosClient } from './_components/ParallaxLogosClient'
 
+export const revalidate = 300
+
 export default function HomePage() {
   const structuredData = {
     '@context': 'https://schema.org',
