@@ -120,6 +120,16 @@ const getReadingTime = (value?: PortableTextValue) => {
   return Math.max(1, Math.ceil(words / 200))
 }
 
+const getFileUrl = (ref?: string) => {
+  if (!ref) return null
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET
+  if (!projectId || !dataset) return null
+  const [type, id, ext] = ref.split('-')
+  if (type !== 'file' || !id || !ext) return null
+  return `https://cdn.sanity.io/files/${projectId}/${dataset}/${id}.${ext}`
+}
+
 const portableTextComponents: PortableTextComponents = {
   types: {
     image: ({ value }) => {
@@ -135,6 +145,27 @@ const portableTextComponents: PortableTextComponents = {
             className="h-auto w-full object-cover"
           />
         </figure>
+      )
+    },
+    file: ({ value }) => {
+      const ref = value?.asset?._ref as string | undefined
+      const href = getFileUrl(ref)
+      if (!href) return null
+      const linkText =
+        typeof value?.title === 'string' && value.title.trim()
+          ? value.title.trim()
+          : 'Download PDF'
+      return (
+        <p className="my-6">
+          <a
+            href={href}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="inline-flex items-center gap-2 rounded-full border border-emerald-200/40 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-100 transition hover:border-emerald-100"
+          >
+            {linkText}
+          </a>
+        </p>
       )
     },
   },

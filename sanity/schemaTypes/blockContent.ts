@@ -45,5 +45,18 @@ export const blockContent = defineType({
       type: 'image',
       options: {hotspot: true},
     }),
+    defineArrayMember({
+      type: 'file',
+      options: {
+        accept: '.pdf',
+      },
+      fields: [
+        {
+          name: 'title',
+          type: 'string',
+          title: 'Link text',
+        },
+      ],
+    }),
   ],
 })
