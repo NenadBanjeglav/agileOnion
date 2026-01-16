@@ -171,12 +171,12 @@ const portableTextComponents: PortableTextComponents = {
   },
   block: {
     h2: ({ children }) => (
-      <h2 className="mt-10 scroll-mt-28 text-2xl font-semibold text-white sm:text-3xl">
+      <h2 className="mt-10 mb-4 scroll-mt-28 text-2xl font-semibold text-white sm:text-3xl">
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="mt-8 scroll-mt-28 text-xl font-semibold text-white sm:text-2xl">
+      <h3 className="mt-8 mb-3 scroll-mt-28 text-xl font-semibold text-white sm:text-2xl">
         {children}
       </h3>
     ),
@@ -186,14 +186,14 @@ const portableTextComponents: PortableTextComponents = {
       </blockquote>
     ),
     normal: ({ children }) => (
-      <p className="text-base leading-relaxed text-zinc-200 sm:text-lg">
+      <p className="mb-6 text-base leading-relaxed text-zinc-200 last:mb-0 sm:text-lg">
         {children}
       </p>
     ),
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="ml-5 list-disc space-y-2 text-base text-zinc-200 sm:text-lg">
+      <ul className="mb-6 ml-5 list-disc space-y-2 text-base text-zinc-200 last:mb-0 sm:text-lg">
         {children}
       </ul>
     ),
