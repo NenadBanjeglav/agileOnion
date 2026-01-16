@@ -171,32 +171,20 @@ const portableTextComponents: PortableTextComponents = {
   },
   block: {
     h2: ({ children }) => (
-      <h2 className="mt-10 mb-4 scroll-mt-28 text-2xl font-semibold text-white sm:text-3xl">
-        {children}
-      </h2>
+      <h2>{children}</h2>
     ),
     h3: ({ children }) => (
-      <h3 className="mt-8 mb-3 scroll-mt-28 text-xl font-semibold text-white sm:text-2xl">
-        {children}
-      </h3>
+      <h3>{children}</h3>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="my-8 border-l-2 border-emerald-300/60 bg-white/5 px-6 py-5 text-lg text-emerald-100">
+      <blockquote className="border-l-2 border-emerald-300/60 bg-white/5 px-6 py-5 text-emerald-100">
         {children}
       </blockquote>
     ),
-    normal: ({ children }) => (
-      <p className="mb-6 text-base leading-relaxed text-zinc-200 last:mb-0 sm:text-lg">
-        {children}
-      </p>
-    ),
+    normal: ({ children }) => <p>{children}</p>,
   },
   list: {
-    bullet: ({ children }) => (
-      <ul className="mb-6 ml-5 list-disc space-y-2 text-base text-zinc-200 last:mb-0 sm:text-lg">
-        {children}
-      </ul>
-    ),
+    bullet: ({ children }) => <ul>{children}</ul>,
   },
   listItem: {
     bullet: ({ children }) => <li>{children}</li>,
