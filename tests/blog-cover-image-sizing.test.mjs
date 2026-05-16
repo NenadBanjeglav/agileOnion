@@ -131,7 +131,7 @@ test('cover and body images share the same adaptive layout helper', () => {
   )
   assert.match(
     source,
-    /const imageLayout = getBlogImageLayout\(getPortableTextImageDimensions\(value\)\)/,
+    /const imageLayout = getBlogImageLayout\(\s*getPortableTextImageDimensions\(value\),?\s*\)/,
     'expected body images to use the shared blog image layout helper',
   )
   assert.doesNotMatch(

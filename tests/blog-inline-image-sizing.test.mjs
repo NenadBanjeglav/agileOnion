@@ -29,7 +29,7 @@ test('PortableText body images use the shared adaptive image layout', () => {
 
   assert.match(
     renderer,
-    /const imageLayout = getBlogImageLayout\(getPortableTextImageDimensions\(value\)\)/,
+    /const imageLayout = getBlogImageLayout\(\s*getPortableTextImageDimensions\(value\),?\s*\)/,
     'expected body images to derive layout from projected Sanity dimensions',
   )
   assert.match(
