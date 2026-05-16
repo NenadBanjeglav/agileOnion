@@ -53,6 +53,7 @@ const POST_QUERY = `*[
   _createdAt,
   body,
   coverImage,
+  "coverImageDimensions": coverImage.asset->metadata.dimensions,
   author->{name, image}
 }`
 
@@ -82,6 +83,12 @@ type Author = {
   image?: unknown
 }
 
+type ImageDimensions = {
+  width?: number | null
+  height?: number | null
+  aspectRatio?: number | null
+}
+
 type Post = {
   _id: string
   title: string
@@ -92,6 +99,7 @@ type Post = {
   _createdAt?: string
   body?: PortableTextValue
   coverImage?: unknown
+  coverImageDimensions?: ImageDimensions | null
   author?: Author
 }
 
@@ -128,6 +136,38 @@ const getFileUrl = (ref?: string) => {
   const [type, id, ext] = ref.split('-')
   if (type !== 'file' || !id || !ext) return null
   return `https://cdn.sanity.io/files/${projectId}/${dataset}/${id}.${ext}`
+}
+
+const isPositiveNumber = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isFinite(value) && value > 0
+
+const isPortraitImage = (dimensions?: ImageDimensions | null) => {
+  const width = dimensions?.width
+  const height = dimensions?.height
+
+  return isPositiveNumber(width) && isPositiveNumber(height) && height > width
+}
+
+const getImageDimension = (value: unknown, fallback: number) =>
+  isPositiveNumber(value) ? Math.round(value) : fallback
+
+const getCoverImageLayout = (dimensions?: ImageDimensions | null) => {
+  const isPortrait = isPortraitImage(dimensions)
+  const fallbackWidth = isPortrait ? 900 : 1600
+  const fallbackHeight = isPortrait ? 1200 : 900
+
+  return {
+    sourceWidth: isPortrait ? 900 : 1600,
+    width: getImageDimension(dimensions?.width, fallbackWidth),
+    height: getImageDimension(dimensions?.height, fallbackHeight),
+    sizes: isPortrait
+      ? '(min-width: 768px) 520px, calc(100vw - 48px)'
+      : '(min-width: 1024px) 1024px, calc(100vw - 48px)',
+    frameClassName: [
+      'overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.9)]',
+      isPortrait ? 'mx-auto w-full max-w-[520px]' : 'w-full',
+    ].join(' '),
+  }
 }
 
 const portableTextComponents: PortableTextComponents = {
@@ -263,8 +303,12 @@ export default async function BlogPostPage({
   const readingTime = getReadingTime(post.body)
   const categoryLabel = CATEGORY_LABELS[post.category ?? ''] ?? 'Blog'
   const categorySlug = post.category ?? null
+  const coverImageLayout = getCoverImageLayout(post.coverImageDimensions)
   const coverImageUrl = post.coverImage
-    ? urlFor(post.coverImage).width(1600).auto('format').url()
+    ? urlFor(post.coverImage)
+        .width(coverImageLayout.sourceWidth)
+        .auto('format')
+        .url()
     : null
   const authorName = post.author?.name ?? 'Agile Onion'
   const authorImageUrl = post.author?.image
@@ -351,13 +395,14 @@ export default async function BlogPostPage({
           </header>
 
           {coverImageUrl && (
-            <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.9)]">
+            <div className={coverImageLayout.frameClassName}>
               <Image
                 src={coverImageUrl}
                 alt={`Naslovna slika za ${post.title}`}
-                width={1600}
-                height={900}
-                className="h-auto w-full object-cover"
+                width={coverImageLayout.width}
+                height={coverImageLayout.height}
+                sizes={coverImageLayout.sizes}
+                className="h-auto w-full object-contain"
                 priority
               />
             </div>
