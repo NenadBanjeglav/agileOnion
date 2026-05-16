@@ -16,7 +16,7 @@ test('post query fetches cover image dimensions', () => {
   )
 })
 
-test('portrait cover detection compares Sanity width and height', () => {
+test('portrait image detection compares Sanity width and height', () => {
   assert.match(
     source,
     /type ImageDimensions = \{[\s\S]*?width\?: number \| null[\s\S]*?height\?: number \| null[\s\S]*?\}/,
@@ -29,32 +29,32 @@ test('portrait cover detection compares Sanity width and height', () => {
   )
 })
 
-test('cover image layout caps portrait covers without capping landscape covers', () => {
+test('shared blog image layout caps portrait images without capping landscape images', () => {
   const layoutMatch = source.match(
-    /const getCoverImageLayout = \([\s\S]*?\n\}\n\nconst portableTextComponents/,
+    /const getBlogImageLayout = \([\s\S]*?\n\}\n\nconst getPortableTextImageDimensions/,
   )
   const layout = layoutMatch?.[0] ?? ''
 
-  assert.ok(layout, 'expected getCoverImageLayout helper in blog page')
+  assert.ok(layout, 'expected getBlogImageLayout helper in blog page')
   assert.match(
     layout,
     /max-w-\[520px\]/,
-    'expected portrait cover frame to cap at 520px',
+    'expected portrait image frame to cap at 520px',
   )
   assert.match(
     layout,
     /\bmx-auto\b/,
-    'expected portrait cover frame to be centered',
+    'expected portrait image frame to be centered',
   )
   assert.match(
     layout,
     /: 'w-full'/,
-    'expected landscape cover frame to stay full width',
+    'expected landscape image frame to stay full width',
   )
   assert.match(
     layout,
     /sourceWidth: isPortrait \? 900 : 1600/,
-    'expected smaller Sanity transform width for portrait covers',
+    'expected smaller Sanity transform width for portrait images',
   )
   assert.match(
     layout,
@@ -68,7 +68,7 @@ test('cover image layout caps portrait covers without capping landscape covers',
   )
 })
 
-test('cover image dimensions cannot round down to zero', () => {
+test('blog image dimensions cannot round down to zero', () => {
   assert.match(
     source,
     /Math\.max\(1,\s*Math\.round\(value\)\)/,
@@ -79,7 +79,7 @@ test('cover image dimensions cannot round down to zero', () => {
 test('cover image URL uses adaptive layout source width', () => {
   assert.match(
     source,
-    /const coverImageLayout = getCoverImageLayout\(post\.coverImageDimensions\)/,
+    /const coverImageLayout = getBlogImageLayout\(post\.coverImageDimensions\)/,
     'expected cover image layout to use Sanity cover dimensions',
   )
   assert.match(
@@ -120,5 +120,23 @@ test('cover image render uses adaptive layout values', () => {
     coverBlock,
     /className="h-auto w-full object-contain"/,
     'expected cover image to preserve natural aspect ratio',
+  )
+})
+
+test('cover and body images share the same adaptive layout helper', () => {
+  assert.match(
+    source,
+    /const coverImageLayout = getBlogImageLayout\(post\.coverImageDimensions\)/,
+    'expected cover images to use the shared blog image layout helper',
+  )
+  assert.match(
+    source,
+    /const imageLayout = getBlogImageLayout\(getPortableTextImageDimensions\(value\)\)/,
+    'expected body images to use the shared blog image layout helper',
+  )
+  assert.doesNotMatch(
+    source,
+    /getCoverImageLayout/,
+    'expected cover-specific image layout helper to be generalized',
   )
 })
