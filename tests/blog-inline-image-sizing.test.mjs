@@ -43,7 +43,7 @@ test('PortableText body images are centered and capped to text column width', ()
 
 test('cover image does not reuse the inline body image cap', () => {
   const coverBlockMatch = source.match(
-    /\{coverImageUrl && \([\s\S]*?priority\s*\/\>\s*<\/div>\s*\)\}/,
+    /\{coverImageUrl && \([\s\S]*?priority\s*\/>\s*<\/div>\s*\)\}/,
   )
   const coverBlock = coverBlockMatch?.[0] ?? ''
 

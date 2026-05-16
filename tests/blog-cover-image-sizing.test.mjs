@@ -68,9 +68,22 @@ test('cover image layout caps portrait covers without capping landscape covers',
   )
 })
 
+test('cover image URL uses adaptive layout source width', () => {
+  assert.match(
+    source,
+    /const coverImageLayout = getCoverImageLayout\(post\.coverImageDimensions\)/,
+    'expected cover image layout to use Sanity cover dimensions',
+  )
+  assert.match(
+    source,
+    /\.width\(coverImageLayout\.sourceWidth\)/,
+    'expected cover image URL transform to use adaptive source width',
+  )
+})
+
 test('cover image render uses adaptive layout values', () => {
   const coverBlockMatch = source.match(
-    /\{coverImageUrl && \([\s\S]*?priority\s*\/\>\s*<\/div>\s*\)\}/,
+    /\{coverImageUrl && \([\s\S]*?priority\s*\/>\s*<\/div>\s*\)\}/,
   )
   const coverBlock = coverBlockMatch?.[0] ?? ''
 
