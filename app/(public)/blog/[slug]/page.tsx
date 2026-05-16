@@ -95,6 +95,10 @@ type ImageDimensions = {
   aspectRatio?: number | null
 }
 
+type BlogImageValue = {
+  dimensions?: ImageDimensions | null
+}
+
 type Post = {
   _id: string
   title: string
@@ -157,7 +161,7 @@ const isPortraitImage = (dimensions?: ImageDimensions | null) => {
 const getImageDimension = (value: unknown, fallback: number) =>
   isPositiveNumber(value) ? Math.max(1, Math.round(value)) : fallback
 
-const getCoverImageLayout = (dimensions?: ImageDimensions | null) => {
+const getBlogImageLayout = (dimensions?: ImageDimensions | null) => {
   const isPortrait = isPortraitImage(dimensions)
   const fallbackWidth = isPortrait ? 900 : 1600
   const fallbackHeight = isPortrait ? 1200 : 900
@@ -174,6 +178,14 @@ const getCoverImageLayout = (dimensions?: ImageDimensions | null) => {
       isPortrait ? 'mx-auto w-full max-w-[520px]' : 'w-full',
     ].join(' '),
   }
+}
+
+const getPortableTextImageDimensions = (value: unknown) => {
+  if (!value || typeof value !== 'object' || !('dimensions' in value)) {
+    return null
+  }
+
+  return (value as BlogImageValue).dimensions ?? null
 }
 
 const portableTextComponents: PortableTextComponents = {
@@ -309,7 +321,7 @@ export default async function BlogPostPage({
   const readingTime = getReadingTime(post.body)
   const categoryLabel = CATEGORY_LABELS[post.category ?? ''] ?? 'Blog'
   const categorySlug = post.category ?? null
-  const coverImageLayout = getCoverImageLayout(post.coverImageDimensions)
+  const coverImageLayout = getBlogImageLayout(post.coverImageDimensions)
   const coverImageUrl = post.coverImage
     ? urlFor(post.coverImage)
         .width(coverImageLayout.sourceWidth)
