@@ -133,16 +133,17 @@ const getFileUrl = (ref?: string) => {
 const portableTextComponents: PortableTextComponents = {
   types: {
     image: ({ value }) => {
-      const imageUrl = urlFor(value).width(1200).auto('format').url()
+      const imageUrl = urlFor(value).width(1000).auto('format').url()
       if (!imageUrl) return null
       return (
-        <figure className="my-8 overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+        <figure className="mx-auto my-8 w-full max-w-[760px] overflow-hidden rounded-2xl border border-white/10 bg-white/5">
           <Image
             src={imageUrl}
             alt="Ilustracija u članku"
-            width={1200}
-            height={700}
-            className="h-auto w-full object-cover"
+            width={1000}
+            height={583}
+            sizes="(min-width: 768px) 760px, calc(100vw - 48px)"
+            className="h-auto w-full object-contain"
           />
         </figure>
       )
@@ -170,12 +171,8 @@ const portableTextComponents: PortableTextComponents = {
     },
   },
   block: {
-    h2: ({ children }) => (
-      <h2>{children}</h2>
-    ),
-    h3: ({ children }) => (
-      <h3>{children}</h3>
-    ),
+    h2: ({ children }) => <h2>{children}</h2>,
+    h3: ({ children }) => <h3>{children}</h3>,
     blockquote: ({ children }) => (
       <blockquote className="border-l-2 border-emerald-300/60 bg-white/5 px-6 py-5 text-emerald-100">
         {children}
