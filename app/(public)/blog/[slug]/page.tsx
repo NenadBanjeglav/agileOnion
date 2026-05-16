@@ -51,7 +51,13 @@ const POST_QUERY = `*[
   category,
   publishedAt,
   _createdAt,
-  body,
+  body[]{
+    ...,
+    _type == "image" => {
+      ...,
+      "dimensions": asset->metadata.dimensions
+    }
+  },
   coverImage,
   "coverImageDimensions": coverImage.asset->metadata.dimensions,
   author->{name, image}
