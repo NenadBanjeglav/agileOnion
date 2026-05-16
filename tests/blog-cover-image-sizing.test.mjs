@@ -31,7 +31,7 @@ test('image orientation detection compares Sanity width and height', () => {
 
 test('shared blog image layout caps portrait images without capping landscape images', () => {
   const layoutMatch = source.match(
-    /const getBlogImageLayout = \([\s\S]*?\n\}\n\nconst getPortableTextImageDimensions/,
+    /const getBlogImageLayout = \([\s\S]*?\r?\n\}\r?\n\r?\nconst getPortableTextImageDimensions/,
   )
   const layout = layoutMatch?.[0] ?? ''
 
