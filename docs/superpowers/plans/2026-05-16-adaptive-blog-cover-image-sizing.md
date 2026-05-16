@@ -278,21 +278,21 @@ const getCoverImageLayout = (dimensions?: ImageDimensions | null) => {
 In `BlogPostPage`, replace:
 
 ```ts
-  const coverImageUrl = post.coverImage
-    ? urlFor(post.coverImage).width(1600).auto('format').url()
-    : null
+const coverImageUrl = post.coverImage
+  ? urlFor(post.coverImage).width(1600).auto('format').url()
+  : null
 ```
 
 with:
 
 ```ts
-  const coverImageLayout = getCoverImageLayout(post.coverImageDimensions)
-  const coverImageUrl = post.coverImage
-    ? urlFor(post.coverImage)
-        .width(coverImageLayout.sourceWidth)
-        .auto('format')
-        .url()
-    : null
+const coverImageLayout = getCoverImageLayout(post.coverImageDimensions)
+const coverImageUrl = post.coverImage
+  ? urlFor(post.coverImage)
+      .width(coverImageLayout.sourceWidth)
+      .auto('format')
+      .url()
+  : null
 ```
 
 - [ ] **Step 5: Use the adaptive layout in the cover image JSX**
@@ -300,36 +300,40 @@ with:
 In `BlogPostPage`, replace the current cover block:
 
 ```tsx
-          {coverImageUrl && (
-            <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.9)]">
-              <Image
-                src={coverImageUrl}
-                alt={`Naslovna slika za ${post.title}`}
-                width={1600}
-                height={900}
-                className="h-auto w-full object-cover"
-                priority
-              />
-            </div>
-          )}
+{
+  coverImageUrl && (
+    <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.9)]">
+      <Image
+        src={coverImageUrl}
+        alt={`Naslovna slika za ${post.title}`}
+        width={1600}
+        height={900}
+        className="h-auto w-full object-cover"
+        priority
+      />
+    </div>
+  )
+}
 ```
 
 with:
 
 ```tsx
-          {coverImageUrl && (
-            <div className={coverImageLayout.frameClassName}>
-              <Image
-                src={coverImageUrl}
-                alt={`Naslovna slika za ${post.title}`}
-                width={coverImageLayout.width}
-                height={coverImageLayout.height}
-                sizes={coverImageLayout.sizes}
-                className="h-auto w-full object-contain"
-                priority
-              />
-            </div>
-          )}
+{
+  coverImageUrl && (
+    <div className={coverImageLayout.frameClassName}>
+      <Image
+        src={coverImageUrl}
+        alt={`Naslovna slika za ${post.title}`}
+        width={coverImageLayout.width}
+        height={coverImageLayout.height}
+        sizes={coverImageLayout.sizes}
+        className="h-auto w-full object-contain"
+        priority
+      />
+    </div>
+  )
+}
 ```
 
 - [ ] **Step 6: Run the regression tests and verify they pass**

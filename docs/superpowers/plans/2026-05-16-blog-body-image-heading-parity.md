@@ -28,6 +28,7 @@ This is one focused rendering change on the blog post detail page. It affects on
 ### Task 1: Update Regression Tests For Shared Adaptive Blog Images
 
 **Files:**
+
 - Modify: `tests/blog-inline-image-sizing.test.mjs`
 - Modify: `tests/blog-cover-image-sizing.test.mjs`
 
@@ -288,6 +289,7 @@ Expected result: a commit containing only the two updated test files.
 ### Task 2: Project Body Image Dimensions From Sanity
 
 **Files:**
+
 - Modify: `app/(public)/blog/[slug]/page.tsx`
 - Test: `tests/blog-inline-image-sizing.test.mjs`
 
@@ -328,6 +330,7 @@ Expected result: partial FAIL. The query projection assertion passes, while the 
 ### Task 3: Generalize The Cover Image Layout Helper
 
 **Files:**
+
 - Modify: `app/(public)/blog/[slug]/page.tsx`
 - Test: `tests/blog-cover-image-sizing.test.mjs`
 
@@ -381,13 +384,13 @@ Expected result: cover and body image code can use the same helper without dupli
 Replace:
 
 ```ts
-  const coverImageLayout = getCoverImageLayout(post.coverImageDimensions)
+const coverImageLayout = getCoverImageLayout(post.coverImageDimensions)
 ```
 
 with:
 
 ```ts
-  const coverImageLayout = getBlogImageLayout(post.coverImageDimensions)
+const coverImageLayout = getBlogImageLayout(post.coverImageDimensions)
 ```
 
 - [ ] **Step 4: Run the cover image test**
@@ -405,6 +408,7 @@ Expected result: partial FAIL. The shared helper and cover call-site assertions 
 ### Task 4: Render Body Images With The Shared Adaptive Layout
 
 **Files:**
+
 - Modify: `app/(public)/blog/[slug]/page.tsx`
 - Test: `tests/blog-inline-image-sizing.test.mjs`
 - Test: `tests/blog-cover-image-sizing.test.mjs`
@@ -476,6 +480,7 @@ Expected result: a commit containing only the blog post page implementation chan
 ### Task 5: Verify The Blog Article Experience
 
 **Files:**
+
 - Verify: `app/(public)/blog/[slug]/page.tsx`
 - Verify: `tests/blog-inline-image-sizing.test.mjs`
 - Verify: `tests/blog-cover-image-sizing.test.mjs`

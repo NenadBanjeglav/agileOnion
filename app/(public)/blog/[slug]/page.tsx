@@ -191,7 +191,9 @@ const getPortableTextImageDimensions = (value: unknown) => {
 const portableTextComponents: PortableTextComponents = {
   types: {
     image: ({ value }) => {
-      const imageLayout = getBlogImageLayout(getPortableTextImageDimensions(value))
+      const imageLayout = getBlogImageLayout(
+        getPortableTextImageDimensions(value),
+      )
       const imageUrl = urlFor(value)
         .width(imageLayout.sourceWidth)
         .auto('format')
