@@ -16,7 +16,7 @@ test('post query fetches cover image dimensions', () => {
   )
 })
 
-test('portrait image detection compares Sanity width and height', () => {
+test('image orientation detection compares Sanity width and height', () => {
   assert.match(
     source,
     /type ImageDimensions = \{[\s\S]*?width\?: number \| null[\s\S]*?height\?: number \| null[\s\S]*?\}/,
@@ -25,7 +25,7 @@ test('portrait image detection compares Sanity width and height', () => {
   assert.match(
     source,
     /const isPortraitImage = \([\s\S]*?height > width[\s\S]*?\}/,
-    'expected portrait detection to compare height against width',
+    'expected image orientation detection to compare height against width',
   )
 })
 
