@@ -191,16 +191,20 @@ const getPortableTextImageDimensions = (value: unknown) => {
 const portableTextComponents: PortableTextComponents = {
   types: {
     image: ({ value }) => {
-      const imageUrl = urlFor(value).width(1000).auto('format').url()
+      const imageLayout = getBlogImageLayout(getPortableTextImageDimensions(value))
+      const imageUrl = urlFor(value)
+        .width(imageLayout.sourceWidth)
+        .auto('format')
+        .url()
       if (!imageUrl) return null
       return (
-        <figure className="mx-auto my-8 w-full max-w-[760px] overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+        <figure className={`my-8 ${imageLayout.frameClassName}`}>
           <Image
             src={imageUrl}
             alt="Ilustracija u članku"
-            width={1000}
-            height={583}
-            sizes="(min-width: 768px) 760px, calc(100vw - 48px)"
+            width={imageLayout.width}
+            height={imageLayout.height}
+            sizes={imageLayout.sizes}
             className="h-auto w-full object-contain"
           />
         </figure>
