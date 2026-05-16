@@ -149,7 +149,7 @@ const isPortraitImage = (dimensions?: ImageDimensions | null) => {
 }
 
 const getImageDimension = (value: unknown, fallback: number) =>
-  isPositiveNumber(value) ? Math.round(value) : fallback
+  isPositiveNumber(value) ? Math.max(1, Math.round(value)) : fallback
 
 const getCoverImageLayout = (dimensions?: ImageDimensions | null) => {
   const isPortrait = isPortraitImage(dimensions)

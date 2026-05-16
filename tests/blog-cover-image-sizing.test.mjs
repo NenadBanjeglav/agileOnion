@@ -68,6 +68,14 @@ test('cover image layout caps portrait covers without capping landscape covers',
   )
 })
 
+test('cover image dimensions cannot round down to zero', () => {
+  assert.match(
+    source,
+    /Math\.max\(1,\s*Math\.round\(value\)\)/,
+    'expected malformed fractional image dimensions to clamp to at least 1',
+  )
+})
+
 test('cover image URL uses adaptive layout source width', () => {
   assert.match(
     source,
